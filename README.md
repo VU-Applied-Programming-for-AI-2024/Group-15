@@ -1,0 +1,5 @@
+- Brief description of the project
+- Team members
+- Installation details
+- Architecture
+    - High level structure of the repo
