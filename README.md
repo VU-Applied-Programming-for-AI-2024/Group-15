@@ -3,6 +3,7 @@
 ## Brief description of the project
 ## Frontend mockup
 ## Team members
+# Felice Faruolo 
 ## Installation details
 ## Architecture
     - High level structure of the repo
