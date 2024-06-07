@@ -25,11 +25,11 @@ jobs:
           node-version: '20.x'
       - name: Verify Node.js Version
         run: node -v
-      - name: Change Directory to Frontend
-        run: cd frontend/my-fitness-ai
       - name: Install Dependencies
+        working-directory: frontend/my-fitness-ai
         run: npm install
       - name: Build Angular App
+        working-directory: frontend/my-fitness-ai
         run: npm run build
       - name: Build And Deploy
         id: builddeploy
@@ -56,3 +56,4 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_FIELD_0430D9303 }}
           action: "close"
+
