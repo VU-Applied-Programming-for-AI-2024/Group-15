@@ -1,4 +1,4 @@
-name: Azure Static Web Apps CI/CD
+ame: Azure Static Web Apps CI/CD
 
 on:
   push:
@@ -19,19 +19,14 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Setup Node.js
+      - name: Setup Node.js 
         uses: actions/setup-node@v3
-        with:
+        with: 
           node-version: '20.x'
-      - name: Verify Node.js Version
-        run: node -v
       - name: Install Dependencies
-        working-directory: frontend/my-fitness-ai
         run: npm install
-      - name: Build Angular App
         working-directory: frontend/my-fitness-ai
-        run: npm run build
-      - name: Build And Deploy
+      - name: Build and Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -56,4 +51,3 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_FIELD_0430D9303 }}
           action: "close"
-
