@@ -19,26 +19,36 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Setup Node.js 
-        uses: actions/setup-node@v3
-        with: 
-          node-version: '20.x'
+      - name: Install NVM
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm install 20
+          nvm use 20
+          node -v
       - name: Install Dependencies
-        run: npm install
+        run: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm use 20
+          npm install
         working-directory: frontend/my-fitness-ai
       - name: Build and Deploy
+        run: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm use 20
+          npm run build
+      - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_FIELD_0430D9303 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "frontend/my-fitness-ai" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "frontend/my-fitness-ai/dist/my-fitness-ai" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
-
+          app_location: "frontend/my-fitness-ai"
+          output_location: "frontend/my-fitness-ai/dist/my-fitness-ai"
+  
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
