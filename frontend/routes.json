@@ -1,0 +1,11 @@
+{
+    "routes": [
+      {
+        "route": "/api/*",
+        "allowedRoles": ["anonymous"],
+        "proxy": {
+          "backendUrl": "https://fitnessai-backend.azurewebsites.net/"
+        }
+      }
+    ]
+  }
