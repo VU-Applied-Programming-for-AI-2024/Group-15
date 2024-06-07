@@ -25,8 +25,12 @@ jobs:
           node-version: '20.x'
       - name: Verify Node.js Version
         run: node -v
+      - name: Change Directory to Frontend
+        run: cd frontend/my-fitness-ai
       - name: Install Dependencies
         run: npm install
+      - name: Build Angular App
+        run: npm run build
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -36,9 +40,9 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/frontend/my-fitness-ai" # App source code path
+          app_location: "frontend/my-fitness-ai" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "/frontend/my-fitness-ai/dist/my-fitness-ai" # Built app content directory - optional
+          output_location: "frontend/my-fitness-ai/dist/my-fitness-ai" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
