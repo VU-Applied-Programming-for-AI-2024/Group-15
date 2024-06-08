@@ -1,3 +1,6 @@
+ "engines": {
+    "node": ">=18"
+  }
 {
   "name": "my-fitness-ai-coach",
   "version": "0.0.0",
