@@ -1,5 +1,3 @@
-name: Azure Static Web Apps CI/CD
-
 on:
   push:
     branches:
@@ -23,14 +21,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.19.1' # Specify Node.js version 18.19.1 or later
-          cache: 'npm'
+          node-version: "18.19.1" # Specify Node.js version 18.19.1 or later
+          cache: "npm"
 
       - name: Install dependencies
         run: npm install
         working-directory: frontend/my-fitness-ai-coach
 
-      - name: Build Angular project
+      - name: Build Angular projet
         run: npm run build -- --configuration production
         working-directory: frontend/my-fitness-ai-coach
 
@@ -42,7 +40,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          # For more inforation regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/frontend/my-fitness-ai-coach" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "dist/my-fitness-ai-coach/browser" # Built app content directory - optional
