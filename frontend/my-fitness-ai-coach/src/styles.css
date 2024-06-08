@@ -1,1 +1,216 @@
-/* You can add global styles to this file, and also import other style files */
+/* base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+a {
+    color: black;
+}
+a:visited {
+    color: black;
+}
+a:hover {
+    color: #6F86FF;
+}
+
+/* GENERAL STYLES*/
+
+
+
+/*style of the home page */
+.homepage{
+    display: -moz-grid-line;
+    text-align: center;
+    place-items: center;
+    background-color: rgb(80, 220, 206);
+
+}
+
+/*style of the AI schedule page  */
+.aischedule{    
+    display: -moz-grid-line;
+    text-align: center;
+    place-items: center;
+    background-color: rgb(80, 220, 206);
+    
+
+}
+
+/*style of the schedule page*/
+.schedule{
+    display: -moz-grid-line;
+    text-align: center;
+    place-items: center;
+    background-color: rgb(80, 220, 206);
+}
+
+
+
+/* SLIDERS STYLES*/
+
+/* Age slider*/
+
+.age-range{
+    height: 80px;
+    width:  380px;
+    background: rgb(188, 183, 183);
+    border-radius: 15px ;
+    padding: 0 65px 0 45px;
+    margin: auto;
+}
+/*number 100 on top*/
+.age-range .slider-value{
+    position: relative;
+    width: 100%;
+}
+.age-range .slider-value span{
+    position: absolute;
+    height: 45px;
+    width: 45px;
+    color:whitesmoke;
+    font-weight: 500;
+    top: -40px;
+    transform: translateX(-50%);
+    line-height: 55px ;
+    z-index: 2;
+
+}
+.age-range .slider-value span:after{
+    position: absolute;
+    content: "";
+    height: 45px;
+    width: 45px;
+    background: rgb(80, 220, 206);
+    left:50%;
+    transform: translateX(-50%) rotate(45deg);
+    border: 3px solid #fff;
+    z-index: -1;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+
+}
+.age-range .slider-value span::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    background: #664AFF;
+    cursor: pointer;
+}
+
+/*Slider and values*/
+.age-range .field{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+}
+.age-range .field .value{
+    position: absolute;
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+
+}
+.age-range .field .value.left{
+    
+    left:-22px
+}
+
+.age-range .field .value.right{
+    right:-43px
+}
+
+
+.age-range .field input{
+    -webkit-appearance: none;
+    height: 12px;
+    width: 100%;
+    border-radius: 5px;
+    outline: none;
+    border:none;
+
+}
+
+
+
+
+
+
+
+/* HAMBURGER MENU STYLES*/
+
+/* off-screen-menu */
+.off-screen-menu {
+    background-color: whitesmoke;
+    height: 100vh;
+    width: 100%;
+    max-width: 25%;
+    position: fixed;
+    top: 0;
+    left: -25%; 
+    flex-direction: column;
+    align-items: center;    
+    justify-content: center;
+    text-align: center;
+    font-size: 3rem;
+    transition: .3s ease;
+}
+.off-screen-menu.active {
+    left: 0; 
+}
+
+/* nav */
+nav {
+    padding: 1rem;
+    display: flex;
+    background-color: none;
+}
+
+/* ham menu box */
+.ham-menu {
+    height: 50px;
+    width: 40px;
+    margin-right: auto; 
+    position: relative;
+}
+/* ham menu elements */
+.ham-menu span {
+    height: 7px;
+    width: 100%;
+    background-color: whitesmoke;
+    border-radius: 25px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: .3s ease;
+}
+.ham-menu span:nth-child(1) {
+    top: 25%;
+}
+.ham-menu span:nth-child(3) {
+    top: 75%;
+}
+.ham-menu.active span {
+    background-color: black;
+    
+
+}
+.ham-menu.active span:nth-child(1) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.ham-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+.ham-menu.active span:nth-child(3) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
