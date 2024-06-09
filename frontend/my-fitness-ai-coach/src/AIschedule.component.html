@@ -147,6 +147,24 @@
     </div>
     <h3>Preferences</h3>
 
+    <!--Muscle selection menu-->
+    <h4>Targeted Muscles</h4>
+    <div class="muscle-container">
+        <button id="add-muscle-btn">+</button>
+        <div id="muscle-list"></div>
+    </div>
+
+    <div id="muscleModal" class="muscle-modal">
+        <div class="muscle-modal-content">
+            <span class="close">&times;</span>
+            <h4>Select Muscle</h4>
+            <select id="muscle-select">
+                <!-- Options will be dynamically added via JavaScript -->
+            </select>
+            <button id="save-muscle-btn">Add Muscle</button>
+        </div>
+    </div>
+
     <!--Goal selection-->
     <label for = "Goal">Goal</label>
     <select id = "Goal" name ="Goal">
