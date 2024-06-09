@@ -48,12 +48,17 @@ a:hover {
     background-color: rgb(80, 220, 206);
 }
 
+
+
 /*Gender selction buttons*/
 .gender-selection{
-    position: absolute;
+    position: relative;
+    display: flex;
+    justify-content: center;
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
+    
 
 }
 .gender-selection input[type = "radio"]{
@@ -72,29 +77,40 @@ a:hover {
     display: inline-flex;
     align-items: center;
     cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
 
 }
+/*Code for non-checked labels*/
 .gender-selection label::before{
-   
     content: "";
     height: 30px;
     width: 30px;
-    border: 3px solid goldenrod;
+    border: 3px solid black;
     border-radius: 50% ;
-    margin-right: 20px;
+    margin-right: 10px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+/*code for checked label*/
+.gender-selection input[type ="radio"]:checked + label{
+    background-color: darkcyan;
+    color:white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
 }
-.gender-selection input[type ="radio"]:checked +  label{
-    background-color: rgb(83, 83, 151);
-    color:black;
-
-}
-.gender-selection input[type ="radio"]:checked +  label:before{
-    height: 35px;
-    width: 35px;
+.gender-selection input[type ="radio"]:checked + label:before{
+    height: 25px;
+    width: 25px;
     border: 5px solid white;
     background-color: aquamarine;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
 
+}
+.gender-selection label:hover {
+    background-color: #5050cc;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* SLIDERS STYLES*/
@@ -102,10 +118,11 @@ a:hover {
 /* sliders background*/
 
 .age-range, .weight-range{
-    height: 80px;
-    width:  380px;
-    background: rgb(188, 183, 183);
+    height: 50px;
+    width:  45%;
+    background:  linear-gradient(135deg, #e0e0e0ae, #c0c0c017);
     border-radius: 15px ;
+    box-shadow: 0 4px 10px rgba(0,0, 0, 0.1);
     padding: 0 65px 0 45px;
     margin: auto;
 }
@@ -113,7 +130,9 @@ a:hover {
 .age-range .slider-value, .weight-range .slider-value{
     position: relative;
     width: 100%;
+    
 }
+
 .age-range .slider-value .slider-span, .weight-range .slider-value .slider-span{
     position: absolute;
     height: 45px;
@@ -126,6 +145,10 @@ a:hover {
     transition: transform 0.3s ease-in-out;
     line-height: 55px ;
     z-index: 2;
+    background:  #50DCCC;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
 
 }
 
@@ -134,13 +157,14 @@ a:hover {
 
 }
 
-
+/*slider surrounding when using */
 .age-range .slider-value .slider-span:after, .weight-range .slider-value .slider-span:after{
     position: absolute;
     content: "";
     height: 45px;
     width: 45px;
-    background: rgb(80, 220, 206);
+    background: linear-gradient(135deg, #e0e0e050, #c0c0c017);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     left:50%;
     transform: translateX(-50%) rotate(45deg);
     border: 3px solid #fff;
@@ -150,15 +174,26 @@ a:hover {
     border-bottom-left-radius: 50%;
 
 }
+/*Thumb styling (the button we actually touch)*/
 .age-range .field input::-webkit-slider-thumb, .weight-range .field input::-webkit-slider-thumb{
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
-    background: rgb(80, 220, 206);
+    background: linear-gradient(135deg, #50DCCC, #00A8A8);
     border-radius: 50%;
     border: 2px solid white;
     cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+
+/* Thumb hover effect */
+.age-range .field input::-webkit-slider-thumb:hover,.weight-range .field input::-webkit-slider-thumb:hover {
+    background: linear-gradient(135deg, #00A8A8, #50DCCC);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+
 
 /*Slider and values*/
 .age-range .field, .weight-range .field{
@@ -169,6 +204,7 @@ a:hover {
     height: 100%;
 
 }
+/*numbers on the side*/
 .age-range .field .value, .weight-range .field .value{
     position: absolute;
     font-size: 18px;
@@ -185,11 +221,12 @@ a:hover {
     right:-43px
 }
 
-
+/*Track style*/
 .age-range .field input, .weight-range .field input{
     -webkit-appearance: none;
     height: 10px;
     width: 100%;
+    background: linear-gradient(90deg, #67dbcd, #b3e4de);
     border-radius: 5px;
     outline: none;
     border:none;
@@ -219,6 +256,7 @@ a:hover {
 .off-screen-menu.active {
     left: 0; 
 }
+
 
 /* nav */
 nav {
