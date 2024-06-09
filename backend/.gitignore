@@ -1,8 +1,5 @@
-__pycache__/
-*.pyc
-*.cache
-*.map
-*.js.map
+# Virtual environment
+.venv/
 
 # Node modules
 node_modules/
