@@ -52,9 +52,9 @@ a:hover {
 
 /* SLIDERS STYLES*/
 
-/* Age slider*/
+/* sliders background*/
 
-.age-range{
+.age-range, .weight-range{
     height: 80px;
     width:  380px;
     background: rgb(188, 183, 183);
@@ -62,24 +62,33 @@ a:hover {
     padding: 0 65px 0 45px;
     margin: auto;
 }
-/*number 100 on top*/
-.age-range .slider-value{
+/*number showed when selecting*/
+.age-range .slider-value, .weight-range .slider-value{
     position: relative;
     width: 100%;
 }
-.age-range .slider-value span{
+.age-range .slider-value .slider-span, .weight-range .slider-value .slider-span{
     position: absolute;
     height: 45px;
     width: 45px;
     color:whitesmoke;
     font-weight: 500;
     top: -40px;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease-in-out;
     line-height: 55px ;
     z-index: 2;
 
 }
-.age-range .slider-value span:after{
+
+.age-range .slider-value .slider-span.show, .weight-range .slider-value .slider-span.show{
+    transform: translateX(-50%) scale(1);
+
+}
+
+
+.age-range .slider-value .slider-span:after, .weight-range .slider-value .slider-span:after{
     position: absolute;
     content: "";
     height: 45px;
@@ -94,16 +103,18 @@ a:hover {
     border-bottom-left-radius: 50%;
 
 }
-.age-range .slider-value span::-webkit-slider-thumb{
+.age-range .field input::-webkit-slider-thumb, .weight-range .field input::-webkit-slider-thumb{
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
-    background: #664AFF;
+    background: rgb(80, 220, 206);
+    border-radius: 50%;
+    border: 2px solid white;
     cursor: pointer;
 }
 
 /*Slider and values*/
-.age-range .field{
+.age-range .field, .weight-range .field{
     position: relative;
     display: flex;
     align-items: center;
@@ -111,37 +122,32 @@ a:hover {
     height: 100%;
 
 }
-.age-range .field .value{
+.age-range .field .value, .weight-range .field .value{
     position: absolute;
     font-size: 18px;
     font-weight: 600;
     color: black;
 
 }
-.age-range .field .value.left{
+.age-range .field .value.left, .weight-range .field .value.left{
     
     left:-22px
 }
 
-.age-range .field .value.right{
+.age-range .field .value.right, .weight-range .field .value.right{
     right:-43px
 }
 
 
-.age-range .field input{
+.age-range .field input, .weight-range .field input{
     -webkit-appearance: none;
-    height: 12px;
+    height: 10px;
     width: 100%;
     border-radius: 5px;
     outline: none;
     border:none;
 
 }
-
-
-
-
-
 
 
 /* HAMBURGER MENU STYLES*/
