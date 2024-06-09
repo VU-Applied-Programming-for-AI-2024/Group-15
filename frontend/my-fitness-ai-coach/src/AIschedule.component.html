@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">    
@@ -29,10 +28,14 @@
      <div class="off-screen-menu">
         <ul>
             <li><a href="index.html">Home</a></li>
+            <br>
             <li>Discover</li>
+            <br>
             <li>Manual Schedule</li>
             <li><a href="AIschedule.component.html">AI Schedule</a></li>
+            <br>
             <li>Help</li>
+            <br>
             <li>About</li>
         </ul>
         
@@ -41,9 +44,9 @@
         <!--Hamburger menu lines-->
         <nav>
             <div class = "ham-menu">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span class="ham-span"></span>
+                <span class="ham-span"></span>
+                <span class="ham-span"></span>
             </div>
         </nav> 
 
@@ -51,36 +54,44 @@
     <!--Subtitle #1--->
     <h2>AI Schedule</h2>
 
-
+    <br>
     <h3>Personal Information</h3>
     <br>
-    <br>
-    <br>
-    <br>
+    
 
 
     <!--age input-->
+    <h4>Age</h4>
     <div class="age-range">
         <div class = "slider-value">
-            <span>50</span>
+            <span class ="slider-span">50</span>
         </div>
     
         <div class ="field">
             <div class ="value left">0</div>
-            <input type="range" min="0" max="100" value="50", steps="1">
+            <input type="range" class ="age-input" min="0" max="100" value="50", steps="1">
             <div class ="value right">100</div>
         </div>
     </div>
+    <!--Takes the value of the silder + puts it in place of the text-->
     <script >
-        const slideValue =  document.querySelector("span");
-        const inputSlider = document.querySelector("input");
-        inputSlider.oninput = (()=>{
-            let value = inputSlider.value;
-            slideValue.textContent = value;
+        const ageslideValue =  document.querySelector(".age-range .slider-span");
+        const ageinputSlider = document.querySelector(".age-input");
+        ageinputSlider.oninput = (()=>{
+            let agevalue = ageinputSlider.value;
+            ageslideValue.textContent = agevalue;
+            ageslideValue.style.left = agevalue +"%";
+            ageslideValue.classList.add("show");
+            
 
+        });
+    /* makes the slider value invisible when the slider is inactive*/
+        ageinputSlider.onblur = (()=>{
+            ageslideValue.classList.remove("show")
         });
 
     </script>
+
   
     <br>
     
@@ -88,28 +99,71 @@
     </div>
 
     <!--Gender selection-->
-    <div>         
-        
-    Gender
+    <h4>Gender</h4>
     <br>
-    <label>Male</label>
-    <input type="radio" id = "Male" name = "title" value = "male">
-
-    <label>Female</label>
-    <input type = "radio" id = "Female" name = "title" value = "female">
-
-    <label>Other</label>
-    <input type = "radio" id = "Other"name = "title" value = "other">
+    <div class="gender-selection">
+        <input type="radio" id = "male" name = "gender" value = "male" >
+        <label for = "male">Male</label>
+        <input type = "radio" id = "female" name = "gender" value = "female">
+        <label for = "female">Female</label>
+        <input type = "radio" id = "other"name = "gender" value = "other">
+        <label for = "other">Other</label>
+    </div>      
+    
     <br>
-    </div>
+    <br>
 
-    <div>
     <!--Weight input-->
-    Weight 
+    <h4>Weight</h4>
+    
+    <div class="weight-range">
+        <div class = "slider-value">
+            <span class = "slider-span">70</span>
+        </div>
+        <div class="field">
+            <div class = "value left">0</div>
+            <input type="range" class = "weight-input" min = 0 max = "200" value="100" step="1">
+            <div class = "value right">200</div>
+        </div>
+    </div>
+   <!--Takes the value of the silder + puts it in place of the text-->
+   <script >
+    const weightslideValue =  document.querySelector(".weight-range .slider-span");
+    const weightinputSlider = document.querySelector(".weight-input");
+    weightinputSlider.oninput = (()=>{
+        let weightvalue = weightinputSlider.value;
+        weightslideValue.textContent = weightvalue;
+        weightslideValue.style.left = (weightvalue/2) +"%";
+        weightslideValue.classList.add("show");     
+    });
+    /* makes the slider value invisible when the slider is inactive*/
+    weightinputSlider.onblur = (()=>{
+        weightslideValue.classList.remove("show")
+    });
+
+</script>
     <br>
-    <input type="range">
+    
     </div>
     <h3>Preferences</h3>
+
+    <!--Muscle selection menu-->
+    <h4>Targeted Muscles</h4>
+    <div class="muscle-container">
+        <button id="add-muscle-btn">+</button>
+        <div id="muscle-list"></div>
+    </div>
+
+    <div id="muscleModal" class="muscle-modal">
+        <div class="muscle-modal-content">
+            <span class="close">&times;</span>
+            <h4>Select Muscle</h4>
+            <select id="muscle-select">
+                <!-- Options will be dynamically added via JavaScript -->
+            </select>
+            <button id="save-muscle-btn">Add Muscle</button>
+        </div>
+    </div>
 
     <!--Goal selection-->
     <label for = "Goal">Goal</label>
