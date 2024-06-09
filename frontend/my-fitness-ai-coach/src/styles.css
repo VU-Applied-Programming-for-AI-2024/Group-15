@@ -283,7 +283,7 @@ a:hover {
 
 /*Track style*/
 .age-range .field input, .weight-range .field input{
-    -webkit-appearance: none;
+    appearance: none;
     height: 10px;
     width: 100%;
     background: linear-gradient(90deg, #67dbcd, #b3e4de);
