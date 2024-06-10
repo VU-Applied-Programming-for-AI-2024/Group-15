@@ -15,7 +15,7 @@ def home():
 
 @app.route('/api/test')
 def test_api():
-    return jsonify(status='success', message='API is working')
+    return jsonify(status='success', message='API is workingg')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
