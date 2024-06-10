@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Determine which environment to use
-env = os.environ.get('FLASK_ENV', 'development')
+env = os.environ.get('FLASK_ENV', 'production')
 app.config.from_object(config[env])
 
 @app.route('/')
