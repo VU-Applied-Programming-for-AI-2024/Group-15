@@ -62,7 +62,3 @@ jobs:
           app-name: 'FitnessAI-backend'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6184AFC8917F46FCBF32219FEA87920C }}
-      - name: Set environment variable for Flask
-        run: | 
-          az webapp config appsettings set --name FitnessAI-backend --resource-group FitnessAI --settings WEBSITES_PORT=800
-
