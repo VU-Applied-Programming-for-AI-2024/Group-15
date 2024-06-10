@@ -1,16 +1,22 @@
-import os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from flask_cors import CORS
+import os
 from config import config
 
 app = Flask(__name__)
-env = os.getenv('FLASK_ENV', 'development')  
-app.config.from_object(config[env])
 CORS(app)
 
-@app.route('/api/hello', methods=['GET'])
-def hello():
-    return jsonify(message='Hello from Flask!')
+# Determine which environment to use
+env = os.environ.get('FLASK_ENV', 'development')
+app.config.from_object(config[env])
+
+@app.route('/')
+def home():
+    return jsonify(message="Hello, Flask!")
+
+@app.route('/api/test')
+def test_api():
+    return jsonify(status='success', message='API is working')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
