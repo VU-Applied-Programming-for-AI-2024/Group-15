@@ -1,11 +1,12 @@
-import logging
-from app import create_app
-from waitress import serve
+import os
+from flask import Flask
 
-logging.basicConfig(level=logging.DEBUG)
+app = Flask(__name__)
 
-app = create_app()
+@app.route('/')
+def hello():
+    return "Hello, World!"
 
 if __name__ == '__main__':
-    print("Starting server...")
-    print("Server started successfully.")
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
