@@ -1,18 +1,22 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
 
+# Angular cache
 .angular/cache/
-__pycache__/
+/pycache_/
 *.pyc
 *.cache
 *.map
 *.js.map
 
-# Node modules
-node_modules/
-
 # Logs
 logs
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Dependency directories
 jspm_packages/
@@ -37,8 +41,8 @@ typings/
 .env
 
 # Angular build artifacts
-dist/
-build/
+/dist
+/build
 
 # TypeScript cache
 *.tsbuildinfo
@@ -46,8 +50,12 @@ build/
 # IDEs and editors
 .idea/
 .vscode/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+/*.suo
+.ntvs
+/*.njsproj
+/*.sln
+/*.sw?
+
+# Misc
+.DS_Store
+Thumbs.db
