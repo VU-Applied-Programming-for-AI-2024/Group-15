@@ -1,12 +1,7 @@
-from flask import Flask, jsonify
-from flask_cors import CORS
-from config import config
+from flask import Flask
 
-def create_app():
-    app = Flask(__name__)
-    CORS(app)
+app = Flask(__name__)
 
-    # Load configuration
-    app.config.from_object(config)
-
-app = create_app()
+@app.route('/')
+def hello():
+    return "Hello, World!"
