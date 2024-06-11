@@ -5,3 +5,5 @@ def create_app():
     from .routes import main
     app.register_blueprint(main)
     return app
+
+from app import routes 
