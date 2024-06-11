@@ -9,14 +9,4 @@ def create_app():
     # Load configuration
     app.config.from_object(config)
 
-    @app.route('/')
-    def home():
-        return jsonify(message="Hello, Flask!")
-
-    @app.route('/api/test')
-    def test_api():
-        return jsonify(status='success', message='API is working')
-
-    return app
-
 app = create_app()
