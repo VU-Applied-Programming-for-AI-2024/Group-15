@@ -8,25 +8,73 @@
 }
 
 a {
-    color: black;
+    color: #B0B3B8;
 }
 a:visited {
-    color: black;
+    color: #B0B3B8;
+    
 }
 a:hover {
-    color: #6F86FF;
+    color: #D0D3D4;
 }
+
+/*nav bar (with hamburger menu logo)*/
+nav {
+    padding: 1rem;
+    display: flex;
+    position: fixed; /* Fixed position */
+    align-items: center;
+    justify-content: space-between;
+    top: 0; /* Align to top */
+    left: 0; /* Align to left */
+    width: 100%; /* Full width */
+    background-color: none;
+    z-index: 1000; /* Ensure it's on top */
+}
+
+
+.subtitle{ 
+    padding: 10px; /* Adjust as needed */
+    display: block;
+    position: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #4A627D;
+    z-index: 1000; /* Ensures it stays on top of other elements */
+    text-align: center; /* Center the text if needed */
+    
+    
+    
+
+}
+
 
 /* GENERAL STYLES*/
 
 
 
-/*style of the home page */
+/*pages rectangle in center*/
+.center-container {
+    display: -moz-grid-line;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #2A3D66; 
+    color: #B0B3B8; 
+    width: 80%; 
+    padding: 20px; 
+    margin: 50px auto; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    overflow: hidden;
+}
 .homepage{
     display: -moz-grid-line;
     text-align: center;
     place-items: center;
-    background-color: rgb(80, 220, 206);
+    background-color: #1C1F2E;
+    color: #333333;
 
 }
 
@@ -35,7 +83,8 @@ a:hover {
     display: -moz-grid-line;
     text-align: center;
     place-items: center;
-    background-color: rgb(80, 220, 206);
+    background-color: #1C1F2E;
+    color : #333333
     
 
 }
@@ -45,7 +94,8 @@ a:hover {
     display: -moz-grid-line;
     text-align: center;
     place-items: center;
-    background-color: rgb(80, 220, 206);
+    background-color: #1C1F2E;
+    color: #333333;
 }
 
 
@@ -61,7 +111,7 @@ a:hover {
     padding: 5px 10px;
     cursor: pointer;
     border-radius: 5px;
-    background-color: rgb(80, 220, 206);
+    background-color: #4A627D;
     color: white;
     border: none;
 }
@@ -74,6 +124,7 @@ a:hover {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
+
 }
 
 /* Modal */
@@ -87,24 +138,25 @@ a:hover {
     height: 100%; 
     overflow: auto; 
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    color: #B0B3B8;
 }
 
 .muscle-modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    background-color: #2A3D66;
+    margin: 15% auto; 
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 60%;
 }
+/*close button*/
 .close {
     color: #aaa;
-    float: right;
+    float:right;
     font-size: 28px;
     font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.close:hover,.close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -127,10 +179,10 @@ a:hover {
 /* everything about the look of a label*/
 .gender-selection label{
     position: relative;
-    color : black;
+    color : #D0D3D4;
     font-family : sans-serif;
     font-size : 20px;
-    border: 2px solid whitesmoke;
+    border: 2px solid rgba(245, 245, 245, 0.678);
     background-color: none;
     border-radius: 10px;
     padding : 10px, 50px;
@@ -145,15 +197,15 @@ a:hover {
     content: "";
     height: 30px;
     width: 30px;
-    border: 3px solid black;
+    border: 3px solid #D0D3D4;
     border-radius: 50% ;
     margin-right: 10px;
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 /*code for checked label*/
 .gender-selection input[type ="radio"]:checked + label{
-    background-color: darkcyan;
-    color:white;
+    background-color: #4A627D;
+    color:#B0B3B8;
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
@@ -161,13 +213,13 @@ a:hover {
 .gender-selection input[type ="radio"]:checked + label:before{
     height: 25px;
     width: 25px;
-    border: 5px solid white;
-    background-color: aquamarine;
+    border: 5px solid #B0B3B8;
+    background-color: #4A627D;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
 
 }
 .gender-selection label:hover {
-    background-color: #5050cc;
+    background-color: #4A627D;
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -186,6 +238,7 @@ a:hover {
     padding: 0 65px 0 45px;
     margin: auto;
 }
+
 /*number showed when selecting*/
 .age-range .slider-value, .weight-range .slider-value{
     position: relative;
@@ -197,7 +250,7 @@ a:hover {
     position: absolute;
     height: 45px;
     width: 45px;
-    color:whitesmoke;
+    color:#D0D3D4;
     font-weight: 500;
     top: -40px;
     transform: translateX(-50%) scale(0);
@@ -205,7 +258,7 @@ a:hover {
     transition: transform 0.3s ease-in-out;
     line-height: 55px ;
     z-index: 2;
-    background:  #50DCCC;
+    background:  #2A3D66;
     border-radius: 50%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
@@ -223,7 +276,7 @@ a:hover {
     content: "";
     height: 45px;
     width: 45px;
-    background: linear-gradient(135deg, #e0e0e050, #c0c0c017);
+    background: linear-gradient(135deg, #2A3D66, #2A3D66);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     left:50%;
     transform: translateX(-50%) rotate(45deg);
@@ -239,16 +292,16 @@ a:hover {
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
-    background: linear-gradient(135deg, #50DCCC, #00A8A8);
+    background: linear-gradient(135deg, #2A3D66, #586175);
     border-radius: 50%;
-    border: 2px solid white;
+    border: 2px solid #B0B3B8;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Thumb hover effect */
 .age-range .field input::-webkit-slider-thumb:hover,.weight-range .field input::-webkit-slider-thumb:hover {
-    background: linear-gradient(135deg, #00A8A8, #50DCCC);
+    background: linear-gradient(135deg, #00A8A8, #2A3D66);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -283,10 +336,10 @@ a:hover {
 
 /*Track style*/
 .age-range .field input, .weight-range .field input{
-    -webkit-appearance: none;
+    appearance: none;
     height: 10px;
     width: 100%;
-    background: linear-gradient(90deg, #67dbcd, #b3e4de);
+    background: linear-gradient(90deg, #2A3D66, #7b8eb7);
     border-radius: 5px;
     outline: none;
     border:none;
@@ -299,7 +352,7 @@ a:hover {
 
 /* off-screen-menu */
 .off-screen-menu {
-    background-color: whitesmoke;
+    background-color: #4A627D;
     height: 100vh;
     width: 100%;
     max-width: 25%;
