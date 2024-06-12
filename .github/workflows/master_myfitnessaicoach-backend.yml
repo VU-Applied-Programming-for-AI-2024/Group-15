@@ -80,18 +80,17 @@ jobs:
       - name: Check for log files
         run: |
           echo "Listing files in /home/LogFiles"
-          ls -al /home/LogFiles
+          ls -al /home/LogFiles || echo "No /home/LogFiles directory found."
 
       - name: Display specific log files
         run: |
           echo "Listing kudu trace files"
-          ls -al /home/LogFiles/kudu/trace/
+          ls -al /home/LogFiles/kudu/trace/ || echo "No /home/LogFiles/kudu/trace directory found."
 
           echo "Displaying deployment logs"
           for logfile in /home/LogFiles/kudu/trace/*.txt; do
             echo "Log file: $logfile"
             cat $logfile
-          done
-
+          done || echo "No log files found in /home/LogFiles/kudu/trace/"
 
 
