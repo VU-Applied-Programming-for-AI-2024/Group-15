@@ -60,7 +60,3 @@ jobs:
           app-name: 'myfitnessai'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2704C0FE8E3B4B1CAD0A5FFF40AFB9BF }}
-
-      - name: Verify deployment
-        run: |
-          curl -I ${{ steps.deploy-to-webapp.outputs.webapp-url }}
