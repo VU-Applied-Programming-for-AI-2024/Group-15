@@ -52,7 +52,11 @@ jobs:
           name: python-app
 
       - name: Unzip artifact for deployment
-        run: unzip backend_release.zip
+        run: unzip backend_release.zip -d $GITHUB_WORKSPACE/backend_release
+
+      - name: Install dependencies on Azure
+        run: |
+          pip install -r $GITHUB_WORKSPACE/backend_release/requirements.txt
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
@@ -61,15 +65,12 @@ jobs:
           app-name: 'myfitnessaicoach-backend'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CC592A1A03AC4D13B3D1E9F8026DB51C }}
-
-      - name: Install dependencies on Azure
-        run: |
-          cd /home/site/wwwroot
-          pip install -r requirements.txt
+          package: $GITHUB_WORKSPACE/backend_release
 
       - name: Run the application
         run: |
-          cd /home/site/wwwroot
+          cd $GITHUB_WORKSPACE/backend_release
           python -m waitress --port=8000 run:app
+
 
 
