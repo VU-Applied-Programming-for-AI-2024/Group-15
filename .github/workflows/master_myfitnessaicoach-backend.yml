@@ -56,6 +56,14 @@ jobs:
       - name: Unzip backend artifact for deployment
         run: unzip backend_release.zip
 
+      - name: List files after unzipping
+        run: ls -al
+
+      - name: Move files to correct location
+        run: |
+          mv backend/* ./
+          ls -al
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -86,4 +94,5 @@ jobs:
       - name: Display app logs
         run: cat /home/LogFiles/AppServiceAppLogs_Feature_Installer/startup_0.log
         continue-on-error: true
+
 
