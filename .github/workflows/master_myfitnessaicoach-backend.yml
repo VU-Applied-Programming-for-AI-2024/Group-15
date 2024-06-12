@@ -11,36 +11,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Set up Python version
         uses: actions/setup-python@v1
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Create and start virtual environment
         run: |
           python -m venv venv
           source venv/bin/activate
-          pip install -r backend/requirements.txt
 
-      - name: List files before zipping
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: List backend files before zipping
         run: ls -al backend
 
-      - name: Zip artifact for deployment
+      - name: Zip backend artifact for deployment
         run: |
           cd backend
-          zip -r ../release.zip . -x "venv/*"
+          zip -r ../backend_release.zip . -x "venv/*"
 
-      - name: List files after zipping
-        run: ls -al
-
-      - name: Upload artifact for deployment jobs
+      - name: Upload backend artifact for deployment jobs
         uses: actions/upload-artifact@v3
         with:
-          name: python-app
-          path: release.zip
+          name: backend-app
+          path: backend_release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,22 +48,13 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download artifact from build job
+      - name: Download backend artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: python-app
+          name: backend-app
 
-      - name: List files after download
-        run: ls -al
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
-
-      - name: List files after unzipping
-        run: ls -al
-
-      - name: Display directory structure
-        run: tree
+      - name: Unzip backend artifact for deployment
+        run: unzip backend_release.zip
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
@@ -75,8 +64,17 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CC592A1A03AC4D13B3D1E9F8026DB51C }}
 
-      - name: Check deployment logs
-        run: cat /home/LogFiles/2024_06_11_ln1xsdlwk000014_docker.log
+      - name: Wait for logs to be available
+        run: sleep 30
 
-      - name: Check kudu trace logs
-        run: cat /home/LogFiles/kudu/trace/12bfb8978819-370efb3e-5e88-4626-bf78-4d4e7407a0a0.txt
+      - name: List available log files
+        run: ls -al /home/LogFiles/
+        continue-on-error: true
+
+      - name: Display docker log file
+        run: cat /home/LogFiles/2024_06_11_ln1xsdlwk000014_docker.log
+        continue-on-error: true
+
+      - name: Display app logs
+        run: cat /home/LogFiles/AppServiceAppLogs_Feature_Installer/startup_0.log
+        continue-on-error: true
