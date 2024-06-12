@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // Use the correct backend URL
-const API_URL = process.env.REACT_APP_API_URL || 'http://myfitnessaicoach-backend.azurewebsites.net';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 const useFetchItems = () => {
   const [items, setItems] = useState([]);
