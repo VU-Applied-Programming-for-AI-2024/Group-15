@@ -1,5 +1,7 @@
 # Virtual environment
 .venv/
+environment.yml
+
 
 # Node modules
 node_modules/
