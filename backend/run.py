@@ -24,4 +24,5 @@ def add_item():
     return jsonify(new_item), 201
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=int(os.environ.get("WEBSITE_PORT", 8000)))
