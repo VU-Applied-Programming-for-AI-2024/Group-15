@@ -75,7 +75,7 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CC592A1A03AC4D13B3D1E9F8026DB51C }}
 
       - name: Wait for deployment to stabilize
-        run: sleep 60
+        run: sleep 30
 
       - name: Check for log files
         run: |
