@@ -48,9 +48,6 @@ jobs:
         with:
           name: python-app
 
-      - name: Create deployment directory
-        run: mkdir -p backend_release
-
       - name: Unzip artifact for deployment
         run: unzip backend_release.zip -d backend_release
 
@@ -58,13 +55,13 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'myfitnessaicoach-backend'
+          app-name: 'myfitnessaicoach-backendd'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CC592A1A03AC4D13B3D1E9F8026DB51C }}
-          package: backend_release
+          package: backend_release/backend_release.zip
 
       - name: Set startup command
         run: |
-          az webapp config set --name myfitnessaicoach-backendd --resource-group FitnessAI --startup-file 'python -m waitress --port=8000 run:app'
+          az webapp config set --name myfitnessaicoach-backendd --resource-group YOUR_RESOURCE_GROUP --startup-file 'python -m waitress --port=8000 run:app'
         env:
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
