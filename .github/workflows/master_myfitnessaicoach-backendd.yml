@@ -61,7 +61,7 @@ jobs:
 
       - name: Set startup command
         run: |
-          az webapp config set --name myfitnessaicoach-backendd --resource-group YOUR_RESOURCE_GROUP --startup-file 'python -m waitress --port=8000 run:app'
+          az webapp config set --name myfitnessaicoach-backendd --resource-group FitnessiAI --startup-file 'python -m waitress --port=8000 run:app'
         env:
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
