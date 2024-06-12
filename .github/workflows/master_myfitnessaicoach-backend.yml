@@ -19,19 +19,11 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Miniconda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-activate-base: false
-          python-version: '3.10'
-
-      - name: Create conda environment
-        run: conda create -n myenv python=3.10 -y
-
-      - name: Activate conda environment and install dependencies
+      - name: Install dependencies
         run: |
-          echo "source /usr/share/miniconda/bin/activate myenv" >> $GITHUB_ENV
-          conda run -n myenv pip install -r requirements.txt
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: List files before zipping
@@ -71,6 +63,9 @@ jobs:
       - name: List files after unzipping
         run: ls -al
 
+      - name: Display directory structure
+        run: tree
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -78,3 +73,10 @@ jobs:
           app-name: 'myfitnessaicoach-backend'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CC592A1A03AC4D13B3D1E9F8026DB51C }}
+
+      - name: Check deployment logs
+        run: cat /home/LogFiles/2024_06_11_ln1xsdlwk000014_docker.log
+
+      - name: Check kudu trace logs
+        run: cat /home/LogFiles/kudu/trace/12bfb8978819-370efb3e-5e88-4626-bf78-4d4e7407a0a0.txt
+
