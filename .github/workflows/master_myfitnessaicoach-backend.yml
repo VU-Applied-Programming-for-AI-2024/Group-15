@@ -24,20 +24,13 @@ jobs:
           source venv/bin/activate
 
       - name: Install dependencies
-        run: |
-          source venv/bin/activate
-          pip install -r backend/requirements.txt
-
-      - name: Debug - List directory contents
-        run: |
-          echo "Listing root directory"
-          ls -al
-          echo "Listing backend directory"
-          ls -al backend
+        run: pip install -r backend/requirements.txt
 
       - name: Zip artifact for deployment
         run: |
-          zip -r backend_release.zip backend -x "backend/__pycache__/*" "backend/venv/*"
+          cd backend
+          zip ../backend_release.zip ./* -r
+          cd ..
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
@@ -61,11 +54,6 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip backend_release.zip
 
-      - name: Install dependencies on server
-        run: |
-          cd backend
-          pip install -r requirements.txt
-
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -74,23 +62,14 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CC592A1A03AC4D13B3D1E9F8026DB51C }}
 
-      - name: Wait for deployment to stabilize
-        run: sleep 30
-
-      - name: Check for log files
+      - name: Install dependencies on Azure
         run: |
-          echo "Listing files in /home/LogFiles"
-          ls -al /home/LogFiles || echo "No /home/LogFiles directory found."
+          cd /home/site/wwwroot
+          pip install -r requirements.txt
 
-      - name: Display specific log files
+      - name: Run the application
         run: |
-          echo "Listing kudu trace files"
-          ls -al /home/LogFiles/kudu/trace/ || echo "No /home/LogFiles/kudu/trace directory found."
-
-          echo "Displaying deployment logs"
-          for logfile in /home/LogFiles/kudu/trace/*.txt; do
-            echo "Log file: $logfile"
-            cat $logfile
-          done || echo "No log files found in /home/LogFiles/kudu/trace/"
+          cd /home/site/wwwroot
+          python -m waitress --port=8000 run:app
 
 
