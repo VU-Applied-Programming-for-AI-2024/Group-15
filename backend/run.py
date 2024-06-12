@@ -25,4 +25,4 @@ def add_item():
 
 if __name__ == "__main__":
     from waitress import serve
-    serve(app, host="0.0.0.0", port=int(os.environ.get("WEBSITE_PORT", 8000)))
+    serve(app, host="0.0.0.0", port=int(os.environ.get("WEBSITE_PORT", 80)))
