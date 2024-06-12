@@ -1,4 +1,4 @@
-name: Build and deploy Python app to Azure Web App - myfitnessaicoach-backendd
+name: Build and deploy Python app to Azure Web App - myfitnessaicoach-backend
 
 on:
   push:
@@ -61,3 +61,15 @@ jobs:
           app-name: 'myfitnessaicoach-backend'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CC592A1A03AC4D13B3D1E9F8026DB51C }}
           package: backend_release
+
+      - name: Set startup command
+        run: |
+          az webapp config set --name myfitnessaicoach-backendd --resource-group FitnessAI --startup-file 'python -m waitress --port=8000 run:app'
+        env:
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+
+          
