@@ -2,44 +2,61 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function App() {
-  const [data, setData] = useState(null);
-  const [postData, setPostData] = useState({ message: '' });
+  const [items, setItems] = useState([]);
+  const [newItem, setNewItem] = useState({ id: '', name: '' });
   const [response, setResponse] = useState(null);
 
   useEffect(() => {
-    // Fetch data from Flask backend
-    axios.get('http://localhost:5000/api/data')
+    // Fetch items from Flask backend
+    axios.get('http://localhost:5000/api/items')
       .then(response => {
-        setData(response.data);
+        setItems(response.data);
       })
       .catch(error => {
-        console.error('There was an error fetching the data!', error);
+        console.error('There was an error fetching the items!', error);
       });
   }, []);
 
-  const handlePost = () => {
-    // Post data to Flask backend
-    axios.post('http://localhost:5000/api/data', postData)
+  const handleAddItem = () => {
+    // Add new item to Flask backend
+    axios.post('http://localhost:5000/api/items', newItem)
       .then(response => {
+        setItems([...items, response.data]);
         setResponse(response.data);
+        setNewItem({ id: '', name: '' });
       })
       .catch(error => {
-        console.error('There was an error posting the data!', error);
+        console.error('There was an error adding the item!', error);
       });
   };
 
   return (
     <div className="App">
       <h1>Data from Flask</h1>
-      {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : 'Loading...'}
+      {items.length ? (
+        <ul>
+          {items.map(item => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      ) : (
+        'Loading...'
+      )}
       
       <h2>Send Data to Flask</h2>
       <input 
         type="text" 
-        value={postData.message}
-        onChange={(e) => setPostData({ message: e.target.value })}
+        placeholder="ID"
+        value={newItem.id}
+        onChange={(e) => setNewItem({ ...newItem, id: e.target.value })}
       />
-      <button onClick={handlePost}>Send</button>
+      <input 
+        type="text" 
+        placeholder="Name"
+        value={newItem.name}
+        onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+      />
+      <button onClick={handleAddItem}>Send</button>
       
       <h2>Response from Flask</h2>
       {response ? <pre>{JSON.stringify(response, null, 2)}</pre> : 'No response yet.'}
