@@ -24,6 +24,10 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
+
+      - name: Zip artifact for deployment
+        run: |
+          cd backend
           zip -r ../release.zip .
           cd ..
 
@@ -49,11 +53,10 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: 'myfitnessai'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2704C0FE8E3B4B1CAD0A5FFF40AFB9BF }}
-
