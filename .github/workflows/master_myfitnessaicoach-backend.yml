@@ -11,25 +11,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Python version
         uses: actions/setup-python@v1
         with:
           python-version: '3.10'
 
-      - name: Create and start virtual environment
+      - name: Install Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-activate-base: false
+          python-version: '3.10'
+      
+      - name: Create conda environment
         run: |
-          python -m venv venv
-          source venv/bin/activate
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+          conda create -n myenv python=3.10 -y
+          source activate myenv
+          conda install -y --file requirements.txt
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      - name: List files before zipping
+        run: ls -al
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip -r release.zip . -x "venv/*"
+
+      - name: List files after zipping
+        run: ls -al
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
@@ -50,8 +60,14 @@ jobs:
         with:
           name: python-app
 
+      - name: List files after download
+        run: ls -al
+
       - name: Unzip artifact for deployment
         run: unzip release.zip
+
+      - name: List files after unzipping
+        run: ls -al
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
