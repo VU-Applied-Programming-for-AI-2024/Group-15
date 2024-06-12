@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - myfitnessaicoach-backendd
+name: Build and deploy Python Flask app to Azure Web App - myfitnessaicoach-backend
 
 on:
   push:
@@ -26,22 +26,23 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
+        working-directory: backend
       
       - name: Install dependencies
         run: pip install -r requirements.txt
+        working-directory: backend
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip -r release.zip .
+        working-directory: backend
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
         with:
           name: python-app
-          path: |
-            release.zip
-            !venv/
+          path: backend/release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,7 +51,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write # This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -60,8 +61,8 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
+        working-directory: backend
 
-      
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -73,6 +74,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'myfitnessaicoach-backendd'
+          app-name: 'myfitnessaicoach-backend'
           slot-name: 'Production'
-          
