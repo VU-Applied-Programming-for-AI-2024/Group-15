@@ -61,6 +61,11 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip backend_release.zip
 
+      - name: Install dependencies on server
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -68,11 +73,6 @@ jobs:
           app-name: 'myfitnessaicoach-backend'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CC592A1A03AC4D13B3D1E9F8026DB51C }}
-
-      - name: Install dependencies on server
-        run: |
-          pip install -r requirements.txt
-          python -m waitress --port=8000 run:app
 
       - name: Wait for deployment to stabilize
         run: sleep 60
@@ -92,5 +92,6 @@ jobs:
             echo "Log file: $logfile"
             cat $logfile
           done
+
 
 
