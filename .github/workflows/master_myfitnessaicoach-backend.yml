@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python version
         uses: actions/setup-python@v1
@@ -24,21 +24,23 @@ jobs:
           source venv/bin/activate
 
       - name: Install dependencies
-        run: pip install -r backend/requirements.txt
+        run: |
+          source venv/bin/activate
+          pip install -r backend/requirements.txt
 
-      - name: List backend files before zipping
-        run: ls -al backend
-
-      - name: Zip backend artifact for deployment
+      - name: Zip artifact for deployment
         run: |
           cd backend
-          zip -r ../backend_release.zip . -x "venv/*"
+          zip ../backend_release.zip ./* -r
+        working-directory: ./backend
 
-      - name: Upload backend artifact for deployment jobs
+      - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
         with:
-          name: backend-app
-          path: backend_release.zip
+          name: python-app
+          path: |
+            backend_release.zip
+            !venv/
 
   deploy:
     runs-on: ubuntu-latest
@@ -48,16 +50,13 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download backend artifact from build job
+      - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: backend-app
+          name: python-app
 
-      - name: Unzip backend artifact for deployment
+      - name: Unzip artifact for deployment
         run: unzip backend_release.zip
-
-      - name: List files after unzipping
-        run: ls -al
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
@@ -67,27 +66,8 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CC592A1A03AC4D13B3D1E9F8026DB51C }}
 
-      - name: Wait for logs to be available
-        run: sleep 60
-
-      - name: List available log files
+      - name: Install dependencies on server
         run: |
-          echo "Listing files in /home/LogFiles"
-          ls -al /home/LogFiles/
-        continue-on-error: true
-
-      - name: List specific log files
-        run: |
-          echo "Listing specific log files"
-          ls -al /home/LogFiles/kudu/trace/
-        continue-on-error: true
-
-      - name: Display docker log file
-        run: cat /home/LogFiles/2024_06_11_ln1xsdlwk000014_docker.log
-        continue-on-error: true
-
-      - name: Display app logs
-        run: cat /home/LogFiles/AppServiceAppLogs_Feature_Installer/startup_0.log
-        continue-on-error: true
-
+          pip install -r requirements.txt
+          python -m waitress -
 
