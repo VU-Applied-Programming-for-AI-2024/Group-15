@@ -70,7 +70,7 @@ jobs:
       - name: Run the application
         run: |
           cd $GITHUB_WORKSPACE/backend_release
-          python -m waitress --port=8000 run:app
+          python -m waitress --port=80 run:app
 
 
 
