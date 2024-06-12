@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
-from waitress import serve
 
 load_dotenv()
 
@@ -28,4 +27,5 @@ def add_item():
     return jsonify(new_item), 201
 
 if __name__ == "__main__":
+    from waitress import serve
     serve(app, host='0.0.0.0', port=8000)
