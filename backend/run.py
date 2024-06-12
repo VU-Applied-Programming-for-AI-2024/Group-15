@@ -6,7 +6,7 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app, resources={r"/api/*": {"origins": "https://icy-rock-0c06feb03.5.azurestaticapps.net"}})
 
 # Sample data
 data = [
