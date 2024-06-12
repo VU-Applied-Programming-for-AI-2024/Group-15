@@ -59,11 +59,6 @@ jobs:
       - name: List files after unzipping
         run: ls -al
 
-      - name: Move files to correct location
-        run: |
-          mv backend/* ./
-          ls -al
-
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
