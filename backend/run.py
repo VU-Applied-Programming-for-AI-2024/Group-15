@@ -2,11 +2,10 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "https://icy-rock-0c06feb03.5.azurestaticapps.net"}}) 
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  # Allow local React frontend
 
 data = [
     {"id": 1, "name": "Item 1"},
@@ -24,4 +23,4 @@ def add_item():
     return jsonify(new_item), 201
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    app.run(debug=True)
