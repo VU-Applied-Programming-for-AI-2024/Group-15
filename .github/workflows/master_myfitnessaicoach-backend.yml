@@ -65,10 +65,18 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CC592A1A03AC4D13B3D1E9F8026DB51C }}
 
       - name: Wait for logs to be available
-        run: sleep 30
+        run: sleep 60
 
       - name: List available log files
-        run: ls -al /home/LogFiles/
+        run: |
+          echo "Listing files in /home/LogFiles"
+          ls -al /home/LogFiles/
+        continue-on-error: true
+
+      - name: List specific log files
+        run: |
+          echo "Listing specific log files"
+          ls -al /home/LogFiles/kudu/trace/
         continue-on-error: true
 
       - name: Display docker log file
@@ -78,3 +86,4 @@ jobs:
       - name: Display app logs
         run: cat /home/LogFiles/AppServiceAppLogs_Feature_Installer/startup_0.log
         continue-on-error: true
+
