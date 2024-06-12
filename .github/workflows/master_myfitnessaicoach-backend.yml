@@ -18,20 +18,12 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Navigate to backend directory
-        run: cd backend
-
-      - name: Create and start virtual environment
+      - name: Navigate to backend directory and set up environment
         run: |
+          cd backend
           python -m venv venv
           source venv/bin/activate
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      - name: Zip artifact for deployment
-        run: |
+          pip install -r requirements.txt
           zip -r ../release.zip .
           cd ..
 
@@ -64,3 +56,4 @@ jobs:
           app-name: 'myfitnessaicoach-backend'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C0FAF64F32824DEDB5BC2FF5DBC9A5AE }}
+
