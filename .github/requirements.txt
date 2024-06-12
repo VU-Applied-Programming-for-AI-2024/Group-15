@@ -51,5 +51,5 @@ requests==2.31.0
 waitress==3.0.0
 python-dotenv==1.0.1
 gunicorn==22.0.0
-flask_restuful==0.3.10
+flask_restful==0.3.10
 
