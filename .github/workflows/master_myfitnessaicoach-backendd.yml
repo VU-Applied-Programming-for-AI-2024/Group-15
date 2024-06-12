@@ -1,4 +1,4 @@
-name: Build and deploy Python app to Azure Web App - myfitnessaicoach-backend
+name: Build and deploy Python app to Azure Web App - myfitnessaicoach-backendd
 
 on:
   push:
