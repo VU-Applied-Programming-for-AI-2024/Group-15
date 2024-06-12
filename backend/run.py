@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  # Allow local React frontend
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}}) 
 
 data = [
     {"id": 1, "name": "Item 1"},
