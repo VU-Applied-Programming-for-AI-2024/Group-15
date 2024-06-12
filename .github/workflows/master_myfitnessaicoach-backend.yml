@@ -24,12 +24,14 @@ jobs:
         with:
           auto-activate-base: false
           python-version: '3.10'
-      
+
       - name: Create conda environment
+        run: conda create -n myenv python=3.10 -y
+
+      - name: Activate conda environment and install dependencies
         run: |
-          conda create -n myenv python=3.10 -y
-          source activate myenv
-          conda install -y --file requirements.txt
+          echo "source /usr/share/miniconda/bin/activate myenv" >> $GITHUB_ENV
+          conda run -n myenv pip install -r requirements.txt
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: List files before zipping
