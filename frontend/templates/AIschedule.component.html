@@ -62,7 +62,7 @@
             </div>
             <div class="field">
                 <div class="value left">0</div>
-                <input type="range" class="age-input" min="0" max="100" value="50" step="1">
+                <input type="range" id = "age-input" class="age-input" min="0" max="100" value="50" step="1">
                 <div class="value right">100</div>
             </div>
         </div>
@@ -103,7 +103,7 @@
             </div>
             <div class="field">
                 <div class="value left">0</div>
-                <input type="range" class="weight-input" min="0" max="200" value="100" step="1">
+                <input type="range" id="weight-input" class="weight-input" min="0" max="200" value="100" step="1">
                 <div class="value right">200</div>
             </div>
         </div>
@@ -134,14 +134,14 @@
                 <span class="close">&times;</span>
                 <h4>Select Muscle</h4>
                 <select id="muscle-select">
-                    <!-- Options will be dynamically added via JavaScript -->
+                    
                 </select>
                 <button id="save-muscle-btn">Add Muscle</button>
             </div>
         </div>
 
         <label for="Goal">Goal</label>
-        <select id="Goal" name="Goal">
+        <select id="goal" name="Goal">
             <option value="weight_loss">weight loss</option>
             <option value="muscle_gain">muscle gain</option>
             <option value="strength_training">strength training</option>
@@ -150,9 +150,10 @@
             <option value="general_fitness">general fitness</option>
         </select>
         <div>
+            
         </div>
         <a href="schedule_page.component.html">
-            <button style="font-size:large; background-size: 2cm; background-color: aquamarine; border-radius: 17px;">Create AI Schedule</button>
+            <button id="create-schedule-btn" style="font-size:large; background-size: 2cm; background-color: aquamarine; border-radius: 17px;" disabled>Create AI Schedule</button>
         </a>
     </div>
 </body>

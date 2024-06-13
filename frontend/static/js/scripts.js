@@ -1,3 +1,72 @@
+/*Code to save the information from the ai schedule*/
+// Function to save data to local storage
+function saveDataToLocalStorage() {
+    const ageValue = document.querySelector(".age-input").value;
+    const genderValue = document.querySelector('input[name="gender"]:checked').value;
+    const weightValue = document.querySelector(".weight-input").value;
+
+    localStorage.setItem("userAge", ageValue);
+    localStorage.setItem("userGender", genderValue);
+    localStorage.setItem("userWeight", weightValue);
+}
+
+// Function to validate form and enable button
+function validateForm() {
+    const age = document.querySelector(".age-input").value;
+    const gender = document.querySelector('input[name="gender"]:checked');
+    const weight = document.querySelector(".weight-input").value;
+    const createScheduleBtn = document.getElementById("create-schedule-btn");
+
+    if (age && gender && weight) {
+        createScheduleBtn.disabled = false;
+    } else {
+        createScheduleBtn.disabled = true;
+    }
+}
+
+// Event listeners for form inputs to trigger validation
+document.addEventListener("DOMContentLoaded", () => {
+    // Check if data exists in localStorage on page load
+    const savedAge = localStorage.getItem("userAge");
+    const savedGender = localStorage.getItem("userGender");
+    const savedWeight = localStorage.getItem("userWeight");
+
+    if (savedAge) {
+        document.querySelector(".age-input").value = savedAge;
+    }
+    if (savedGender) {
+        const genderRadios = document.querySelectorAll('input[name="gender"]');
+        genderRadios.forEach(radio => {
+            if (radio.value === savedGender) {
+                radio.checked = true;
+            }
+        });
+    }
+    if (savedWeight) {
+        document.querySelector(".weight-input").value = savedWeight;
+    }
+
+    // Attach event listeners for input validation
+    document.querySelector(".age-input").addEventListener("input", validateForm);
+    document.querySelectorAll('input[name="gender"]').forEach(input => {
+        input.addEventListener("change", validateForm);
+    });
+    document.querySelector(".weight-input").addEventListener("input", validateForm);
+
+    // Validate form initially on page load
+    validateForm();
+});
+
+// Function to clear localStorage
+function clearLocalStorage() {
+    localStorage.removeItem("userAge");
+    localStorage.removeItem("userGender");
+    localStorage.removeItem("userWeight");
+}
+
+
+
+
 /*Code for hamburger menu */
 const hamMenu = document.querySelector(".ham-menu");
 const offScreenMenu = document.querySelector(".off-screen-menu");
