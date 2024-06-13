@@ -22,14 +22,14 @@ a:hover {
 nav {
     padding: 1rem;
     display: flex;
-    position: fixed; /* Fixed position */
+    position: fixed; 
     align-items: center;
     justify-content: space-between;
-    top: 0; /* Align to top */
-    left: 0; /* Align to left */
-    width: 100%; /* Full width */
+    top: 0; 
+    left: 0; 
+    width: 100%; 
     background-color: none;
-    z-index: 1000; /* Ensure it's on top */
+    
 }
 
 
@@ -129,11 +129,12 @@ nav {
 
 /*style of the AI schedule page  */
 .aischedule{    
-    display: -moz-grid-line;
+    display: grid;
     text-align: center;
-    place-items: center;
+    place-items: center end;
     background-color: #1C1F2E;
-    color : #333333
+    color : #333333;
+    height : 100vh;
     
 
 }
@@ -155,6 +156,10 @@ nav {
 .muscle-container {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
+    margin-left: 45vh;
+    margin-right: 45vh;
+    flex: 1;
 }
 
 #add-muscle-btn {
@@ -165,13 +170,21 @@ nav {
     background-color: #4A627D;
     color: white;
     border: none;
-    margin-right: 10px;
+    margin-right: 1px;
+    right: 10%;
+    margin-left: auto;
+    
+    
 }
 
 .muscle-list {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 10px;
+    gap: 10px; 
+    flex: 1;
+
 }
 
 .muscle-item {
@@ -180,6 +193,7 @@ nav {
     padding: 5px 10px;
     border-radius: 5px;
     margin-top: 10px;
+    align-items: center;
 }
 
 

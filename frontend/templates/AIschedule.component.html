@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% block content %}
-
+<div class = "aischedulepage">
   <!--Subtitle #1--->
   <div class="subtitle">
     <h2>AI Schedule</h2>
@@ -94,22 +94,33 @@
   </script>
 
   <br />
+  <h4>Target Muscles </h4>
   <div class="muscle-container">
-    <li></li>
-    <button id="add-muscle-btn">+</button>
-    <div id="muscle-list" class="muscle-list"></div>
-  </div>
-
-  <div id="muscleModal" class="muscle-modal">
-    <div class="muscle-modal-content">
-      <span class="close">&times;</span>
-      <h4>Select Muscle</h4>
-      <select id="muscle-select"></select>
-
-      <button id="save-muscle-btn">Add Muscle</button>
+    
+    
+    <div id="muscle-list" class="muscle-list">
+        <li>
+        </li>
+            <button id="add-muscle-btn">+</button>
     </div>
+
   </div>
 
+  
+
+<div id="muscleModal" class="muscle-modal">
+    <div class="muscle-modal-content">
+        <span class="close">&times;</span>
+        <h4>Select Muscle</h4>
+        <select id="muscle-select"></select>
+        <button id="save-muscle-btn">Add Muscle</button>
+    </div>
+</div>
+  
+<!--Goal selection-->
+
+
+</div>
   <div class="goal-selection">
     <label for="Goal">Goal</label>
     <select id="goal" name="Goal">
@@ -120,7 +131,7 @@
       <option value="flexibility">flexibility</option>
       <option value="general_fitness">general fitness</option>
     </select>
-    <div></div>
+    </div>
     <a href="schedule_page.component.html">
       <button
         id="create-schedule-btn"
@@ -135,6 +146,6 @@
         Create AI Schedule
       </button>
     </a>
-  </div>
-
+ 
+</div>
 {% endblock %}
