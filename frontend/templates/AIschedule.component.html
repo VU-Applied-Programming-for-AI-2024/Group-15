@@ -17,11 +17,12 @@
 </head>
 
 <body class="aischedule">
-    <div class="center-container">
-        <!--Ttitle of page--->
-        <div class="title">
+    <div class="title">
         <h1><a href="index.html"><b>FitnessAI</b></a></h1>
         </div> 
+    <div class="center-container">
+        <!--Ttitle of page--->
+        
     
         <br>
 
@@ -29,7 +30,7 @@
         <div class="off-screen-menu">
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li>Discover</li>
+                <li>Discover Exercises</li>
                 <li>Manual Schedule</li>
                 <li><a href="AIschedule.component.html">AI Schedule</a></li>
                 <li>Help</li>
@@ -122,24 +123,24 @@
         </script>
 
         <br>
-        <h3>Preferences</h3>
-        <h4>Targeted Muscles</h4>
         <div class="muscle-container">
+            <li></li>
             <button id="add-muscle-btn">+</button>
-            <div id="muscle-list"></div>
+            <div id="muscle-list" class="muscle-list"></div>
         </div>
-
+    
         <div id="muscleModal" class="muscle-modal">
             <div class="muscle-modal-content">
                 <span class="close">&times;</span>
                 <h4>Select Muscle</h4>
-                <select id="muscle-select">
-                    
-                </select>
+                <select id="muscle-select"></select>
+
+                
                 <button id="save-muscle-btn">Add Muscle</button>
             </div>
         </div>
 
+        <div class = "goal-selection">
         <label for="Goal">Goal</label>
         <select id="goal" name="Goal">
             <option value="weight_loss">weight loss</option>
@@ -156,6 +157,7 @@
             <button id="create-schedule-btn" style="font-size:large; background-size: 2cm; background-color: aquamarine; border-radius: 17px;" disabled>Create AI Schedule</button>
         </a>
     </div>
+
 </body>
 </html>
 

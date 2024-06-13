@@ -1,4 +1,7 @@
 /*Code to save the information from the ai schedule*/
+
+
+
 // Function to save data to local storage
 function saveDataToLocalStorage() {
     const ageValue = document.querySelector(".age-input").value;
@@ -25,67 +28,13 @@ function validateForm() {
 }
 
 // Event listeners for form inputs to trigger validation
-document.addEventListener("DOMContentLoaded", () => {
-    // Check if data exists in localStorage on page load
-    const savedAge = localStorage.getItem("userAge");
-    const savedGender = localStorage.getItem("userGender");
-    const savedWeight = localStorage.getItem("userWeight");
-
-    if (savedAge) {
-        document.querySelector(".age-input").value = savedAge;
-    }
-    if (savedGender) {
-        const genderRadios = document.querySelectorAll('input[name="gender"]');
-        genderRadios.forEach(radio => {
-            if (radio.value === savedGender) {
-                radio.checked = true;
-            }
-        });
-    }
-    if (savedWeight) {
-        document.querySelector(".weight-input").value = savedWeight;
-    }
-
-    // Attach event listeners for input validation
-    document.querySelector(".age-input").addEventListener("input", validateForm);
-    document.querySelectorAll('input[name="gender"]').forEach(input => {
-        input.addEventListener("change", validateForm);
-    });
-    document.querySelector(".weight-input").addEventListener("input", validateForm);
-
-    // Validate form initially on page load
-    validateForm();
-});
-
-// Function to clear localStorage
-function clearLocalStorage() {
-    localStorage.removeItem("userAge");
-    localStorage.removeItem("userGender");
-    localStorage.removeItem("userWeight");
-}
-
-
-
-
-/*Code for hamburger menu */
-const hamMenu = document.querySelector(".ham-menu");
-const offScreenMenu = document.querySelector(".off-screen-menu");
-
-hamMenu.addEventListener('click', ()=>{
-    hamMenu.classList.toggle('active');
-    offScreenMenu.classList.toggle('active');
-
-})
-
-
-/* Code for AIschedule modal */
 document.addEventListener('DOMContentLoaded', function() {
     const addMuscleBtn = document.getElementById('add-muscle-btn');
     const modal = document.getElementById('muscleModal');
     const closeModal = document.getElementsByClassName('close')[0];
     const saveMuscleBtn = document.getElementById('save-muscle-btn');
     const muscleSelect = document.getElementById('muscle-select');
-    const muscleList = document.getElementById('muscle-list');
+    const muscleUl = document.getElementById('muscle'); // Select the ul outside the modal
 
     const muscles = [
         "abductors", "abs", "adductors", "biceps", "calves", 
@@ -121,10 +70,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Ensure a muscle is selected before proceeding
         if (selectedMuscle) {
-            const muscleItem = document.createElement('div');
-            muscleItem.className = 'muscle-item';
-            muscleItem.textContent = selectedMuscle;
-            muscleList.appendChild(muscleItem);
+            const muscleItem = document.createElement('li'); // Create li element
+            muscleItem.textContent = selectedMuscle; // Set text content
+            muscleUl.appendChild(muscleItem); // Append to ul#muscle
 
             // Remove the selected muscle from the select options
             const options = muscleSelect.querySelectorAll('option');

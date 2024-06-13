@@ -151,8 +151,10 @@ nav {
 /* Targeted Muscles selection*/
 
 /* + Box*/
+
 .muscle-container {
-    margin: 20px;
+    display: flex;
+    align-items: center;
 }
 
 #add-muscle-btn {
@@ -163,18 +165,23 @@ nav {
     background-color: #4A627D;
     color: white;
     border: none;
+    margin-right: 10px;
+}
+
+.muscle-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .muscle-item {
+    background-color: #4A627D;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
     margin-top: 10px;
 }
 
-.muscle-item select {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-
-}
 
 /* Modal */
 .muscle-modal {
@@ -189,7 +196,7 @@ nav {
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
     color: #B0B3B8;
 }
-
+/*modal background*/
 .muscle-modal-content {
     background-color: #2A3D66;
     margin: 15% auto; 
