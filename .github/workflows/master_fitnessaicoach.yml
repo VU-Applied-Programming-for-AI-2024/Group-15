@@ -59,7 +59,7 @@ jobs:
 
       - name: Check network connectivity to Azure Web App
         run: |
-          curl -I https://myfitnessai.scm.azurewebsites.net/
+          curl -I https://myfitnessai.azurewebsites.net/
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
