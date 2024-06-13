@@ -57,10 +57,6 @@ jobs:
       - name: List files after unzipping
         run: ls -R
 
-      - name: Check network connectivity to Azure Web App
-        run: |
-          curl -I https://myfitnessai.azurewebsites.net/
-
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -71,5 +67,6 @@ jobs:
       - name: Verify deployment
         run: |
           echo "Deployment complete. Checking deployed files..."
-          curl -I https://myfitnessai.azurewebsites.net/
+          curl -I https://myfitnessai.azure
+
 
