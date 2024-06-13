@@ -1,45 +1,31 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
 
-{% block content %}
+<!-- Subtitle #1 -->
+<h2>Discover Exercises</h2>
 
-      <!-- Subtitle #1 -->
-      <h2>Discover Exercises</h2>
+<!-- Search bar -->
+<div class="search">
+  <form action="https://www.google.com/search" method="get" class="search-bar">
+    <label for="search-input"></label>
+    <input type="text" id="search-input" name="q" placeholder="Exercise name" />
+    <button type="submit">
+      <img src="../static/images/magnifying-glass.png" />
+    </button>
+  </form>
+</div>
 
-      <!-- Search bar -->
-      <div class="search">
-        <form
-          action="https://www.google.com/search"
-          method="get"
-          class="search-bar"
-        >
-          <label for="search-input"></label>
-          <input
-            type="text"
-            id="search-input"
-            name="q"
-            placeholder="Exercise name"
-          />
-          <button type="submit">
-            <img src="../static/images/magnifying-glass.png" />
-          </button>
-        </form>
-      </div>
+<!-- Just a test, replace with link to page 2 -->
+<a href="/manual_schedule" target="_self" title="Manual Schedule">
+  <!-- Create schedule manually -->
+  <img src="../static/images/pankwoman.png" height="200" width="300" />
+</a>
+<!-- Create schedule with AI image + link to AI schedule page -->
+<a
+  href="/AIschedule"
+  target="_self"
+  title="Use AI to make a personalized schedule"
+>
+  <img src="../static/images/naturebuffguy.png" height="200" width="300" />
+</a>
 
-      <!-- Just a test, replace with link to page 2 -->
-      <a href="/manual_schedule" target="_self" title="Manual Schedule">
-        <!-- Create schedule manually -->
-        <img src="../static/images/pankwoman.png" height="200" width="300" />
-      </a>
-      <!-- Create schedule with AI image + link to AI schedule page -->
-      <a
-        href="/AIschedule"
-        target="_self"
-        title="Use AI to make a personalized schedule"
-      >
-        <img
-          src="../static/images/naturebuffguy.png"
-          height="200"
-          width="300"
-        />
-      </a>
-      {% endblock %}
+{% endblock %}
