@@ -1,168 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FitnessAI Schedule</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background-color: #add8e6;
-      }
-
-      .container {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        background-color: white;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-
-      header {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-
-      header h1 {
-        margin: 0;
-        font-size: 36px;
-      }
-
-      header h2 {
-        margin: 0;
-        font-size: 18px;
-        color: #666;
-      }
-
-      .schedule {
-        max-height: 500px;
-        overflow-y: auto;
-        background-color: #f0f0f0;
-        padding: 10px;
-        border-radius: 10px;
-      }
-
-      .day {
-        background-color: white;
-        margin-bottom: 10px;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .day:last-child {
-        margin-bottom: 0;
-      }
-
-      .day h3 {
-        margin: 0;
-        font-size: 24px;
-      }
-
-      .exercises {
-        margin: 10px 0;
-      }
-
-      .icon {
-        display: flex;
-        align-items: center;
-      }
-
-      .icon i {
-        font-size: 24px;
-        margin-left: 10px;
-      }
-
-      .icon i.info {
-        color: #999;
-      }
-
-      .icon i.edit {
-        color: #00f;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <h1>FitnessAI</h1>
-        <h2>Schedule</h2>
-      </header>
-      <div class="schedule">
-        <div class="day">
-          <div>
-            <h3>Monday</h3>
-            <div class="exercises">
-              <p>Bench Press 4x8</p>
-              <p>Lateral Raise 3x12</p>
-              <p>Tricep Pushdown 4x12</p>
-            </div>
-          </div>
-          <div class="icon">
-            <i class="info">i</i>
-            <i class="edit">✏️</i>
-          </div>
-        </div>
-        <div class="day">
-          <div>
-            <h3>Tuesday</h3>
-          </div>
-          <div class="icon">
-            <i class="info">i</i>
-            <i class="edit">✏️</i>
-          </div>
-        </div>
-        <div class="day">
-          <div>
-            <h3>Wednesday</h3>
-          </div>
-          <div class="icon">
-            <i class="info">i</i>
-            <i class="edit">✏️</i>
-          </div>
-        </div>
-        <div class="day">
-          <div>
-            <h3>Thursday</h3>
-          </div>
-          <div class="icon">
-            <i class="info">i</i>
-            <i class="edit">✏️</i>
-          </div>
-        </div>
-        <div class="day">
-          <div>
-            <h3>Friday</h3>
-          </div>
-          <div class="icon">
-            <i class="info">i</i>
-            <i class="edit">✏️</i>
-          </div>
-        </div>
-        <div class="day">
-          <div>
-            <h3>Saturday</h3>
-          </div>
-          <div class="icon">
-            <i class="info">i</i>
-            <i class="edit">✏️</i>
-          </div>
-        </div>
-        <div class="day">
-          <div>
-            <h3>Sunday</h3>
-          </div>
-          <div class="icon">
-            <i class="info">i</i>
-            <i class="edit">✏️</i>
-          </div>
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  <header>
+    <h1>FitnessAI</h1>
+    <h2>Schedule</h2>
+  </header>
+  <div class="schedule">
+    <div class="day">
+      <div>
+        <h3>Monday</h3>
+        <div class="exercises">
+          <p>Bench Press 4x8</p>
+          <p>Lateral Raise 3x12</p>
+          <p>Tricep Pushdown 4x12</p>
         </div>
       </div>
+      <div class="icon">
+        <i class="info">i</i>
+        <i class="edit">✏️</i>
+      </div>
     </div>
-  </body>
-</html>
+    <div class="day">
+      <div>
+        <h3>Tuesday</h3>
+      </div>
+      <div class="icon">
+        <i class="info">i</i>
+        <i class="edit">✏️</i>
+      </div>
+    </div>
+    <div class="day">
+      <div>
+        <h3>Wednesday</h3>
+      </div>
+      <div class="icon">
+        <i class="info">i</i>
+        <i class="edit">✏️</i>
+      </div>
+    </div>
+    <div class="day">
+      <div>
+        <h3>Thursday</h3>
+      </div>
+      <div class="icon">
+        <i class="info">i</i>
+        <i class="edit">✏️</i>
+      </div>
+    </div>
+    <div class="day">
+      <div>
+        <h3>Friday</h3>
+      </div>
+      <div class="icon">
+        <i class="info">i</i>
+        <i class="edit">✏️</i>
+      </div>
+    </div>
+    <div class="day">
+      <div>
+        <h3>Saturday</h3>
+      </div>
+      <div class="icon">
+        <i class="info">i</i>
+        <i class="edit">✏️</i>
+      </div>
+    </div>
+    <div class="day">
+      <div>
+        <h3>Sunday</h3>
+      </div>
+      <div class="icon">
+        <i class="info">i</i>
+        <i class="edit">✏️</i>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
