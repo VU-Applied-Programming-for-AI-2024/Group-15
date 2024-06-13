@@ -43,7 +43,7 @@ jobs:
     needs: build
     environment:
       name: 'Production'
-      url: 'https://myfitnessai.azurewebsites.net/'
+      url: 'https://fitnessaicoach.azurewebsites.net/'
 
     steps:
       - name: Download artifact from build job
@@ -61,12 +61,12 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'myfitnessai'
+          app-name: 'fitnessai-coach'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B799F559D19640A3BAAB4FCB0DE400E4 }}
 
       - name: Verify deployment
         run: |
           echo "Deployment complete. Checking deployed files..."
-          curl -I https://myfitnessai.azure
+          curl -I https://fitnessaicoach.azurewebsites.ner
 
 
