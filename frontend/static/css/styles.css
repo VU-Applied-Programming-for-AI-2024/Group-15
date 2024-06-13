@@ -52,7 +52,52 @@ nav {
 
 /* GENERAL STYLES*/
 
+/*search barbackground image and place*/
 
+.search{
+    width: 100%;
+    min-height: 10vh;
+    padding: 1%;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    backdrop-filter: blur (4px) saturate(180%);
+}
+/*Search-bar background*/
+.search-bar{
+    width: 100%;
+    max-width:800px;
+    max-height: 60px ;
+    background-color:rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    border-radius: 60px;
+    padding: 10px;
+}
+/*Input of search bar when typing*/
+.search-bar input{
+    background: transparent;
+    flex: 1;
+    border: 0;
+    outline: none;
+    padding: 24px 20px;
+    font-size: 20px;
+    color: white;
+}
+.search-bar button img{
+    width:25px;
+}
+
+
+.search-bar button{
+    border: 0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background:#78849d ;
+}
 
 /*pages rectangle in center*/
 .center-container {
