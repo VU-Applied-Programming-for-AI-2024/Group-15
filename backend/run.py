@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
 
@@ -21,6 +21,10 @@ def add_item():
     new_item = request.json
     data.append(new_item)
     return jsonify(new_item), 201
+
+@app.route('/')
+def manual_schedule():
+    return render_template('manual_schedule.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
