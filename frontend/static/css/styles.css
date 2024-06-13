@@ -77,6 +77,10 @@ nav {
     color: #333333;
 
 }
+.homepage h1 a {
+    position: relative;
+    z-index: 10;
+}
 
 /*style of the AI schedule page  */
 .aischedule{    
@@ -358,16 +362,39 @@ nav {
     max-width: 25%;
     position: fixed;
     top: 0;
-    left: -25%; 
+    left: -100%; 
     flex-direction: column;
     align-items: center;    
     justify-content: center;
     text-align: center;
-    font-size: 3rem;
-    transition: .3s ease;
+    font-size: 1vh;
+    transition: .3s ease-in-out;
+    padding-top: 50px;
+    
+   
+    display: flex;
+    
+    
+}
+.off-screen-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; /* Distribute items evenly */
+    flex-grow: 1; /* Allow ul to grow and fill available space */
 }
 .off-screen-menu.active {
     left: 0; 
+    padding-top: 50px;
+    display: flexbox;
+    flex-direction: column;
+    align-items:center;
+    justify-content: space-around;
+    font-size: 4vh;
+    transform: translateX(0);
 }
 
 
@@ -383,11 +410,14 @@ nav {
     height: 50px;
     width: 40px;
     margin-right: auto; 
+    margin-top: 20px;
     position: relative;
+    z-index: 9;
 }
 /* ham menu elements */
 .ham-menu span {
     height: 7px;
+    margin-top: 20px;
     width: 100%;
     background-color: whitesmoke;
     border-radius: 25px;
@@ -397,6 +427,8 @@ nav {
     transform: translate(-50%, -50%);
     transition: .3s ease;
 }
+
+
 .ham-menu span:nth-child(1) {
     top: 25%;
 }
