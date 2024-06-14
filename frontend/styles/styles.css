@@ -1,4 +1,4 @@
-/* base styles */
+/* Base styles */
 * {
     margin: 0;
     padding: 0;
@@ -18,7 +18,7 @@ a:hover {
     color: #D0D3D4;
 }
 
-/*nav bar (with hamburger menu logo)*/
+/* Navbar (with hamburger menu logo) */
 nav {
     padding: 1rem;
     display: flex;
@@ -28,12 +28,12 @@ nav {
     top: 0; /* Align to top */
     left: 0; /* Align to left */
     width: 100%; /* Full width */
-    background-color: none;
+    background-color: #1C1F2E;
     z-index: 1000; /* Ensure it's on top */
 }
 
-
-.subtitle{ 
+/* Subtitle */
+.subtitle { 
     padding: 10px; /* Adjust as needed */
     display: block;
     position: flex;
@@ -43,18 +43,12 @@ nav {
     background-color: #4A627D;
     z-index: 1000; /* Ensures it stays on top of other elements */
     text-align: center; /* Center the text if needed */
-    
-    
-    
-
 }
 
+/* General Styles */
 
-/* GENERAL STYLES*/
-
-/*search barbackground image and place*/
-
-.search{
+/* Search bar background image and place */
+.search {
     width: 100%;
     min-height: 10vh;
     padding: 1%;
@@ -63,21 +57,21 @@ nav {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    backdrop-filter: blur (4px) saturate(180%);
+    backdrop-filter: blur(4px) saturate(180%);
 }
-/*Search-bar background*/
-.search-bar{
+/* Search-bar background */
+.search-bar {
     width: 100%;
-    max-width:800px;
-    max-height: 60px ;
-    background-color:rgba(255,255,255,0.2);
+    max-width: 800px;
+    max-height: 60px;
+    background-color: rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
     border-radius: 60px;
     padding: 10px;
 }
-/*Input of search bar when typing*/
-.search-bar input{
+/* Input of search bar when typing */
+.search-bar input {
     background: transparent;
     flex: 1;
     border: 0;
@@ -86,22 +80,21 @@ nav {
     font-size: 20px;
     color: white;
 }
-.search-bar button img{
-    width:25px;
+.search-bar button img {
+    width: 25px;
 }
 
-
-.search-bar button{
+.search-bar button {
     border: 0;
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    background:#78849d ;
+    background: #78849d;
 }
 
-/*pages rectangle in center*/
+/* Pages rectangle in center */
 .center-container {
-    display: -moz-grid-line;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -114,290 +107,19 @@ nav {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
     overflow: hidden;
 }
-.homepage{
-    display: -moz-grid-line;
+.homepage {
+    display: flex;
     text-align: center;
     place-items: center;
     background-color: #1C1F2E;
-    color: #333333;
-
+    color: #B0B3B8;
 }
 .homepage h1 a {
     position: relative;
     z-index: 10;
 }
 
-/*style of the AI schedule page  */
-.aischedule{    
-    display: -moz-grid-line;
-    text-align: center;
-    place-items: center;
-    background-color: #1C1F2E;
-    color : #333333
-    
-
-}
-
-/*style of the schedule page*/
-.schedule{
-    display: -moz-grid-line;
-    text-align: center;
-    place-items: center;
-    background-color: #1C1F2E;
-    color: #333333;
-}
-
-
-/* Targeted Muscles selection*/
-
-/* + Box*/
-.muscle-container {
-    margin: 20px;
-}
-
-#add-muscle-btn {
-    font-size: 24px;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    background-color: #4A627D;
-    color: white;
-    border: none;
-}
-
-.muscle-item {
-    margin-top: 10px;
-}
-
-.muscle-item select {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-
-}
-
-/* Modal */
-.muscle-modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    color: #B0B3B8;
-}
-
-.muscle-modal-content {
-    background-color: #2A3D66;
-    margin: 15% auto; 
-    padding: 20px;
-    border: 1px solid #888;
-    width: 60%;
-}
-/*close button*/
-.close {
-    color: #aaa;
-    float:right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/*Gender selction buttons*/
-.gender-selection{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    
-
-}
-.gender-selection input[type = "radio"]{
-    display:none;
-}
-/* everything about the look of a label*/
-.gender-selection label{
-    position: relative;
-    color : #D0D3D4;
-    font-family : sans-serif;
-    font-size : 20px;
-    border: 2px solid rgba(245, 245, 245, 0.678);
-    background-color: none;
-    border-radius: 10px;
-    padding : 10px, 50px;
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
-
-}
-/*Code for non-checked labels*/
-.gender-selection label::before{
-    content: "";
-    height: 30px;
-    width: 30px;
-    border: 3px solid #D0D3D4;
-    border-radius: 50% ;
-    margin-right: 10px;
-    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-}
-/*code for checked label*/
-.gender-selection input[type ="radio"]:checked + label{
-    background-color: #4A627D;
-    color:#B0B3B8;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-}
-.gender-selection input[type ="radio"]:checked + label:before{
-    height: 25px;
-    width: 25px;
-    border: 5px solid #B0B3B8;
-    background-color: #4A627D;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
-
-}
-.gender-selection label:hover {
-    background-color: #4A627D;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* SLIDERS STYLES*/
-
-/* sliders background*/
-
-.age-range, .weight-range{
-    height: 50px;
-    width:  45%;
-    background:  linear-gradient(135deg, #e0e0e0ae, #c0c0c017);
-    border-radius: 15px ;
-    box-shadow: 0 4px 10px rgba(0,0, 0, 0.1);
-    padding: 0 65px 0 45px;
-    margin: auto;
-}
-
-/*number showed when selecting*/
-.age-range .slider-value, .weight-range .slider-value{
-    position: relative;
-    width: 100%;
-    
-}
-
-.age-range .slider-value .slider-span, .weight-range .slider-value .slider-span{
-    position: absolute;
-    height: 45px;
-    width: 45px;
-    color:#D0D3D4;
-    font-weight: 500;
-    top: -40px;
-    transform: translateX(-50%) scale(0);
-    transform-origin: bottom;
-    transition: transform 0.3s ease-in-out;
-    line-height: 55px ;
-    z-index: 2;
-    background:  #2A3D66;
-    border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-
-}
-
-.age-range .slider-value .slider-span.show, .weight-range .slider-value .slider-span.show{
-    transform: translateX(-50%) scale(1);
-
-}
-
-/*slider surrounding when using */
-.age-range .slider-value .slider-span:after, .weight-range .slider-value .slider-span:after{
-    position: absolute;
-    content: "";
-    height: 45px;
-    width: 45px;
-    background: linear-gradient(135deg, #2A3D66, #2A3D66);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    left:50%;
-    transform: translateX(-50%) rotate(45deg);
-    border: 3px solid #fff;
-    z-index: -1;
-    border-top-left-radius: 50%;
-    border-top-right-radius: 50%;
-    border-bottom-left-radius: 50%;
-
-}
-/*Thumb styling (the button we actually touch)*/
-.age-range .field input::-webkit-slider-thumb, .weight-range .field input::-webkit-slider-thumb{
-    -webkit-appearance: none;
-    height: 20px;
-    width: 20px;
-    background: linear-gradient(135deg, #2A3D66, #586175);
-    border-radius: 50%;
-    border: 2px solid #B0B3B8;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Thumb hover effect */
-.age-range .field input::-webkit-slider-thumb:hover,.weight-range .field input::-webkit-slider-thumb:hover {
-    background: linear-gradient(135deg, #00A8A8, #2A3D66);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-
-
-
-/*Slider and values*/
-.age-range .field, .weight-range .field{
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-
-}
-/*numbers on the side*/
-.age-range .field .value, .weight-range .field .value{
-    position: absolute;
-    font-size: 18px;
-    font-weight: 600;
-    color: black;
-
-}
-.age-range .field .value.left, .weight-range .field .value.left{
-    
-    left:-22px
-}
-
-.age-range .field .value.right, .weight-range .field .value.right{
-    right:-43px
-}
-
-/*Track style*/
-.age-range .field input, .weight-range .field input{
-    appearance: none;
-    height: 10px;
-    width: 100%;
-    background: linear-gradient(90deg, #2A3D66, #7b8eb7);
-    border-radius: 5px;
-    outline: none;
-    border:none;
-
-}
-
-
-
-/* HAMBURGER MENU STYLES*/
+/* Hamburger menu styles */
 
 /* off-screen-menu */
 .off-screen-menu {
@@ -415,11 +137,7 @@ nav {
     font-size: 1vh;
     transition: .3s ease-in-out;
     padding-top: 50px;
-    
-   
     display: flex;
-    
-    
 }
 .off-screen-menu ul {
     list-style: none;
@@ -433,141 +151,4 @@ nav {
 }
 .off-screen-menu.active {
     left: 0; 
-    padding-top: 50px;
-    display: flexbox;
-    flex-direction: column;
-    align-items:center;
-    justify-content: space-around;
-    font-size: 4vh;
-    transform: translateX(0);
-}
-
-
-/* nav */
-nav {
-    padding: 1rem;
-    display: flex;
-    background-color: none;
-}
-
-/* ham menu box */
-.ham-menu {
-    height: 50px;
-    width: 40px;
-    margin-right: auto; 
-    margin-top: 20px;
-    position: relative;
-    z-index: 9;
-}
-/* ham menu elements */
-.ham-menu span {
-    height: 7px;
-    margin-top: 20px;
-    width: 100%;
-    background-color: whitesmoke;
-    border-radius: 25px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    transition: .3s ease;
-}
-
-
-.ham-menu span:nth-child(1) {
-    top: 25%;
-}
-.ham-menu span:nth-child(3) {
-    top: 75%;
-}
-.ham-menu.active span {
-    background-color: black;
-    
-
-}
-.ham-menu.active span:nth-child(1) {
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-}
-.ham-menu.active span:nth-child(2) {
-    opacity: 0;
-}
-.ham-menu.active span:nth-child(3) {
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-body {
-    font-family: Arial, sans-serif;
-  }
-  
-  header {
-    background-color: #f8f8f8;
-    padding: 10px;
-  }
-  
-  nav .ham-menu {
-    display: inline-block;
-    cursor: pointer;
-  }
-  
-  nav .ham-menu span {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px 0;
-    background-color: #333;
-  }
-  
-  nav .off-screen-menu {
-    display: none;
-  }
-  
-  nav .off-screen-menu.active {
-    display: block;
-  }
-  
-  main {
-    padding: 20px;
-  }
-  
-  .info-box {
-    background-color: #e0e0e0;
-    padding: 10px;
-    margin: 10px 0;
-  }
-  
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-  
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-  }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
+    padding-top: 5
