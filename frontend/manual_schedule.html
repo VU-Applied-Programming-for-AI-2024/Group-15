@@ -1,78 +1,25 @@
-{% extends "base.html" %} {% block content %}
-<div class="container">
-  <header>
-    <h1>myFitnessAIcoach</h1>
-    <h2>Schedule</h2>
-  </header>
-  <div class="schedule">
-    <div class="day">
-      <div>
-        <h3>Monday</h3>
-        <div class="exercises">
-          <p>Bench Press 4x8</p>
-          <p>Lateral Raise 3x12</p>
-          <p>Tricep Pushdown 4x12</p>
-        </div>
-      </div>
-      <div class="icon">
-        <i class="info">i</i>
-        <i class="edit">✏️</i>
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+  <h1>myFitnessAIcoach</h1>
+  <h2>Schedule</h2>
+</header>
+<div class="schedule">
+  <div class="day">
+    <div>
+      <h3>Monday</h3>
+      <div class="exercises">
+        <p>Bench Press 4x8</p>
+        <p>Lateral Raise 3x12</p>
+        <p>Tricep Pushdown 4x12</p>
       </div>
     </div>
-    <div class="day">
-      <div>
-        <h3>Tuesday</h3>
-      </div>
-      <div class="icon">
-        <i class="info">i</i>
-        <i class="edit">✏️</i>
-      </div>
-    </div>
-    <div class="day">
-      <div>
-        <h3>Wednesday</h3>
-      </div>
-      <div class="icon">
-        <i class="info">i</i>
-        <i class="edit">✏️</i>
-      </div>
-    </div>
-    <div class="day">
-      <div>
-        <h3>Thursday</h3>
-      </div>
-      <div class="icon">
-        <i class="info">i</i>
-        <i class="edit">✏️</i>
-      </div>
-    </div>
-    <div class="day">
-      <div>
-        <h3>Friday</h3>
-      </div>
-      <div class="icon">
-        <i class="info">i</i>
-        <i class="edit">✏️</i>
-      </div>
-    </div>
-    <div class="day">
-      <div>
-        <h3>Saturday</h3>
-      </div>
-      <div class="icon">
-        <i class="info">i</i>
-        <i class="edit">✏️</i>
-      </div>
-    </div>
-    <div class="day">
-      <div>
-        <h3>Sunday</h3>
-      </div>
-      <div class="icon">
-        <i class="info">i</i>
-        <i class="edit">✏️</i>
-      </div>
+    <div class="icon">
+      <i class="info">i</i>
+      <i class="edit">✏️</i>
     </div>
   </div>
+  <!-- Repeat for other days -->
 </div>
 {% endblock %}
