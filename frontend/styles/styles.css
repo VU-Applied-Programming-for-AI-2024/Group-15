@@ -122,14 +122,14 @@ nav {
     color: #333333;
 
 }
-.homepage h1 a {
+h1 a {
     position: relative;
     z-index: 10;
 }
 
 /*style of the AI schedule page  */
 .aischedule{    
-    display: grid;
+    display: -moz-grid-line;
     text-align: center;
     place-items: center end;
     background-color: #1C1F2E;
@@ -138,10 +138,7 @@ nav {
     
 
 }
-.aischedule h1 a {
-    position: relative;
-    z-index: 10;
-}
+
 
 /*style of the schedule page*/
 .schedule{
@@ -561,7 +558,7 @@ nav {
     max-width: 800px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #2A3D66;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
