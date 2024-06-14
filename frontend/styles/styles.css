@@ -5,46 +5,56 @@
     box-sizing: border-box;
     list-style: none;
     text-decoration: none;
-  }
-  
-  a {
+}
+
+a {
     color: #B0B3B8;
-  }
-  a:visited {
+}
+a:visited {
     color: #B0B3B8;
-  }
-  a:hover {
+    
+}
+a:hover {
     color: #D0D3D4;
-  }
-  
-  /* nav bar (with hamburger menu logo) */
-  nav {
+}
+
+/*nav bar (with hamburger menu logo)*/
+nav {
     padding: 1rem;
     display: flex;
-    position: fixed;
+    position: fixed; /* Fixed position */
     align-items: center;
     justify-content: space-between;
-    top: 0;
-    left: 0;
-    width: 100%;
+    top: 0; /* Align to top */
+    left: 0; /* Align to left */
+    width: 100%; /* Full width */
     background-color: none;
-    z-index: 1000;
-  }
-  
-  .subtitle { 
-    padding: 10px;
+    z-index: 1000; /* Ensure it's on top */
+}
+
+
+.subtitle{ 
+    padding: 10px; /* Adjust as needed */
     display: block;
     position: flex;
     top: 0;
     left: 0;
     width: 100%;
     background-color: #4A627D;
-    z-index: 1000;
-    text-align: center;
-  }
-  
-  /* GENERAL STYLES */
-  .search {
+    z-index: 1000; /* Ensures it stays on top of other elements */
+    text-align: center; /* Center the text if needed */
+    
+    
+    
+
+}
+
+
+/* GENERAL STYLES*/
+
+/*search barbackground image and place*/
+
+.search{
     width: 100%;
     min-height: 10vh;
     padding: 1%;
@@ -53,21 +63,21 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    backdrop-filter: blur(4px) saturate(180%);
-  }
-  
-  .search-bar {
+    backdrop-filter: blur (4px) saturate(180%);
+}
+/*Search-bar background*/
+.search-bar{
     width: 100%;
-    max-width: 800px;
-    max-height: 60px;
-    background-color: rgba(255, 255, 255, 0.2);
+    max-width:800px;
+    max-height: 60px ;
+    background-color:rgba(255,255,255,0.2);
     display: flex;
     align-items: center;
     border-radius: 60px;
     padding: 10px;
-  }
-  
-  .search-bar input {
+}
+/*Input of search bar when typing*/
+.search-bar input{
     background: transparent;
     flex: 1;
     border: 0;
@@ -75,45 +85,137 @@
     padding: 24px 20px;
     font-size: 20px;
     color: white;
-  }
-  .search-bar button img {
-    width: 25px;
-  }
-  
-  .search-bar button {
+}
+.search-bar button img{
+    width:25px;
+}
+
+
+.search-bar button{
     border: 0;
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    background: #78849d;
-  }
-  
-  .center-container {
-    display: flex;
+    background:#78849d ;
+}
+
+/*pages rectangle in center*/
+.center-container {
+    display: -moz-grid-line;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #2A3D66;
-    color: #B0B3B8;
-    width: 80%;
-    padding: 20px;
-    margin: 50px auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #2A3D66; 
+    color: #B0B3B8; 
+    width: 80%; 
+    padding: 20px; 
+    margin: 50px auto; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
     overflow: hidden;
-  }
-  
-  .homepage {
+}
+.homepage{
+    display: -moz-grid-line;
     text-align: center;
     place-items: center;
     background-color: #1C1F2E;
     color: #333333;
-  }
-  
-  .homepage h1 a {
+
+}
+.homepage h1 a {
     position: relative;
     z-index: 10;
-  }
-  
-  /* ... Additional styles ... */
-  
+}
+
+/*style of the AI schedule page  */
+.aischedule{    
+    display: -moz-grid-line;
+    text-align: center;
+    place-items: center;
+    background-color: #1C1F2E;
+    color : #333333
+    
+
+}
+
+/*style of the schedule page*/
+.schedule{
+    display: -moz-grid-line;
+    text-align: center;
+    place-items: center;
+    background-color: #1C1F2E;
+    color: #333333;
+}
+
+
+/* Targeted Muscles selection*/
+
+/* + Box*/
+.muscle-container {
+    margin: 20px;
+}
+
+#add-muscle-btn {
+    font-size: 24px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #4A627D;
+    color: white;
+    border: none;
+}
+
+.muscle-item {
+    margin-top: 10px;
+}
+
+.muscle-item select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+
+}
+
+/* Modal */
+.muscle-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    color: #B0B3B8;
+}
+
+.muscle-modal-content {
+    background-color: #2A3D66;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+}
+/*close button*/
+.close {
+    color: #aaa;
+    float:right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*Gender selction buttons*/
+.gender-selection{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left
