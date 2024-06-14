@@ -131,12 +131,16 @@ nav {
 .aischedule{    
     display: grid;
     text-align: center;
-    place-items: center end;
+    place-items: center;
     background-color: #1C1F2E;
     color : #333333;
     height : 100vh;
     
 
+}
+.aischedule h1 a {
+    position: relative;
+    z-index: 10;
 }
 
 /*style of the schedule page*/
@@ -147,8 +151,22 @@ nav {
     background-color: #1C1F2E;
     color: #333333;
 }
-
-
+.schedule h1 a {
+    position: relative;
+    z-index: 10;
+}
+/*styling for discover page*/
+.discover{
+    display: -moz-grid-line;
+    text-align: center;
+    place-items: center;
+    background-color: #1C1F2E;
+    color: #333333;
+}
+.discover h1 a {
+    position: relative;
+    z-index: 10;
+}
 /* Targeted Muscles selection*/
 
 /* + Box*/
