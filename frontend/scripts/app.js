@@ -8,7 +8,7 @@ hamMenu.addEventListener('click', () => {
 });
 
 /* Code for AIschedule modal */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const addMuscleBtn = document.getElementById('add-muscle-btn');
   const modal = document.getElementById('muscleModal');
   const closeModal = document.getElementsByClassName('close')[0];
@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const muscleList = document.getElementById('muscle-list');
 
   const muscles = [
-    "abductors", "abs", "adductors", "biceps", "calves", 
-    "cardiovascular system", "delts", "forearms", "glutes", 
-    "hamstrings", "lats", "levator scapulae", "pectorals", 
-    "quads", "serratus anterior", "spine", "traps", "triceps", 
+    "abductors", "abs", "adductors", "biceps", "calves",
+    "cardiovascular system", "delts", "forearms", "glutes",
+    "hamstrings", "lats", "levator scapulae", "pectorals",
+    "quads", "serratus anterior", "spine", "traps", "triceps",
     "upper back"
   ];
-  
+
   muscles.forEach(muscle => {
     const option = document.createElement('option');
     option.value = muscle;
@@ -31,39 +31,26 @@ document.addEventListener('DOMContentLoaded', function() {
     muscleSelect.appendChild(option);
   });
 
-  addMuscleBtn.addEventListener('click', function() {
+  addMuscleBtn.addEventListener('click', function () {
     modal.style.display = 'block';
   });
 
-  closeModal.addEventListener('click', function() {
+  closeModal.addEventListener('click', function () {
     modal.style.display = 'none';
   });
 
-  window.addEventListener('click', function(event) {
+  window.addEventListener('click', function (event) {
     if (event.target == modal) {
       modal.style.display = 'none';
     }
   });
 
-  saveMuscleBtn.addEventListener('click', function() {
+  saveMuscleBtn.addEventListener('click', function () {
     const selectedMuscle = muscleSelect.value;
 
-    // Ensure a muscle is selected before proceeding
     if (selectedMuscle) {
       const muscleItem = document.createElement('div');
       muscleItem.className = 'muscle-item';
       muscleItem.textContent = selectedMuscle;
       muscleList.appendChild(muscleItem);
 
-      // Remove the selected muscle from the select options
-      const options = muscleSelect.querySelectorAll('option');
-      options.forEach(option => {
-        if (option.value === selectedMuscle) {
-          option.remove();
-        }
-      });
-
-      modal.style.display = 'none';
-    }
-  });
-});
