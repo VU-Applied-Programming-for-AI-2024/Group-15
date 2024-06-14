@@ -7,8 +7,8 @@
     <meta name="description" content="Gym schedule made by AI and much more" />
     <meta name="keywords" content="gym, fitness, gym planning, AI schedule" />
     <!-- Link to web icon -->
-    <link rel="icon" type="image/jpg" href="../static/images/biceps.jpg" />
-    <link rel="stylesheet" href="../static/css/styles.css" />
+    <link rel="icon" type="image/jpg" href="../images/biceps.jpg" />
+    <link rel="stylesheet" href="../styles/styles.css" />
     <!-- Bootstrap links -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -23,7 +23,7 @@
     ></script>
     <title>FitnessAI</title>
   </head>
-  <body class="schedule">
+  <body class="homepage">
     <h1>
       <a href="index.html"><b>FitnessAI</b></a>
     </h1>
@@ -52,16 +52,49 @@
         </div>
       </nav>
 
+      <!-- Subtitle #1 -->
+      <h2>Discover Exercises</h2>
 
-        <!-- Subtitle #1 -->
-         <div class="subtitle">
-        <h2>Schedule</h2>
+      <!-- Search bar -->
+      <div class="search">
+        <form
+          action="https://www.google.com/search"
+          method="get"
+          class="search-bar"
+        >
+          <label for="search-input"></label>
+          <input
+            type="text"
+            id="search-input"
+            name="q"
+            placeholder="Exercise name"
+          />
+          <button type="submit">
+            <img src="../images/magnifying-glass.png" />
+          </button>
+        </form>
+      </div>
+
+      <!-- Just a test, replace with link to page 2 -->
+      <a href="manual_schedule.html" target="_self" title="Manual Schedule">
+        <!-- Create schedule manually -->
+        <img src="../images/pankwoman.png" height="200" width="300" />
+      </a>
+      <!-- Create schedule with AI image + link to AI schedule page -->
+      <a
+        href="AIschedule.component.html"
+        target="_self"
+        title="Use AI to make a personalized schedule"
+      >
+        <img
+          src="../images/naturebuffguy.png"
+          height="200"
+          width="300"
+        />
+      </a>
+
+      <!-- Link to JavaScript file -->
+      <script src="../scripts/scripts.js"></script>
     </div>
-    </div>
-    <div class="container">
-        
-    </div>
-    <!-- Link to JavaScript file -->
-    <script src="../static/js/scripts.js"></script>
-</body>
+  </body>
 </html>

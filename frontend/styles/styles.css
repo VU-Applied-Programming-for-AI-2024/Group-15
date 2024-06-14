@@ -131,7 +131,7 @@ nav {
 .aischedule{    
     display: grid;
     text-align: center;
-    place-items: center;
+    place-items: center end;
     background-color: #1C1F2E;
     color : #333333;
     height : 100vh;
@@ -546,4 +546,58 @@ nav {
 .ham-menu.active span:nth-child(3) {
     top: 50%;
     transform: translate(-50%, -50%) rotate(-45deg);
+}
+/* Styling for the Workout Statistics page */
+.workout-stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0f7fa;
+    color: #333;
+    height: 100vh;
+}
+
+.center-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+    padding: 10px;
+    text-align: center;
+    background-color: #4A627D;
+    color: #fff;
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.stat-item {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.stat-item h3 {
+    margin-bottom: 10px;
+}
+
+.stat-item ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stat-item canvas {
+    width: 100%;
+    height: 200px;
 }
