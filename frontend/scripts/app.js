@@ -54,3 +54,15 @@ document.addEventListener('DOMContentLoaded', function () {
       muscleItem.textContent = selectedMuscle;
       muscleList.appendChild(muscleItem);
 
+      // Remove the selected muscle from the select options
+      const options = muscleSelect.querySelectorAll('option');
+      options.forEach(option => {
+        if (option.value === selectedMuscle) {
+          option.remove();
+        }
+      });
+
+      modal.style.display = 'none';
+    }
+  });
+});
