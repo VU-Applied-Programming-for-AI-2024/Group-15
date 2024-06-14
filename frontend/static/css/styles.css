@@ -496,3 +496,42 @@ nav {
     top: 50%;
     transform: translate(-50%, -50%) rotate(-45deg);
 }
+
+/* schedule styles */
+
+.day {
+    background-color: white;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .day-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .day-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .icon {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .exercises {
+    margin-top: 10px;
+  }
+  
+  .exercises p {
+    margin: 5px 0;
+  }
+
+  
+  

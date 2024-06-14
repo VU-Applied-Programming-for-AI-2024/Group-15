@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveMuscleBtn = document.getElementById('save-muscle-btn');
     const muscleSelect = document.getElementById('muscle-select');
     const muscleList = document.getElementById('muscle-list');
+    const arrows = document.querySelectorAll('.arrow');
 
     const muscles = [
         "abductors", "abs", "adductors", "biceps", "calves", 
