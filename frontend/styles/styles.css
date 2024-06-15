@@ -746,7 +746,7 @@ ham-menu span:nth-child(3) {
     background-color: white;
     padding: 20px;
     margin: 10px 0;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
   
@@ -783,10 +783,17 @@ ham-menu span:nth-child(3) {
 }
 
 .schedule {
-    max-height: 100%;
-    overflow-y: auto;
+    width: 200%;
+    overflow-y: auto; /* Enable scrolling */
 }
 
 body {
-    overflow: hidden;
+    overflow-y: hidden;
 }
+
+.schedule-description {
+    margin-top: 10px;
+    font-style: italic;
+    color: #555;
+}
+
