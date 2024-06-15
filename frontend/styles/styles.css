@@ -741,30 +741,45 @@ ham-menu span:nth-child(3) {
     margin: 10px 0;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+}
   
-  .day-content {
+.day-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .day-text {
+}
+
+.day-text {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .icon {
+}
+
+.icon {
     display: flex;
     gap: 10px;
-  }
-  
-  .exercises {
+}
+
+.exercises {
     margin-top: 10px;
-  }
-  
-  .exercises p {
+}
+
+.exercises p {
     margin: 5px 0;
-  }
+}
+
+.center-container {
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.schedule {
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+body {
+    overflow: hidden;
+}
