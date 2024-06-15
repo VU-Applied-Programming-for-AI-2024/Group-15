@@ -297,6 +297,7 @@ nav {
 .homepage h1 a {
     position: relative;
     z-index: 10;
+    text-decoration: none 
 }
 
 /*style of the AI schedule page  */
