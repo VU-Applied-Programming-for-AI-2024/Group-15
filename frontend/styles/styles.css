@@ -43,6 +43,7 @@ footer a:hover {
 
 a {
     color: #B0B3B8;
+    text-decoration: none; /* Added to remove underline globally */
 }
 a:visited {
     color: #B0B3B8;
@@ -102,6 +103,11 @@ nav {
     justify-content: space-around;
     font-size: 1.2rem; /* Adjusted font size for a better look */
     transform: translateX(0);
+}
+
+/* Ensuring no underline for submenu links */
+.off-screen-menu a {
+    text-decoration: none;
 }
 
 nav {
@@ -291,6 +297,7 @@ nav {
 .homepage h1 a {
     position: relative;
     z-index: 10;
+    text-decoration: none 
 }
 
 /*style of the AI schedule page  */
@@ -305,6 +312,7 @@ nav {
 .aischedule h1 a {
     position: relative;
     z-index: 10;
+    text-decoration: none !important; /* Added this line */
 }
 
 /*style of the schedule page*/
@@ -318,6 +326,7 @@ nav {
 .schedule h1 a {
     position: relative;
     z-index: 10;
+    text-decoration: none !important; /* Added this line */
 }
 /*styling for discover page*/
 .discover {
@@ -330,6 +339,7 @@ nav {
 .discover h1 a {
     position: relative;
     z-index: 10;
+    text-decoration: none !important; /* Added this line */
 }
 .manual_schedule {
     display: -moz-grid-line;
@@ -341,6 +351,7 @@ nav {
 .manual_schedule h1 a {
     position: relative;
     z-index: 10;
+    text-decoration: none !important; /* Added this line */
 }
 /* Targeted Muscles selection*/
 
@@ -732,3 +743,61 @@ ham-menu span:nth-child(3) {
     width: 100%;
     height: 200px;
 }
+
+/* schedule styles */
+
+.day {
+    width: 800px;
+    background-color: white;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+  
+.day-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.day-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon {
+    display: flex;
+    gap: 10px;
+}
+
+.exercises {
+    margin-top: 10px;
+}
+
+.exercises p {
+    margin: 5px 0;
+}
+
+.schedule-center-container {
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.schedule {
+    width: 100%;
+}
+
+body {
+    overflow-y: hidden;
+}
+
+.schedule-description {
+    margin-top: 10px;
+    font-style: italic;
+    color: #555;
+}
+
