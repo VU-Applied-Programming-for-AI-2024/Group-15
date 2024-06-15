@@ -111,3 +111,10 @@ function validateForm() {
     createScheduleBtn.disabled = true;
   }
 }
+
+// Attach event listeners to inputs
+document.querySelector(".age-input").addEventListener("input", validateForm);
+document.querySelectorAll('input[name="gender"]').forEach(genderInput => {
+  genderInput.addEventListener("change", validateForm);
+});
+document.querySelector(".weight-input").addEventListener("input", validateForm);
