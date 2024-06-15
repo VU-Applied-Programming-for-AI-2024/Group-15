@@ -20,10 +20,14 @@
   ></script>
   <title>Discover</title>
 </head>
-<body class="discover">
+<body class="homepage">
   <h1>
-    <a href="index.html"><b>myFitnessAIcoach</b></a>
+    <a href="index.html">
+      <img src="../images/logo2.png" style="max-width: 150%; height: auto;">
+    </a>
   </h1>
+  <br />
+  <div class="center-container">
   <header>
     <nav>
       <div class="ham-menu">
@@ -36,8 +40,6 @@
         <li><a href="discover.html">Discover</a></li>
         <li><a href="manual_schedule.html">Manual Schedule</a></li>
         <li><a href="AIschedule.component.html">AI Schedule</a></li>
-        <li><a href="help.html">Help</a></li>
-        <li><a href="about.html">About</a></li>
       </ul>
     </nav>
   </header>
@@ -47,7 +49,49 @@
       <h1>Discover Exercises</h1>
       <p>Explore a variety of exercises to enhance your workout routine. Click on an exercise to learn more about its benefits, targeted muscles, and how to perform it correctly.</p>
     </section>
-    
+
+    <div class="search">
+      <form action="discover.html" method="get" class="search-bar">
+        <div class="form-group">
+          <input type="text" id="search-input" name="q" placeholder="Exercise name" />
+        </div>
+        
+        <div class="form-group">
+          <select id="muscle-group" name="muscle-group">
+            <option value="" disabled selected>Muscle Group</option>
+            <option value="chest">Chest</option>
+            <option value="back">Back</option>
+            <option value="arms">Arms</option>
+            <option value="legs">Legs</option>
+            <option value="shoulders">Shoulders</option>
+            <option value="abs">Abs</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <select id="difficulty-level" name="difficulty-level">
+            <option value="" disabled selected>Difficulty Level</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <select id="equipment-needed" name="equipment-needed">
+            <option value="" disabled selected>Equipment Needed</option>
+            <option value="none">None</option>
+            <option value="dumbbells">Dumbbells</option>
+            <option value="barbell">Barbell</option>
+            <option value="machines">Machines</option>
+            <option value="bands">Bands</option>
+          </select>
+        </div>
+        
+        <button type="submit"><img src="../images/magnifying-glass.png" alt="Search"></button>
+      </form>
+    </div>
+
     <section class="exercise-grid">
       <!-- Exercise cards will be dynamically inserted here by JavaScript -->
     </section>
