@@ -96,7 +96,7 @@ nav {
 .off-screen-menu.active {
     left: 0; /* Slide in the menu */
     padding-top: 50px;
-    display: flexbox;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
@@ -112,7 +112,13 @@ nav {
 nav {
     padding: 1rem;
     display: flex;
-    background-color: none;
+    align-items: center; /* Align items vertically in the center */
+    position: absolute; /* Position the nav bar absolutely */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ensure the nav bar spans the full width */
+    background-color: transparent;
+    z-index: 10; /* Ensure the nav bar is above other content */
 }
 
 /* ham menu box */
@@ -129,7 +135,7 @@ nav {
     height: 7px;
     margin-top: 20px;
     width: 100%;
-    background-color: whitesmoke;
+    background-color: #373745;
     border-radius: 25px;
     position: absolute;
     left: 50%;
