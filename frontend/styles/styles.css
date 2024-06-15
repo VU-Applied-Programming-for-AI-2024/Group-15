@@ -789,25 +789,6 @@ ham-menu span:nth-child(3) {
 
 .schedule {
     width: 100%;
-    overflow-y: auto; /* Enable scrolling */
-    scrollbar-width: thin; /* Thin scrollbar */
-    scrollbar-color: #999 #f0f0f0; /* Thumb and track color */
-    padding-right: 10px; /* Adjust padding to accommodate scrollbar */
-}
-
-.schedule::-webkit-scrollbar {
-    width: 6px; /* Width of the scrollbar */
-    height: 6px; /* Height of the scrollbar for horizontal scrollbars */
-}
-
-.schedule::-webkit-scrollbar-thumb {
-    background-color: #999; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners */
-}
-
-.schedule::-webkit-scrollbar-track {
-    background-color: #f0f0f0; /* Color of the scrollbar track */
-    border-radius: 10px; /* Rounded corners */
 }
 
 body {
