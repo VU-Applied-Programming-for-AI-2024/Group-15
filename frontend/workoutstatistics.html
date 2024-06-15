@@ -17,6 +17,19 @@
 
     <!-- Include Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Include custom JS for hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamMenu = document.querySelector('.ham-menu');
+            const offScreenMenu = document.querySelector('.off-screen-menu');
+            
+            hamMenu.addEventListener('click', function () {
+                hamMenu.classList.toggle('active');
+                offScreenMenu.classList.toggle('active');
+            });
+        });
+    </script>
 </head>
 <body class="workout-stats">
   <h1>
@@ -91,7 +104,7 @@
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
+                maintainAspectRatio: true, // Ensure the aspect ratio is maintained
             }
         });
 
@@ -109,7 +122,7 @@
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
+                maintainAspectRatio: true, // Ensure the aspect ratio is maintained
             }
         });
     </script>
