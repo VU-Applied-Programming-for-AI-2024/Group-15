@@ -17,35 +17,45 @@
 
     <!-- Include Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Include custom JS for hamburger menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamMenu = document.querySelector('.ham-menu');
+            const offScreenMenu = document.querySelector('.off-screen-menu');
+            
+            hamMenu.addEventListener('click', function () {
+                hamMenu.classList.toggle('active');
+                offScreenMenu.classList.toggle('active');
+            });
+        });
+    </script>
 </head>
 <body class="workout-stats">
+    <nav>
+        <div class="ham-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="off-screen-menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="discover.html">Discover</a></li>
+                <li><a href="manual_schedule.html">Manual Schedule</a></li>
+                <li><a href="AIschedule.component.html">AI Schedule</a></li>
+                <li><a href="/help">Help</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="center-container">
         <!-- Title of page -->
         <div class="title">
             <h1><a href="index.html"><b>FitnessAI</b></a></h1>
         </div> 
         <br>
-
-        <!-- Hamburger menu options -->
-        <div class="off-screen-menu">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li>Discover</li>
-                <li>Manual Schedule</li>
-                <li><a href="AIschedule.component.html">AI Schedule</a></li>
-                <li>Help</li>
-                <li>About</li>
-            </ul>
-        </div>
-
-        <!-- Hamburger menu lines -->
-        <nav>
-            <div class="ham-menu">
-                <span class="ham-span"></span>
-                <span class="ham-span"></span>
-                <span class="ham-span"></span>
-            </div>
-        </nav>
 
         <!-- Subtitle -->
         <div class="subtitle">

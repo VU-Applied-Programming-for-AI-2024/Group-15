@@ -704,6 +704,7 @@ ham-menu span:nth-child(3) {
     position: relative;
     z-index: 10;
     text-decoration: none !important;
+    color: #fff; /* Ensure title is visible */
 }
 
 /* styling for workout stats content */
@@ -738,6 +739,7 @@ ham-menu span:nth-child(3) {
     width: 100%;
     height: 200px;
 }
+
 
 
 /* schedule styles */
