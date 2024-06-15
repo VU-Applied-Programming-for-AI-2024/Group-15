@@ -747,7 +747,7 @@ ham-menu span:nth-child(3) {
 /* schedule styles */
 
 .day {
-    width: 500px;
+    width: 800px;
     background-color: white;
     padding: 20px;
     margin: 10px 0;
@@ -798,6 +798,6 @@ body {
 .schedule-description {
     margin-top: 10px;
     font-style: italic;
-    color: #555;
+    color: #ffffff;
 }
 
