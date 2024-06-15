@@ -310,9 +310,8 @@ nav {
     height: 100vh;
 }
 .aischedule h1 a {
-    position: center;
+    position: relative;
     z-index: 10;
-    text-decoration: none !important; /* Added this line */
 }
 
 /*style of the schedule page*/
@@ -326,7 +325,6 @@ nav {
 .schedule h1 a {
     position: relative;
     z-index: 10;
-    text-decoration: none !important; /* Added this line */
 }
 /*styling for discover page*/
 .discover {
@@ -339,7 +337,6 @@ nav {
 .discover h1 a {
     position: relative;
     z-index: 10;
-    text-decoration: none !important; /* Added this line */
 }
 .manual_schedule {
     display: -moz-grid-line;
@@ -351,7 +348,6 @@ nav {
 .manual_schedule h1 a {
     position: relative;
     z-index: 10;
-    text-decoration: none !important; /* Added this line */
 }
 /* Targeted Muscles selection*/
 
