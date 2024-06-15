@@ -25,12 +25,13 @@
   </head>
   <body class="homepage">
     <h1>
-      <a href="index.html"><b>FitnessAI</b></a>
+      <a href="index.html">
+        <img src="../images/logo2.png" style="max-width: 120%; height: auto;">
+      </a>
     </h1>
-    <br />
+  
     <div class="center-container">
-      <!-- Title of page -->
-
+  
       <!-- Hamburger menu options -->
       <div class="off-screen-menu">
         <ul>
@@ -42,7 +43,7 @@
           <li><a href="/about">About</a></li>
         </ul>
       </div>
-
+  
       <!-- Hamburger menu lines -->
       <nav>
         <div class="ham-menu">
@@ -51,86 +52,33 @@
           <span></span>
         </div>
       </nav>
-
+  
       <!-- Subtitle #1 -->
       <h2>Discover Exercises</h2>
-
-     <!-- Search bar -->
-<div class="search">
-  <form action="discover.html" method="get" class="search-bar">
-    <div class="form-group">
-      <label for="search-input" class="search-label">Exercise name:</label>
-      <input type="text" id="search-input" name="q" placeholder="Exercise name" />
-    </div>
-
-    <div class="form-group">
-      <label for="muscle-group" class="search-label">Muscle Group:</label>
-      <select id="muscle-group" name="muscle-group">
-        <option value="" disabled selected>Select Muscle Group</option>
-        <option value="chest">Chest</option>
-        <option value="back">Back</option>
-        <option value="arms">Arms</option>
-        <option value="legs">Legs</option>
-        <option value="shoulders">Shoulders</option>
-        <option value="abs">Abs</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="difficulty-level" class="search-label">Difficulty Level:</label>
-      <select id="difficulty-level" name="difficulty-level">
-        <option value="" disabled selected>Select Difficulty Level</option>
-        <option value="beginner">Beginner</option>
-        <option value="intermediate">Intermediate</option>
-        <option value="advanced">Advanced</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="equipment-needed" class="search-label">Equipment Needed:</label>
-      <select id="equipment-needed" name="equipment-needed">
-        <option value="" disabled selected>Select Equipment</option>
-        <option value="none">None</option>
-        <option value="dumbbells">Dumbbells</option>
-        <option value="barbell">Barbell</option>
-        <option value="machines">Machines</option>
-        <option value="bands">Bands</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <button type="submit">
-        <img src="../images/magnifying-glass.png" alt="Search" />
-      </button>
-    </div>
-  </form>
-</div>
-
-
-
-      <!-- Just a test, replace with link to page 2 -->
-      <a href="manual_schedule.html" target="_self" title="Manual Schedule">
-        <!-- Create schedule manually -->
-        <img src="../images/download.jpeg" height="200" width="300" />
-      </a>
-      <!-- Create schedule with AI image + link to AI schedule page -->
-      <a
-        href="AIschedule.component.html"
-        target="_self"
-        title="Use AI to make a personalized schedule"
-      >
-        <img
-          src="../images/ai schedule.jpeg"
-          height="200"
-          width="300"
-        />
-      </a>
-
+  
+      <!-- Website Description -->
+      <div class="description">
+        <p>Welcome to myFitnessAI Coach! Our mission is to provide personalized fitness plans powered by AI to help you achieve your health and fitness goals. Whether you're looking to build muscle, lose weight, or improve your overall fitness, our platform offers a variety of exercises and tailored workout schedules to suit your needs.</p>
+      </div>
+  
+      <!-- Search bar with description -->
+      <div class="search-container">
+        <div class="search-bar">
+          <input type="text" placeholder="Exercise name">
+          <button><img src="../images/magnifying-glass.png" alt="Search"></button>
+        </div>
+      </div>
+  
+      <!-- Image container -->
+      <div class="image-container">
+        <img src="../images/download.jpeg" alt="First Image" />
+        <img src="../images/ai schedule.jpeg" alt="Second Image" />
+      </div>
+  
       <!-- Link to JavaScript file -->
       <script src="../scripts/scripts.js"></script>
     </div>
   </body>
-
   <footer>
     <p>
       Copyright © 2024 Vrije Universiteit Amsterdam. All rights reserved.
