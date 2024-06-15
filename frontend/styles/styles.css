@@ -43,6 +43,7 @@ footer a:hover {
 
 a {
     color: #B0B3B8;
+    text-decoration: none; /* Added to remove underline globally */
 }
 a:visited {
     color: #B0B3B8;
@@ -102,6 +103,11 @@ nav {
     justify-content: space-around;
     font-size: 1.2rem; /* Adjusted font size for a better look */
     transform: translateX(0);
+}
+
+/* Ensuring no underline for submenu links */
+.off-screen-menu a {
+    text-decoration: none;
 }
 
 nav {
