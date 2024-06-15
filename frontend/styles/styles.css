@@ -10,20 +10,19 @@
 html, body {
     height: 100%;
 }
-
 body {
     background: url('../images/peakpx.jpg') no-repeat center center fixed;
     background-size: cover;
     display: flex;
     flex-direction: column;
     font-family: Corbel, sans-serif;
-    color: #B0B3B8;
+    color: #b0b3b8;
 }
 
 /* Footer styles */
 footer {
-    background-color: #B0B3B8 ;
-    color: #fff;
+    background-color: #0000005a;
+    color: #ffffff90;
     text-align: center;
     padding: 10px 20px;
     position: absolute;
@@ -42,7 +41,7 @@ footer a:hover {
 }
 
 a {
-    color: #B0B3B8;
+    color: #d7dde8;
     text-decoration: none; /* Added to remove underline globally */
 }
 a:visited {
@@ -56,12 +55,12 @@ a:hover {
 nav {
     padding: 1rem;
     display: flex;
-    position: fixed;
+    position: relative;
     align-items: center;
     justify-content: space-between;
     top: 0;
     left: 0;
-    width: 100%;
+    width: fit-content;
     background-color: none;
 }
 
@@ -87,7 +86,7 @@ nav {
     list-style: none;
     padding: 0;
     margin: 0;
-    width: 100%;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly; /* Distribute items evenly */
@@ -120,8 +119,7 @@ nav {
 .ham-menu {
     height: 50px;
     width: 40px;
-    margin-right: auto;
-    margin-top: 20px;
+    margin-left: 20px; /* Adjust this value to control the distance from the left edge */
     position: relative;
     z-index: 9;
 }
@@ -178,7 +176,7 @@ nav {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    backdrop-filter: blur(4px) saturate(180%);
+    backdrop-filter: blur(4px) saturate(140%);
 }
 
 /*Search-bar background*/
@@ -189,7 +187,7 @@ nav {
     align-items: center;
     width: 100%;
     max-width: 800px;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1); /* Set to semi-transparent */
     border-radius: 10px;
     padding: 20px;
     margin: 0 auto;
@@ -255,8 +253,8 @@ nav {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #2A3D66;
-    color: #B0B3B8;
+    background-color: white; /* Set background to white */
+    color: #333333; /* Text color set to grey */
     width: 90%; /* Increase the width of the container */
     padding: 40px; /* Increase padding for more space */
     margin: 50px auto;
@@ -271,15 +269,14 @@ nav {
     color: #B0B3B8;
     padding: 20px;
 }
-
 /*pages rectangle in center*/
 .center-container {
-    display: -moz-grid-line;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #889ac0; 
-    color: #B0B3B8; 
+    background-color: white; 
+    color: #333333; 
     width: 80%; 
     padding: 20px; 
     margin: 50px auto; 
@@ -287,17 +284,19 @@ nav {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
     overflow: hidden;
 }
+
 .homepage {
-    display: -moz-grid-line;
+    display: flex;
     text-align: center;
     place-items: center;
     background-color: #1C1F2E;
     color: #333333;
 }
+
 .homepage h1 a {
     position: relative;
     z-index: 10;
-    text-decoration: none 
+    text-decoration: none;
 }
 
 /*style of the AI schedule page  */
@@ -741,7 +740,6 @@ ham-menu span:nth-child(3) {
 }
 
 
-
 /* schedule styles */
 
 .day {
@@ -798,4 +796,3 @@ body {
     font-style: italic;
     color: #ffffff;
 }
-
