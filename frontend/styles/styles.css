@@ -312,6 +312,7 @@ nav {
 .aischedule h1 a {
     position: relative;
     z-index: 10;
+    text-decoration: none !important;
 }
 
 /*style of the schedule page*/
@@ -325,6 +326,7 @@ nav {
 .schedule h1 a {
     position: relative;
     z-index: 10;
+    text-decoration: none !important;
 }
 /*styling for discover page*/
 .discover {
@@ -337,6 +339,7 @@ nav {
 .discover h1 a {
     position: relative;
     z-index: 10;
+    text-decoration: none !important;
 }
 .manual_schedule {
     display: -moz-grid-line;
@@ -348,6 +351,7 @@ nav {
 .manual_schedule h1 a {
     position: relative;
     z-index: 10;
+    text-decoration: none !important;
 }
 /* Targeted Muscles selection*/
 
