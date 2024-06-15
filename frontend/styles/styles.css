@@ -769,7 +769,7 @@ ham-menu span:nth-child(3) {
     margin: 5px 0;
 }
 
-.center-container {
+.schedule-center-container {
     max-height: 80vh;
     overflow-y: auto;
     padding: 20px;
