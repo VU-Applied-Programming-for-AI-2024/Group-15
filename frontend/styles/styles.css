@@ -784,7 +784,6 @@ ham-menu span:nth-child(3) {
 
 .schedule {
     width: 200%;
-    overflow-y: auto; /* Enable scrolling */
 }
 
 body {
