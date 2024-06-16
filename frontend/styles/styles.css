@@ -266,7 +266,7 @@ nav {
     margin: 50px auto;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .homepage {
@@ -275,21 +275,7 @@ nav {
     color: #B0B3B8;
     padding: 20px;
 }
-/*pages rectangle in center*/
-.center-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: white; 
-    color: #333333; 
-    width: 80%; 
-    padding: 20px; 
-    margin: 50px auto; 
-    border-radius: 10px; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-    overflow: hidden;
-}
+
 
 .homepage {
     display: flex;
@@ -498,7 +484,8 @@ nav {
 /* sliders background*/
 .age-range, .weight-range {
     height: 50px;
-    width: 45%;
+    width: 100%;
+    max-width: 1000px;
     background: linear-gradient(135deg, #e0e0e0ae, #c0c0c017);
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -793,9 +780,7 @@ ham-menu span:nth-child(3) {
     width: 100%;
 }
 
-body {
-    overflow-y: hidden;
-}
+
 
 .schedule-description {
     margin-top: 10px;
