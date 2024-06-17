@@ -26,16 +26,3 @@ class Exercise:
             target=data.get('target')
         )
 
-# Example JSON string
-json_str = '''{
-  "bodyPart": "waist",
-  "equipment": "body weight",
-  "gifUrl": "http://d205bpvrqc9yn1.cloudfront.net/0002.gif",
-  "id": "0002",
-  "name": "45° side bend",
-  "target": "abs"
-}'''
-
-# Convert JSON to Exercise instance
-exercise = Exercise.from_json(json_str)
-print(exercise)
