@@ -1,0 +1,94 @@
+/*search bar background image and place*/
+.homepage {
+    display: flex;
+    text-align: center;
+    place-items: center;
+    background-color: #1C1F2E;
+    color: #333333;
+    padding: 20px;
+}
+
+.homepage h1 a {
+    position: relative;
+    z-index: 10;
+    text-decoration: none;
+}
+.search {
+    width: 100%;
+    min-height: 10vh;
+    padding: 1%;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    backdrop-filter: blur(4px) saturate(140%);
+}
+
+/*Search-bar background*/
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.1); /* Set to semi-transparent */
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0 auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-label {
+    color: white;
+    margin-bottom: 5px;
+    margin-right: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    min-width: 180px;
+    flex: 1;
+}
+
+.search-bar input,
+.search-bar select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    color: black;
+    margin-bottom: 5px;
+}
+
+.search-bar input::placeholder,
+.search-bar select::placeholder {
+    color: #ccc;
+}
+
+.search-bar button {
+    border: none;
+    background-color: #4A627D;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-top: auto;
+}
+
+.search-bar button img {
+    width: 20px;
+    height: 20px;
+}
+
+.search-bar button:hover {
+    background-color: #3A4E6D;
+}
+
+.search-bar select option {
+    color: black; /* Options should have a different color for readability */
+}
