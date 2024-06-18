@@ -51,5 +51,33 @@ jobs:
         run: |
           cd backend
           zip -r ../release.zip .
-          c
+          cd ..
 
+      - name: Upload artifact for deployment jobs
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-app
+          path: release.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: 'https://fitnessaicoach.azurewebsites.net/'
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: python-app
+
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+        
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        id: deploy-to-webapp
+        with:
+          app-name: 'fitnessaicoach'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B799F559D19640A3BAAB4FCB0DE400E4 }}
