@@ -23,17 +23,18 @@ jobs:
         id: artifact
         with:
           script: |
-            const res = await github.rest.actions.listArtifactsForRepo({
+            const artifacts = await github.rest.actions.listArtifactsForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-            })
-            res.data.artifacts.forEach(({ id }) => {
-              github.rest.actions.deleteArtifact({
+            });
+
+            for (const artifact of artifacts.data.artifacts) {
+              await github.rest.actions.deleteArtifact({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                artifact_id: id,
-              })
-            })
+                artifact_id: artifact.id,
+              });
+            }
 
       - name: Set up Python version
         uses: actions/setup-python@v1
