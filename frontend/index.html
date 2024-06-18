@@ -22,37 +22,49 @@
       crossorigin="anonymous"
     ></script>
     <title>myFitnessAI </title>
+    <style>
+      .navbar {
+        margin-bottom: 20px;
+      }
+      .navbar-brand img {
+        max-width: 120%;
+        height: auto;
+      }
+    </style>
   </head>
   <body class="homepage">
-    <h1>
-      <a href="index.html">
-        <img src="../images/logo2.png" style="max-width: 120%; height: auto;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary fixed-top">
+      <a class="navbar-brand ms-3" href="index.html">
+        <img src="../images/logo2.png" alt="Logo">
       </a>
-    </h1>
-  
-    <div class="center-container">
-  
-      <!-- Hamburger menu options -->
-      <div class="off-screen-menu">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="discover.html">Discover</a></li>
-          <li><a href="manual_schedule.html">Manual Schedule</a></li>
-          <li><a href="AIschedule.component.html">AI Schedule</a></li>
-          <li><a href="/help">Help</a></li>
-          <li><a href="/about">About</a></li>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="discover.html">Discover</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="manual_schedule.html">Manual Schedule</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="AIschedule.component.html">AI Schedule</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/help">Help</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
         </ul>
       </div>
-  
-      <!-- Hamburger menu lines -->
-      <nav>
-        <div class="ham-menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </nav>
-  
+    </nav>
+    
+    <div class="container mt-5">
       <!-- Subtitle #1 -->
       <h2>Discover Exercises</h2>
   
@@ -78,14 +90,14 @@
       <!-- Link to JavaScript file -->
       <script src="../scripts/scripts.js"></script>
     </div>
+    
+    <footer>
+      <p>
+        Copyright © 2024 Vrije Universiteit Amsterdam. All rights reserved.
+        <a href="/privacy-policy">Privacy Policy</a> |
+        <a href="/terms-of-service">Terms of Service</a> |
+        <a href="/contact">Contact</a>
+      </p>
+    </footer>
   </body>
-  <footer>
-    <p>
-      Copyright © 2024 Vrije Universiteit Amsterdam. All rights reserved.
-      <a href="/privacy-policy">Privacy Policy</a> |
-      <a href="/terms-of-service">Terms of Service</a> |
-      <a href="/contact">Contact</a>
-    </p>
-  </footer>
-
 </html>
