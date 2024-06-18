@@ -65,7 +65,7 @@
   </div>
   <h3>Personal Information</h3>
   <br />
-  <form id = "user-info-form">
+  <form id = "user-info-form" action="http://localhost:5000/api/create-schedule" method="post">
   <!--Age input-->
   <h4>Age</h4>
   <div class="age-range">
@@ -159,7 +159,7 @@
     <div id="muscle-list" class="muscle-list">
         <li>
         </li>
-            <button id="add-muscle-btn">+</button>
+            <button id="add-muscle-btn" type="button">+</button>
     </div>
 
   </div>
@@ -171,7 +171,7 @@
         <span class="close">&times;</span>
         <h4>Select Muscle</h4>
         <select id="muscle-select"></select>
-        <button id="save-muscle-btn">Add Muscle</button>
+        <button id="save-muscle-btn" type="button">Add Muscle</button>
     </div>
 </div>
   
@@ -199,6 +199,7 @@
           background-color: lightgray;
           border-radius: 17px;
         "
+        type="submit"
         disabled
       >
         Create AI Schedule
