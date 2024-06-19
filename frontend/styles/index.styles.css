@@ -20,65 +20,51 @@
     margin-top: 20px;
   }
   
-  .index_boxes-1 {
+  .index_boxes-1, .index_boxes-2 {
     display: inline-block;
-    width: 60px;
-    height: 80px;
+    width: 200px;
+    height: 380px;
     position: relative;
-    background-image: url('../images/ai schedule.jpeg'); 
     background-size: cover;
     background-position: center;
     border-radius: 20px;
     overflow: hidden;
-    transition: transform 0.4s ease;
-    text-decoration: none; 
-    color: #ffffffc9; 
+    transition: transform 0.5s ease, box-shadow 0.4s ease;
+    text-decoration: none; /* Ensure no underline for links */
+    color: #ffffffc9; /* Text color */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.4rem;
-    font-weight: bold;
     text-transform: uppercase;
-  }
-
-  .index_boxes-2 {
-    display: inline-block;
-    width: 60px;
-    height: 80px;
-    position: relative;
-    background-image: url('../images/download.jpeg'); 
-    background-size: cover;
-    background-position: center;
-    border-radius: 20px;
-    overflow: hidden;
-    transition: transform 0.4s ease;
-    text-decoration: none; 
-    color: #ffffffc9; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    font-weight: bold;
-    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1); 
   }
   
-  .index_boxes::before {
+  .index_boxes-1::before, .index_boxes-2::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(177, 176, 176, 0.489); 
-    z-index: 1; 
-    backdrop-filter: blur(5px); 
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    z-index: 1; /
   }
   
-  .index_boxes p {
+  .index_boxes-1 p, .index_boxes-2 p {
     position: relative; /* Ensure text is above the overlay */
     z-index: 2;
   }
   
-  .index_boxes:hover {
+  .index_boxes-1:hover, .index_boxes-2:hover {
     transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 14px 28px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+  }
+  
+  .index_boxes-1 {
+    background-image: url('../images/ai schedule.jpeg'); /* Replace with your image path */
+  }
+  
+  .index_boxes-2 {
+    background-image: url('../images/download.jpeg'); /* Replace with your image path */
   }
