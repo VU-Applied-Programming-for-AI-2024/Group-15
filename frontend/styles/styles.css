@@ -11,7 +11,7 @@
   
   body {
     font-family: 'Corbel';
-    background: linear-gradient(90deg, #0093E9 0%, #80D0C7 100%);
+    background: linear-gradient(80deg, #1b98e1 0%, #80d0c7 100%);
     color: #333;
     display: flex;
     flex-direction: column;
@@ -27,6 +27,10 @@
     align-items: center;
     background-color: rgba(255, 255, 255, 0);
     backdrop-filter: blur(20px);
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: 100; 
   }
   
   .navbar a {
@@ -34,10 +38,11 @@
     text-decoration: none;
     margin: 0 15px;
     font-size: 1rem;
+    font-weight: bold; 
   }
   
   .logo img {
-    width: 150px;
+    width: 300px;
   }
   
   .main-content {
@@ -58,15 +63,14 @@
   
   .cta-button {
     display: inline-block;
-    padding: 18px 40px;
+    padding: 80px 60px;
     font-size: 1.4rem;
     color: #fff;
-    background-color: #007bffc4;
+    background-color: #4fa1ffe0;
     border: none;
-    border-radius: 30px;
+    border-radius: 20px;
     margin-top: 20px;
     transition: background-color 0.5s ease;
-    transition-timing-function: cubic-bezier(.29, 1.01, 1, -0.68);
   }
   
   .cta-button:hover {
@@ -79,9 +83,9 @@
     width: 100%;
     text-align: center;
     padding: 10px 0;
-    background-color: rgba(0, 0, 0, 0.413);
-    color: #fff;
-    font-size: 1.0 rem;
+    background-color: rgba(0, 0, 0, 0.251);
+    color: #ffffffb9;
+    font-size: 0.8 rem;
   }
   
   footer a {

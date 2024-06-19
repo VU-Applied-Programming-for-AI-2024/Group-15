@@ -1,9 +1,64 @@
-.homepage {
+.index_page {
+    text-align: center;
+    margin-top: 100px; /* Adjusted to account for the fixed navbar height */
+  }
+  
+  .index_page h1 {
+    font-size: 3rem;
+    color: #fff;
+  }
+  
+  .index_page p {
+    font-size: 1.2rem;
+    margin: 20px 0;
+    color: #e0e0e0;
+  }
+  
+  .index_boxes_cta {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .index_boxes {
+    display: inline-block;
+    width: 60px;
+    height: 80px;
+    position: relative;
+    background-image: url('../images/ai schedule.jpeg'); 
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    text-decoration: none; 
+    color: #ffffffc9; 
+    display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    min-height: 100vh;
-    padding: 20px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .index_boxes::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(177, 176, 176, 0.489); 
+    z-index: 1; 
+    backdrop-filter: blur(5px); 
+  }
+  
+  .index_boxes p {
+    position: relative; /* Ensure text is above the overlay */
+    z-index: 2;
+  }
+  
+  .index_boxes:hover {
+    transform: scale(1.05);
   }
