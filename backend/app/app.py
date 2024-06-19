@@ -1,7 +1,13 @@
 from flask import Flask, jsonify, request
 from dotenv import load_dotenv, find_dotenv
+from models.day import Day
+from models.bodypart import BodyPart
+from models.schedule import Schedule
+from models.exercise import Exercise, WorkoutExercise
+from models.workout import Workout
 import requests
 import os
+import re
 
 load_dotenv(find_dotenv())
 app = Flask(__name__)
@@ -111,6 +117,68 @@ def calories_burned():
     }
     data, status_code = fetch_api_data(endpoint, params)
     return jsonify(data), status_code
+
+def create_custom_schedule(gender, weight, goal, bodyparts, days):
+    routines = []
+
+    for bodypart in bodyparts:
+        for target_muscle in bodypart.value:
+            endpoint = f"{BASE_URL}/4824/ai+workout+planner"
+            params = {
+                'target': target_muscle,
+                'gender': gender,
+                'weight': weight,
+                'goal': goal
+            }
+            data, status_code = fetch_api_data(endpoint, params)
+            if status_code == 200 and 'routine' in data:
+                routines.append(data['routine'][0])
+
+    custom_schedule = {day: Workout() for day in days}
+    day_index = 0
+
+    exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
+
+    for routine in routines:
+        lines = routine.split('**')
+        current_workout = None
+
+        for line in lines:
+            line = line.strip()
+            if 'Day' in line:
+                if current_workout:
+                    custom_schedule[days[day_index % len(days)]] = current_workout
+                    day_index += 1
+                current_workout = Workout()
+            elif current_workout:
+                exercises = line.split('\n')
+                for exercise in exercises:
+                    if exercise and not exercise.startswith('Day'):
+                        match = exercise_pattern.match(exercise.strip())
+                        if match:
+                            name = match.group(1).strip()
+                            sets = int(match.group(2))
+                            reps = f"{match.group(3)}-{match.group(4)}"
+                            exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=name, target="unknown")
+                            current_workout.add_exercise(WorkoutExercise(exercise_obj, sets, reps))
+                        else:
+                            exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=exercise.strip(), target="unknown")
+                            current_workout.add_exercise(WorkoutExercise(exercise_obj, 0, ""))
+        if current_workout:
+            custom_schedule[days[day_index % len(days)]] = current_workout
+            day_index += 1
+
+    return Schedule([str(custom_schedule[day]) for day in days])
+
+# Example usage
+gender = "male"
+weight = "80"
+goal = "muscle_gain"
+bodyparts = [BodyPart.CHEST, BodyPart.UPPER_ARMS]
+days = [Day.MONDAY, Day.WEDNESDAY, Day.FRIDAY]
+custom_schedule = create_custom_schedule(gender, weight, goal, bodyparts, days)
+print(custom_schedule)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
