@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 API_ENDPOINT = os.environ.get("API_ENDOPOINT")
 API_KEY = os.environ.get("EXERCISE_API_KEY")
-BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
+BASE_URL = os.environ.get("API_ENDPOINT")
 
 def fetch_api_data(endpoint, params=None):
     """Fetch data from the external API."""
