@@ -78,6 +78,7 @@
         type="range"
         id="age-input"
         class="age-input"
+        name = "age-input"
         min="0"
         max="100"
         value="50"
@@ -127,6 +128,7 @@
         type="range"
         id="weight-input"
         class="weight-input"
+        name = "weight-input"
         min="0"
         max="200"
         value="100"
@@ -152,7 +154,7 @@
   </script>
 
   <br />
-  <h4>Target Muscles </h4>
+  <h4>Target Muscle Group </h4>
   <div class="muscle-container">
     
     
@@ -181,7 +183,7 @@
 </div>
   <div class="goal-selection">
     <label for="Goal">Goal</label>
-    <select id="goal" name="Goal">
+    <select id="goal" name="goal">
       <option value="weight_loss">weight loss</option>
       <option value="muscle_gain">muscle gain</option>
       <option value="strength_training">strength training</option>
@@ -190,6 +192,7 @@
       <option value="general_fitness">general fitness</option>
     </select>
     </div>
+    <form action = "schedule_page.component.html">
     <a href="schedule_page.component.html">
       <button
         id="create-schedule-btn"
@@ -205,6 +208,7 @@
         Create AI Schedule
       </button>
     </a>
+  </form>
  
 </div>
 </form>
