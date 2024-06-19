@@ -1,5 +1,4 @@
 import pymongo
-import getpass
 from typing import Any, Dict, List, Union
 import logging 
 import os
@@ -12,7 +11,7 @@ load_dotenv(find_dotenv())
 CONNECTION_STRING = os.environ.get("MONGODB_STRING")
 DB_NAME = "myFitnessAIcoach"
 
-REQUIRED_KEYS = {"user_id", "intensity", "calories_burned", "targeted_muscles"}
+REQUIRED_KEYS = {"intensity", "calories_burned", "targeted_muscles"}
 
 def validate_keys(data: Dict[str, Any], required_keys: set) -> bool:
     """Validate that the provided data contain the required keys."""
@@ -36,12 +35,6 @@ def update_document_id(collection: pymongo.collection.Collection, document_id: A
     validate_keys(update_data, REQUIRED_KEYS)
     collection.update_one({"_id": document_id}, {"$set": update_data})
     logger.info("Updated document with _id {}: {}".format(document_id, collection.find_one({"_id": document_id})))
-
-def update_document_user_id(collection: pymongo.collection.Collection, user_id: Any, update_data: Dict[str, Any]) -> None:
-    """Update the document containing user_id with update_data"""
-    validate_keys(update_data, REQUIRED_KEYS)
-    collection.update_one({"user_id": user_id}, {"$set": update_data})
-    logger.info("Updated document with user_id {}: {}".format(user_id, collection.find_one({"user_id": user_id})))
 
 def insert_document(collection: pymongo.collection.Collection, document_data: Dict[str, Any]) -> Any:
     """Insert a document with document_data and return the contents of its _id field"""
@@ -67,15 +60,14 @@ def retrieve_all_values_for_key(collection: pymongo.collection.Collection, key: 
     for value in values:
         if key in value:
             val = value[key]
-            if isinstance(val, dict):  # Directly check if val is a dictionary
-                # Unpack dictionary and add to result
+            if isinstance(val, dict):
                 result.append({k: v for k, v in val.items()})
             else:
                 result.append(val)
     return result
 
 def server_crud_operations(operation: str, json_data: Dict[str, Any] = None, collection_name: str = None, key: str = None, value: Any = None, 
-         update_data: Dict[str, Any] = None, document_id: int = None, user_id: int = None) -> None:
+         update_data: Dict[str, Any] = None, document_id: int = None, ) -> None:
     """Connect to the API for MongoDB, create DB and collection, and perform CRUD operations"""
     client = pymongo.MongoClient(CONNECTION_STRING)
     try:
@@ -97,10 +89,6 @@ def server_crud_operations(operation: str, json_data: Dict[str, Any] = None, col
     elif operation == "update_by_id" and collection_name and document_id and update_data:
         collection = create_collection_if_not_exists(client, collection_name)
         update_document_id(collection, document_id, update_data)
-
-    elif operation == "update_by_user" and collection_name and user_id and update_data:
-        collection = create_collection_if_not_exists(client, collection_name)
-        update_document_user_id(collection, user_id, update_data)
 
     elif operation == "delete" and collection_name and document_id:
         collection = create_collection_if_not_exists(client, collection_name)

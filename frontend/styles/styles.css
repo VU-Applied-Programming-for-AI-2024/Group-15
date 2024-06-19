@@ -1,55 +1,97 @@
-/* base styles */
+/* Base styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    list-style: none;
-    text-decoration: none;
-}
-
-html, body {
+  }
+  
+  html, body {
     height: 100%;
-}
-body {
-    background: url('../images/peakpx.jpg') no-repeat center center fixed;
-    background-size: cover;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(120deg, #0093E9 0%, #80D0C7 100%);
+    color: #333;
     display: flex;
     flex-direction: column;
-    font-family: Corbel, sans-serif;
-    color: #b0b3b8;
-}
-
-/* Footer styles */
-footer {
-    background-color: #0000005a;
-    color: #ffffff90;
-    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .navbar {
+    width: 100%;
     padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  
+  .navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1rem;
+  }
+  
+  .logo img {
+    width: 50px;
+  }
+  
+  .main-content {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .main-content h1 {
+    font-size: 3rem;
+    color: #fff;
+  }
+  
+  .main-content p {
+    font-size: 1.2rem;
+    margin: 20px 0;
+    color: #e0e0e0;
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    background-color: #0056b3;
+  }
+  
+  footer {
     position: absolute;
     bottom: 0;
     width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
     font-size: 0.8rem;
-}
-
-footer a {
+  }
+  
+  footer a {
     color: #fff;
     text-decoration: none;
-}
-
-footer a:hover {
+  }
+  
+  footer a:hover {
     text-decoration: underline;
-}
-
-a {
-    color: #d7dde8;
-    text-decoration: none; /* Added to remove underline globally */
-}
-a:visited {
-    color: #B0B3B8;
-}
-a:hover {
-    color: #D0D3D4;
-}
+  }
 
 
 /* HAMBURGER MENU */

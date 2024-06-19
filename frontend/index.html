@@ -3,14 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Description and tags -->
     <meta name="description" content="Gym schedule made by AI and much more" />
     <meta name="keywords" content="gym, fitness, gym planning, AI schedule" />
-    <!-- Link to web icon -->
     <link rel="icon" type="image/jpg" href="../images/biceps.jpg" />
     <link rel="stylesheet" href="../styles/styles.css" />
     <link rel="stylesheet" href="../styles/index.styles.css" />
-    <!-- Bootstrap links -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -22,73 +19,36 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <title>myFitnessAI </title>
+    <title>myFitnessAI</title>
   </head>
   <body class="homepage">
-    <h1>
-      <a href="index.html">
-           <img src="../images/logo2.png" class="logo" alt="Logo">
-        </a>
-    </h1>
-  
-    <div class="center-container">
-  
-      <!-- Hamburger menu options -->
-      <div class="off-screen-menu">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="discover.html">Discover</a></li>
-          <li><a href="manual_schedule.html">Manual Schedule</a></li>
-          <li><a href="AIschedule.component.html">AI Schedule</a></li>
-        </ul>
-      </div>
-  
-      <!-- Hamburger menu lines -->
-      <nav>
-        <div class="ham-menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </nav>
-  
-      <!-- Subtitle #1 -->
-      <h2>Discover Exercises</h2>
-  
-      <!-- Website Description -->
-      <div class="description">
-        <p>Welcome to myFitnessAI Coach! Our mission is to provide personalized fitness plans powered by AI to help you achieve your health and fitness goals. Whether you're looking to build muscle, lose weight, or improve your overall fitness, our platform offers a variety of exercises and tailored workout schedules to suit your needs.</p>
-      </div>
-  
-      <!-- Search bar with description -->
-      <div class="search-container">
-        <div class="search-bar">
-          <input type="text" placeholder="Exercise name">
-          <button><img src="../images/magnifying-glass.png" alt="Search"></button>
-        </div>
-      </div>
-  
-      <!-- Image container -->
-      <div class="image-container">
-        <a href = "../manual_schedule.html">
-        <img src="../images/download.jpeg" alt="First Image" />
+    <nav class="navbar">
+      <a href="index.html" class="logo">
+        <img src="../images/logo2.png" alt="Logo">
       </a>
-      <a href="../AIschedule.component.html">
-        <img src="../images/ai schedule.jpeg" alt="Second Image" />
-      </a>
+      <div class="navbar-links">
+        <a href="index.html">Home</a>
+        <a href="discover.html">Discover</a>
+        <a href="manual_schedule.html">Manual Schedule</a>
+        <a href="AIschedule.component.html">AI Schedule</a>
       </div>
+    </nav>
   
-      <!-- Link to JavaScript file -->
-      <script src="../scripts/scripts.js"></script>
+    <div class="main-content">
+      <h1>Plan your fitness journey</h1>
+      <p>Let AI help you create a personalized fitness schedule to achieve your goals.</p>
+      <a href="AIschedule.component.html" class="cta-button">Create AI Schedule</a>
     </div>
-  </body>
-  <footer>
-    <p>
-      Copyright © 2024 Vrije Universiteit Amsterdam. All rights reserved.
-      <a href="/privacy-policy">Privacy Policy</a> |
-      <a href="/terms-of-service">Terms of Service</a> |
-      <a href="/contact">Contact</a>
-    </p>
-  </footer>
+  
+    <footer>
+      <p>
+        Copyright © 2024 Vrije Universiteit Amsterdam. All rights reserved.
+        <a href="/privacy-policy">Privacy Policy</a> |
+        <a href="/terms-of-service">Terms of Service</a> |
+        <a href="/contact">Contact</a>
+      </p>
+    </footer>
 
+    <script src="../scripts/scripts.js"></script>
+  </body>
 </html>
