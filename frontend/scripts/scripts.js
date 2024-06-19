@@ -138,3 +138,43 @@ document.getElementById('user-info-form').addEventListener('submit', function (e
     console.error('Error:', error);
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("user-info-form");
+  const createScheduleBtn = document.getElementById("create-schedule-btn");
+
+  // Add event listener to the form submission
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Disable the button to prevent multiple submissions
+    createScheduleBtn.disabled = true;
+
+    // Serialize form data into JSON format
+    const formData = new FormData(form);
+    const jsonData = {};
+    formData.forEach((value, key) => {
+      jsonData[key] = value;
+    });
+
+    // Make a fetch request to submit the form data
+    fetch("http://localhost:5000/api/create-schedule", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(jsonData),
+    })
+      .then(response => response.json())
+      .then(result => {
+        console.log("Success:", result);
+        // Redirect to the specified URL after successful submission
+        const redirectUrl = document.getElementById("redirect-url").value;
+        window.location.href = redirectUrl;
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        // Handle errors if needed
+      });
+  });
+});
