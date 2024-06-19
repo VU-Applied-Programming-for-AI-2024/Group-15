@@ -17,7 +17,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const muscleSelect = document.getElementById("muscle-select");
   const muscleList = document.getElementById("muscle-list");
 
-  const muscles = ["Legs", "chest", "back", "arms", "shoulders", "abs"];
+  const muscles = ["back",
+     "cardio", 
+     "chest", 
+     "lower arms", 
+     "lower legs",  
+     "neck", 
+     "shoulder", 
+     "upper arms", 
+     "upper legs",
+    "waist"
+  ];
 
   muscles.forEach((muscle) => {
     const option = document.createElement("option");
