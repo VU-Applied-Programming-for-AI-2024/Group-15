@@ -1,17 +1,16 @@
 .index_page {
     text-align: center;
-    margin-top: 100px; /* Adjusted to account for the fixed navbar height */
-  }
-  
+    margin-top: 100px; 
+}
   .index_page h1 {
     font-size: 3rem;
-    color: #fff;
+    color: #ffffffe1;
   }
   
   .index_page p {
     font-size: 1.2rem;
     margin: 20px 0;
-    color: #e0e0e0;
+    color: #e0e0e0e6;
   }
   
   .index_boxes_cta {
@@ -21,7 +20,7 @@
     margin-top: 20px;
   }
   
-  .index_boxes {
+  .index_boxes-1 {
     display: inline-block;
     width: 60px;
     height: 80px;
@@ -31,7 +30,28 @@
     background-position: center;
     border-radius: 20px;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
+    text-decoration: none; 
+    color: #ffffffc9; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .index_boxes-2 {
+    display: inline-block;
+    width: 60px;
+    height: 80px;
+    position: relative;
+    background-image: url('../images/download.jpeg'); 
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.4s ease;
     text-decoration: none; 
     color: #ffffffc9; 
     display: flex;
