@@ -1,4 +1,4 @@
-from workout_exercise import WorkoutExercise
+from backend.app.models.workout_exercise import WorkoutExercise
 
 class Workout:
     def __init__(self):
