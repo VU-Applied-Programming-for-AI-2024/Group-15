@@ -62,7 +62,6 @@
   .index_boxes-1:hover, .index_boxes-2:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 14px 28px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-    filter: blur(4px); 
   }
   .index_boxes-1 {
     background-image: url('../images/ai schedule.jpeg'); /* Replace with your image path */
