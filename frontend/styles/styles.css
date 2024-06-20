@@ -1,43 +1,48 @@
 /* Base styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  html, body {
-    height: 100%;
-  }
-  
-  body {
-    font-family: 'Corbel';
-    background: linear-gradient(90deg, #0093E9 0%, #80D0C7 100%);
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .navbar {
-    width: 100%;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0);
-    backdrop-filter: blur(20px);
-  }
-  
-  .navbar a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 1rem;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Corbel';
+  background: linear-gradient(80deg, #1b98e1 0%, #80d0c7 100%);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Ensure content starts at the top */
+}
+
+.navbar {
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.1); /* Slightly visible for testing */
+  backdrop-filter: blur(20px);
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  z-index: 100; 
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 1.2rem;
+}
+
   
   .logo img {
-    width: 150px;
+    width: 300px;
   }
   
   .main-content {
@@ -55,33 +60,16 @@
     margin: 20px 0;
     color: #e0e0e0;
   }
-  
-  .cta-button {
-    display: inline-block;
-    padding: 18px 40px;
-    font-size: 1.4rem;
-    color: #fff;
-    background-color: #007bffc4;
-    border: none;
-    border-radius: 30px;
-    margin-top: 20px;
-    transition: background-color 0.5s ease;
-    transition-timing-function: cubic-bezier(.29, 1.01, 1, -0.68);
-  }
-  
-  .cta-button:hover {
-    background-color: #044387cc;
-  }
-  
+
   footer {
     position: absolute;
     bottom: 0;
     width: 100%;
     text-align: center;
     padding: 10px 0;
-    background-color: rgba(0, 0, 0, 0.413);
-    color: #fff;
-    font-size: 1.0 rem;
+    background-color: rgba(0, 0, 0, 0.251);
+    color: #ffffffb9;
+    font-size: 0.6 rem;
   }
   
   footer a {
@@ -110,7 +98,7 @@ nav {
 
 /* off-screen-menu */
 .off-screen-menu {
-    background-color: #4A627D;
+    background-color: #61cec19c;
     height: 100vh;
     width: 100%;
     max-width: 25%;
@@ -165,7 +153,7 @@ nav {
     height: 7px;
     margin-top: 20px;
     width: 100%;
-    background-color: whitesmoke;
+    background-color: rgba(245, 245, 245, 0.8);
     border-radius: 25px;
     position: absolute;
     left: 50%;
