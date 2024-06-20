@@ -12,6 +12,10 @@ import re
 load_dotenv(find_dotenv())
 app = Flask(__name__)
 
+@app.route('/')
+def hello():
+    return 'Hello, World!'
+
 API_ENDPOINT = os.environ.get("API_ENDOPOINT")
 API_KEY = os.environ.get("EXERCISE_API_KEY")
 BASE_URL = os.environ.get("API_ENDPOINT")
