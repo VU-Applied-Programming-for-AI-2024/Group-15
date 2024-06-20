@@ -5,8 +5,6 @@ from flask_cors import CORS
 import re
 from typing import Union, Tuple, Optional, List
 
-app = Flask(__name__)
-CORS(app)
 
 @app.route('/api/create-schedule', methods=['POST'])
 def create_schedule():
@@ -36,6 +34,3 @@ def create_schedule():
     except Exception as e:
         print("Error:", str(e))
         return jsonify({"status": "error", "message": str(e)}), 500
-    
-if __name__ == '__main__':
-    app.run(debug=True)

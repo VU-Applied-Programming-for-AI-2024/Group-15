@@ -39,7 +39,7 @@
     justify-content: center;
     font-size: 1.8rem;
     text-transform: uppercase;
-    text-shadow: 1px 1px #d7d7d7e6;
+    text-shadow: 0.2px 0.2px #d7d7d7e6;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);
   }
   

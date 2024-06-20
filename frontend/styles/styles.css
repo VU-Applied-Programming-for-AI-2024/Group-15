@@ -62,7 +62,6 @@ body {
 /*footer css */
 footer {
   position: relative - bottom; 
-  bottom: 0;
   width: 100%;
   text-align: center;
   padding: 10px 0;
