@@ -2,6 +2,7 @@ from flask import jsonify, request
 import requests
 import os
 
+API_ENDPOINT = os.environ.get("API_ENDPOINT")
 API_KEY = os.environ.get("EXERCISE_API_KEY")
 BASE_URL = os.environ.get("API_ENDPOINT")
 
