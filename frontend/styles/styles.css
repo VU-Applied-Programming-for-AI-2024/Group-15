@@ -20,12 +20,12 @@ body {
 }
 
 .navbar {
-  width: 100%;
+  width: 80%;
   padding: 10px 20px;
-  display: flex;
+  display: flex-end;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.1); /* Slightly visible for testing */
+  background-color: transparent;
   backdrop-filter: blur(20px);
   position: fixed; 
   top: 0; 
@@ -55,19 +55,19 @@ body {
 }
 
 .main-content p {
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   margin: 20px 0;
   color: #e0e0e0;
 }
-/*footer css */
 footer {
-  position: relative - bottom; 
+  position: absolute;
+  bottom: 0;
   width: 100%;
   text-align: center;
   padding: 10px 0;
   background-color: rgba(0, 0, 0, 0.251);
   color: #ffffffb9;
-  font-size: 0.4 rem;
+  font-size: 0.4rem;
 }
 
 footer a {
