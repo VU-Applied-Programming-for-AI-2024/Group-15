@@ -1,7 +1,7 @@
-from backend.app.models.day import Day
-from backend.app.models.workout import Workout
-from backend.app.models.workout_exercise import WorkoutExercise
-from backend.app.models.exercise import Exercise
+from models.day import Day
+from models.workout import Workout
+from models.workout_exercise import WorkoutExercise
+from models.exercise import Exercise
 import re
 
 class Schedule:

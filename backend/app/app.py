@@ -3,7 +3,8 @@ from dotenv import load_dotenv, find_dotenv
 from models.day import Day
 from models.bodypart import BodyPart
 from models.schedule import Schedule
-from models.exercise import Exercise, WorkoutExercise
+from models.exercise import Exercise
+from models.workout_exercise import WorkoutExercise
 from models.workout import Workout
 import requests
 import os
