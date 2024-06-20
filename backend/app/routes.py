@@ -1,6 +1,10 @@
 from flask import jsonify, request
 import requests
-import os
+import os 
+from models.bodypart import BodyPart
+from typing import List, Any, Union
+from app import create_custom_schedule
+
 
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
 API_KEY = os.environ.get("EXERCISE_API_KEY")
@@ -110,7 +114,7 @@ def register_routes(app):
         return jsonify(data), status_code
     
     @app.route('/api/create-schedule', methods=['POST'])
-    def create_schedule():
+    def gather_info():
         try:
             data = request.get_json()
             print("Received data:", data)
@@ -122,18 +126,39 @@ def register_routes(app):
             muscles = data.get('muscles')
             goal = data.get('goal')
             days = data.get('days')
+
+            #Changes the muscles into BodyParts objects
+            muscle_list: List[BodyPart] = []
+            for muscle in muscles:
+                if muscle == "back":
+                    muscle_list.append(BodyPart.BACK)
+                if muscle == "cardio":
+                    muscle_list.append(BodyPart.CARDIO)
+                if muscle == "chest":
+                    muscle_list.append(BodyPart.CHEST)
+                if muscle == "lower arms":
+                    muscle_list.append(BodyPart.LOWER_ARMS)
+                if muscle == "lower legs":
+                    muscle_list.append(BodyPart.LOWER_LEGS)
+                if muscle == "neck":
+                    muscle_list.append(BodyPart.NECK)
+                if muscle=="shoulders":
+                    muscle_list.append(BodyPart.SHOULDERS)
+                if muscle == "upper arms":
+                    muscle_list.append(BodyPart.UPPER_ARMS)
+                if muscle == "upper legs":
+                    muscle_list.append(BodyPart.UPPER_LEGS)
+                if muscle == "waist":
+                    muscle_list.append (BodyPart.WAIST)
+                #insure that the API isn't cofused about gender   
+                if gender=="other":
+                    gender == "female"
+
+        
             
-            print("Age:", age)
-            print("Gender:", gender)
-            print("Weight:", weight)
-            print("Muscles:", muscles)
-            print("Goal:", goal)
-            print("Days:", days)
-            
-            # Here you can add your logic to process the data and create a schedule
-            
+            custom_schedule = create_custom_schedule(gender, weight, goal, muscle_list, days)
             # Return a success response
-            return jsonify({"status": "success", "message": "Schedule created successfully"}), 200
+            return jsonify({"status": "success", "message": "Schedule created successfully", "schedule": custom_schedule}), 200
         except Exception as e:
             print("Error:", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
