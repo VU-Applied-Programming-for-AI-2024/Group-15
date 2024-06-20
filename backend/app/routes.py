@@ -162,3 +162,42 @@ def register_routes(app):
         except Exception as e:
             print("Error:", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
+        
+    def search_exercises(user_input, bodypart, equipment):
+        """
+        Search for exercises based on user input, body part, and equipment.
+        
+        Parameters:
+        - user_input (str): The search string provided by the user.
+        - bodypart (str): The body part to filter exercises.
+        - equipment (str): The equipment to filter exercises.
+        
+        Returns:
+        - list: A list of exercises matching the search criteria.
+        """
+        # Fetch exercises for the specified body part
+        endpoint = f"{BASE_URL}/310/list+exercise+by+body+part"
+        params = {'bodyPart': bodypart}
+        exercises, status_code = fetch_api_data(endpoint, params)
+        
+        if status_code != 200:
+            return {"error": "Failed to fetch exercises"}, status_code
+
+        # Filter exercises based on user input and equipment
+        filtered_exercises = [
+            exercise for exercise in exercises
+            if (user_input.lower() in exercise['name'].lower() or 
+                user_input.lower() in exercise['description'].lower()) and 
+            (equipment.lower() in exercise['equipment'].lower())
+        ]
+
+        return filtered_exercises, 200
+
+    @app.route('/search_exercises', methods=['GET'])
+    def search_exercises_route():
+        user_input = request.args.get('user_input', '')
+        bodypart = request.args.get('bodypart', '')
+        equipment = request.args.get('equipment', '')
+
+        exercises, status_code = search_exercises(user_input, bodypart, equipment)
+        return jsonify(exercises), status_code
