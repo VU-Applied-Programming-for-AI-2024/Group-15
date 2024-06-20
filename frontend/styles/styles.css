@@ -40,174 +40,55 @@ body {
   font-size: 1.2rem;
 }
 
-  
-  .logo img {
-    width: 300px;
-  }
-  
-  .main-content {
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  .main-content h1 {
-    font-size: 3rem;
-    color: #fff;
-  }
-  
-  .main-content p {
-    font-size: 1.2rem;
-    margin: 20px 0;
-    color: #e0e0e0;
-  }
+.logo img {
+  width: 300px;
+}
 
-  footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: 10px 0;
-    background-color: rgba(0, 0, 0, 0.251);
-    color: #ffffffb9;
-    font-size: 0.6 rem;
-  }
-  
-  footer a {
-    color: #fff;
-    text-decoration: none;
-  }
-  
-  footer a:hover {
-    text-decoration: underline;
-  }
+.main-content {
+  text-align: center;
+  margin-top: 50px;
+}
 
+.main-content h1 {
+  font-size: 3rem;
+  color: #fff;
+}
 
-/* HAMBURGER MENU */
-nav {
-    padding: 1rem;
+.main-content p {
+  font-size: 1.2rem;
+  margin: 20px 0;
+  color: #e0e0e0;
+}
+/*footer css */
+footer {
+  position: relative - bottom; 
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  background-color: rgba(0, 0, 0, 0.251);
+  color: #ffffffb9;
+  font-size: 0.4 rem;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+ /*Main text in the page*/
+.main-block {
     display: flex;
-    align-items: center; /* Align items vertically in the center */
-    position: absolute; /* Position the nav bar absolutely */
-    top: 0;
-    left: 0;
-    width: 100%; /* Ensure the nav bar spans the full width */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background-color: transparent;
-    z-index: 10; /* Ensure the nav bar is above other content */
+    color: #fffffff2; 
+    width: 75%; 
 }
-
-
-/* off-screen-menu */
-.off-screen-menu {
-    background-color: #61cec19c;
-    height: 100vh;
-    width: 100%;
-    max-width: 25%;
-    position: fixed;
-    top: 0;
-    left: -100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 1vh;
-    transition: 0.3s ease-in-out;
-    padding-top: 50px;
-    display: flex;
-}
-.off-screen-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly; /* Distribute items evenly */
-    flex-grow: 1; /* Allow ul to grow and fill available space */
-}
-.off-screen-menu.active {
-    left: 0;
-    padding-top: 50px;
-    display: flexbox;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    font-size: 4vh;
-    transform: translateX(0);
-}
-/* Ensuring no underline for submenu links */
-.off-screen-menu a {
-    text-decoration: none;
-}
-
-
-/* ham menu box */
-.ham-menu {
-    height: 50px;
-    width: 40px;
-    margin-right: auto;
-    margin-top: 20px;
-    position: relative;
-    z-index: 9;
-}
-.ham-menu span {
-    height: 7px;
-    margin-top: 20px;
-    width: 100%;
-    background-color: rgba(245, 245, 245, 0.8);
-    border-radius: 25px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    transition: 0.3s ease;
-}
-
-.ham-menu span:nth-child(1) {
-    top: 25%;
-}
-
-.ham-menu span:nth-child(3) {
-    top: 75%;
-}
-
-.ham-menu.active span {
-    background-color: black;
-}
-
-.ham-menu.active span:nth-child(1) {
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.ham-menu.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.ham-menu.active span:nth-child(3) {
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-
-
- /*Center container*/
-/* Ensure the container is properly centered and styled */
-.center-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: white; /* Set background to white */
-    color: #333333; /* Text color set to grey */
-    width: 90%; /* Increase the width of the container */
-    padding: 40px; /* Increase padding for more space */
-    margin: 50px auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-}
-
-
 
 /*Search bar */
 .search {
@@ -269,7 +150,7 @@ nav {
 
 .search-bar button {
     border: none;
-    background-color: #4A627D;
+    background-color: #ffffffe3;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
@@ -283,9 +164,9 @@ nav {
 }
 
 .search-bar button:hover {
-    background-color: #3A4E6D;
+    background-color: #d9d9d9bc;
 }
 
 .search-bar select option {
-    color: black; /* Options should have a different color for readability */
+    color: rgba(233, 33, 33, 0.95); /* Options should have a different color for readability */
 }
