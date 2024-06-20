@@ -4,6 +4,7 @@ import os
 
 load_dotenv()
 
+@app.route('/')
 def create_app():
     app = Flask(__name__)
 
