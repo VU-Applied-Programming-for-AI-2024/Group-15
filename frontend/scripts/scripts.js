@@ -142,3 +142,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
   validateForm(); // Initial validation to disable the button if necessary
 });
+
+class ExerciseList {
+  constructor(apiUrl, containerId) {
+      this.apiUrl = apiUrl;
+      this.containerId = containerId;
+  }
+
+  fetchExercises() {
+      fetch(this.apiUrl)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json();
+          })
+          .then(data => this.displayExercises(data.exercises))
+          .catch(error => console.error('Error fetching data:', error));
+  }
+
+  displayExercises(exercises) {
+      const exerciseList = document.getElementById(this.containerId);
+      if (!exerciseList) {
+          console.error(`Container with ID ${this.containerId} not found`);
+          return;
+      }
+      
+      exerciseList.innerHTML = ''; // Clear any existing content
+      exercises.forEach(exercise => {
+          const div = document.createElement('div');
+          div.textContent = exercise.name;
+          exerciseList.appendChild(div);
+      });
+  }
+}
+
+// When the document is ready, create an instance of ExerciseList and fetch data
+document.addEventListener('DOMContentLoaded', function() {
+  const exerciseList = new ExerciseList('https://fitnessaicoach.azurewebsites.net/calories_burned', 'exercise-list');
+  exerciseList.fetchExercises();
+});
