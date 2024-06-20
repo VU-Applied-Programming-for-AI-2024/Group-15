@@ -143,42 +143,51 @@ document.addEventListener('DOMContentLoaded', function() {
   validateForm(); // Initial validation to disable the button if necessary
 });
 
-class ExerciseList {
-  constructor(apiUrl, containerId) {
-      this.apiUrl = apiUrl;
-      this.containerId = containerId;
-  }
-
-  fetchExercises() {
-      fetch(this.apiUrl)
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
-              return response.json();
-          })
-          .then(data => this.displayExercises(data.exercises))
-          .catch(error => console.error('Error fetching data:', error));
-  }
-
-  displayExercises(exercises) {
-      const exerciseList = document.getElementById(this.containerId);
-      if (!exerciseList) {
-          console.error(`Container with ID ${this.containerId} not found`);
-          return;
-      }
-      
-      exerciseList.innerHTML = ''; // Clear any existing content
-      exercises.forEach(exercise => {
-          const div = document.createElement('div');
-          div.textContent = exercise.name;
-          exerciseList.appendChild(div);
-      });
-  }
-}
-
-// When the document is ready, create an instance of ExerciseList and fetch data
 document.addEventListener('DOMContentLoaded', function() {
-  const exerciseList = new ExerciseList('https://fitnessaicoach.azurewebsites.net/calories_burned', 'exercise-list');
+  const apiUrl = 'http://127.0.0.1:5000/calories_burned';
+  const containerId = 'exercise-list';
+
+  class ExerciseList {
+      constructor(apiUrl, containerId) {
+          this.apiUrl = apiUrl;
+          this.containerId = containerId;
+      }
+
+      fetchExercises() {
+          fetch(this.apiUrl)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+              })
+              .then(data => this.displayExercises(data))
+              .catch(error => console.error('Error fetching data:', error));
+      }
+
+      displayExercises(data) {
+          const exerciseList = document.getElementById(this.containerId);
+          if (!exerciseList) {
+              console.error(`Container with ID ${this.containerId} not found`);
+              return;
+          }
+
+          exerciseList.innerHTML = ''; // Clear any existing content
+          const div = document.createElement('div');
+          div.className = 'exercise-item';
+          div.innerHTML = `
+              <p><strong>Calories Burned:</strong> ${data.calories_burned}</p>
+              <p><strong>Age:</strong> ${data.details.age}</p>
+              <p><strong>Exercise:</strong> ${data.details.exercise}</p>
+              <p><strong>Gender:</strong> ${data.details.gender}</p>
+              <p><strong>Reps:</strong> ${data.details.reps}</p>
+              <p><strong>Weight:</strong> ${data.details.weight}</p>
+          `;
+          exerciseList.appendChild(div);
+      }
+  }
+
+  const exerciseList = new ExerciseList(apiUrl, containerId);
   exerciseList.fetchExercises();
+});
 });
