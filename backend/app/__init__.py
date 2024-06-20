@@ -1,15 +1,16 @@
 from flask import Flask
 from flask_cors import CORS
 import logging
-from .config import Config
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
     CORS(app)  # Enable CORS
 
+    # Set up logging
     logging.basicConfig(level=logging.INFO)
+
+    # Register routes
     from .routes import register_routes
     register_routes(app)
 
-    return ap
+    return app

@@ -1,13 +1,5 @@
-/*style of the AI schedule page  */
-.aischedule {
-    display: grid;
-    text-align: center;
-    place-items: center;
-    background-color: #1C1F2E;
-    color: #333333;
-    height: 100vh;
-}
-.aischedule h1 a {
+
+aischedule h1 a {
     position: relative;
     z-index: 10;
     text-decoration: none !important;
