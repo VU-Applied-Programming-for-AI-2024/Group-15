@@ -26,10 +26,6 @@ def fetch_api_data(endpoint, params=None):
     else:
         return {"error": "Failed to fetch data from the API"}, response.status_code
 
-@app.route('/')
-def home():
-    return "Welcome to the Exercise Database API!"
-
 @app.route('/list_of_body_parts', methods=['GET'])
 def list_of_body_parts():
     endpoint = f"{BASE_URL}/309/list+of+body+parts"
@@ -169,15 +165,6 @@ def create_custom_schedule(gender, weight, goal, bodyparts, days):
             day_index += 1
 
     return Schedule([str(custom_schedule[day]) for day in days])
-
-#Example
-gender = "male"
-weight = "80"
-goal = "muscle_gain"
-bodyparts = [BodyPart.CHEST, BodyPart.UPPER_ARMS]
-days = [Day.MONDAY, Day.WEDNESDAY, Day.FRIDAY]
-custom_schedule = create_custom_schedule(gender, weight, goal, bodyparts, days)
-print(custom_schedule)
 
 
 if __name__ == '__main__':

@@ -82,16 +82,12 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
-// Function to validate form and enable button
-function validateForm() {
-  const age = document.querySelector('.age-input').value;
-  const gender = document.querySelector('input[name="gender"]:checked');
-  const weight = document.querySelector('.weight-input').value;
-  const muscles = document.querySelectorAll('.muscle-item');
+// function to activate days of the week
+document.addEventListener('DOMContentLoaded', function () {
+  const days = document.querySelectorAll('.day');
   const createScheduleBtn = document.getElementById('create-schedule-btn');
-  const muscleErrorText = document.getElementById('muscle-error');
 
+<<<<<<< HEAD
   
   console.log("Gender Selected:", gender !== null);
   
@@ -185,6 +181,88 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(error => {
         console.error("Error:", error);
         // Handle errors if needed
+=======
+  days.forEach(day => {
+      day.addEventListener('click', function () {
+          day.classList.toggle('active');
+          validateForm();
+>>>>>>> 39d2984997c25a8e33dab98c6e368ef4fcb89085
       });
   });
+
+  function validateForm() {
+      const age = document.querySelector('.age-input').value;
+      const gender = document.querySelector('input[name="gender"]:checked');
+      const weight = document.querySelector('.weight-input').value;
+      const muscles = document.querySelectorAll('.muscle-item');
+      const muscleErrorText = document.getElementById('muscle-error');
+
+      const selectedDays = Array.from(days).some(day => day.classList.contains('active'));
+      console.log("Gender Selected:", gender !== null);
+      console.log("Muscles Selected:", muscles.length > 0);
+      console.log("Days Selected:", selectedDays);
+
+      // Check if all required fields are filled
+      const genderSelected = gender !== null;
+      const musclesSelected = muscles.length > 0;
+
+      if (genderSelected && musclesSelected && selectedDays) {
+          createScheduleBtn.disabled = false;
+      } else {
+          createScheduleBtn.disabled = true;
+          if (!musclesSelected) {
+              muscleErrorText.style.display = "block"; // Show error text
+          } else {
+              muscleErrorText.style.display = "none"; // Hide error text if at least 1 muscle is selected
+          }
+      }
+  }
+
+  // Attach event listeners to inputs
+  document.querySelector(".age-input").addEventListener("input", validateForm);
+  document.querySelectorAll('input[name="gender"]').forEach(genderInput => {
+      genderInput.addEventListener("change", validateForm);
+  });
+
+  document.querySelector(".weight-input").addEventListener("input", validateForm);
+
+  // Form submission to communicate data to Flask backend
+  document.getElementById('user-info-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const age = document.querySelector('.age-input').value;
+      const gender = document.querySelector('input[name="gender"]:checked').value;
+      const weight = document.querySelector('.weight-input').value;
+      const muscles = Array.from(document.querySelectorAll('input[name="target_muscles"]')).map(input => input.value);
+      const goal = document.getElementById('goal').value;
+
+      const selectedDays = [];
+      days.forEach(day => {
+          if (day.classList.contains('active')) {
+              selectedDays.push(day.getAttribute('data-day'));
+          }
+      });
+
+      const data = { age, gender, weight, muscles, goal, days: selectedDays };
+
+      fetch('http://localhost:5000/api/create-schedule', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(result => {
+          console.log('Success:', result);
+          // Redirect to the specified URL after successful submission
+          const redirectUrl = document.getElementById("redirect-url").value;
+          window.location.href = redirectUrl;
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+  });
+
+  validateForm(); // Initial validation to disable the button if necessary
 });
