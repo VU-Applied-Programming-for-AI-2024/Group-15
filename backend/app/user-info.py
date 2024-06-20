@@ -20,12 +20,14 @@ def create_schedule():
         weight = data.get('weight')
         muscles = data.get('muscles')
         goal = data.get('goal')
+        days = data.get('days')
         
         print("Age:", age)
         print("Gender:", gender)
         print("Weight:", weight)
         print("Muscles:", muscles)
         print("Goal:", goal)
+        print("Days:", days)
         
         # Here you can add your logic to process the data and create a schedule
         
