@@ -41,7 +41,6 @@
     text-transform: uppercase;
     text-shadow: 1px 1px #d7d7d7e6;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);
-    filter: blur(2px); 
   }
   
   .index_boxes-1::before, .index_boxes-2::before {
@@ -65,11 +64,9 @@
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 14px 28px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
     filter: blur(4px); 
   }
-  
   .index_boxes-1 {
     background-image: url('../images/ai schedule.jpeg'); /* Replace with your image path */
   }
-  
   .index_boxes-2 {
     background-image: url('../images/download.jpeg'); /* Replace with your image path */
   }

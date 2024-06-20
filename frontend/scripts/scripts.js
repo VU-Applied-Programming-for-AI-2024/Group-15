@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
       jsonData[key] = value;
     });
 
-    // Make a fetch request to submit the form data
+    // It is a fetch request to submit the form data
     fetch("http://localhost:5000/api/create-schedule", {
       method: "POST",
       headers: {

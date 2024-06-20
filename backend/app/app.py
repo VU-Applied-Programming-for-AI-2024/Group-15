@@ -170,7 +170,7 @@ def create_custom_schedule(gender, weight, goal, bodyparts, days):
 
     return Schedule([str(custom_schedule[day]) for day in days])
 
-# Example usage
+#Example
 gender = "male"
 weight = "80"
 goal = "muscle_gain"
@@ -181,7 +181,7 @@ print(custom_schedule)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000, host=2)
 
 
 
