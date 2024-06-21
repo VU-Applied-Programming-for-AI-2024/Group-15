@@ -95,6 +95,3 @@ def server_crud_operations(operation: str, json_data: Dict[str, Any] = None, col
         delete_document(collection, document_id)
     else:
         logger.error("Invalid operation or missing parameters")
-
-def find_all_documents(collection: pymongo.collection.Collection) -> List[Dict[str, Any]]:
-    return list(collection.find({}))

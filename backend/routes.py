@@ -1,6 +1,6 @@
 from flask import jsonify, request
 import requests
-import os 
+import os
 from typing import List, Any, Union
 from dotenv import load_dotenv, find_dotenv
 from models.day import Day
@@ -15,18 +15,15 @@ load_dotenv(find_dotenv())
 
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
 API_KEY = os.environ.get("EXERCISE_API_KEY")
-BASE_URL = os.environ.get("API_ENDPOINT")
+BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
 
 def fetch_api_data(endpoint, params=None):
-    """Fetch data from the external API."""
-    
     headers = {"Authorization": f"Bearer {API_KEY}"}
     response = requests.get(endpoint, headers=headers, params=params)
-    
     if response.status_code == 200:
         return response.json(), 200
     else:
-        return {"error": "Failed to fetch data from the API"}, response.status_code
+        return {"error": "Failed to fetch data from the API. Felix is the best"}, response.status_code
 
 def register_routes(app):
     @app.route('/')
@@ -123,22 +120,8 @@ def register_routes(app):
 
         exercises, status_code = search_exercises(user_input, bodypart, equipment)
         return jsonify(exercises), status_code
-    
-    
-    
-def search_exercises(user_input, bodypart, equipment):
-        """
-        Search for exercises based on user input, body part, and equipment.
-        
-        Parameters:
-        - user_input (str): The search string provided by the user.
-        - bodypart (str): The body part to filter exercises.
-        - equipment (str): The equipment to filter exercises.
-        
-        Returns:
-        - list: A list of exercises matching the search criteria.
-        """
-        # Fetch exercises for the specified body part
+
+    def search_exercises(user_input, bodypart, equipment):
         endpoint = f"{BASE_URL}/310/list+exercise+by+body+part"
         params = {'bodyPart': bodypart}
         exercises, status_code = fetch_api_data(endpoint, params)
@@ -146,7 +129,6 @@ def search_exercises(user_input, bodypart, equipment):
         if status_code != 200:
             return {"error": "Failed to fetch exercises"}, status_code
 
-        # Filter exercises based on user input and equipment
         filtered_exercises = [
             exercise for exercise in exercises
             if (user_input.lower() in exercise['name'].lower() or 
@@ -156,7 +138,7 @@ def search_exercises(user_input, bodypart, equipment):
 
         return filtered_exercises, 200
 
-def create_custom_schedule(gender, weight, goal, bodyparts, days):
+    def create_custom_schedule(gender, weight, goal, bodyparts, days):
         routines = []
 
         for bodypart in bodyparts:
@@ -206,6 +188,4 @@ def create_custom_schedule(gender, weight, goal, bodyparts, days):
                 custom_schedule[days[day_index % len(days)]] = current_workout
                 day_index += 1
 
-
         return Schedule([str(custom_schedule[day]) for day in days])
-
