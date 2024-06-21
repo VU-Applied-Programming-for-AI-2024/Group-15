@@ -1,15 +1,6 @@
-from flask import Flask, jsonify
+from app import create_app
 
-app = Flask(__name__)
-
-@app.route('/calories_burned', methods=['GET'])
-def calories_burned():
-    exercises = [
-        {"name": "Push-up", "calories": 100},
-        {"name": "Sit-up", "calories": 50},
-        # Add more exercises here
-    ]
-    return jsonify({"exercises": exercises})
+app = create_app()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)

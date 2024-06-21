@@ -39,12 +39,6 @@ def register_routes(app):
         data, status_code = fetch_api_data(endpoint, params)
         return jsonify(data), status_code
 
-    @app.route('/list_of_target_muscles', methods=['GET'])
-    def list_of_target_muscles():
-        endpoint = f"{BASE_URL}/311/list+of+target+muscles"
-        data, status_code = fetch_api_data(endpoint)
-        return jsonify(data), status_code
-
     @app.route('/list_by_target_muscle', methods=['GET'])
     def list_by_target_muscle():
         target = request.args.get('target', 'biceps')
