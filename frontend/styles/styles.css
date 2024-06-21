@@ -19,7 +19,7 @@ body {
   justify-content: flex-start; /* Ensure content starts at the top */
 }
 
-.navbar {
+.menu {
   width: 100%;
   padding: 10px 20px;
   display: flex;
@@ -31,24 +31,23 @@ body {
   top: 0; 
   left: 0; 
   z-index: 100;
-  gap: 20px;
 }
 
-.navbar-links {
+.nmenu-links {
   display: flex;
-  justify-content: space-between;
-  width: 80%; 
+  justify-content: center; /* Center the links */
+  gap: 20px; /* Add space between links */
 }
 
-.navbar-links a {
+.menu-links a {
   text-align: center;
   padding: 10px 15px;
   color: white;
   text-decoration: none;
-  font-size: 1.2rem; /* Adjust the font size as needed */
+  font-size: 1.2rem;
 }
 
-.navbar-links a:hover {
+.menu-links a:hover {
   text-decoration: underline;
 }
 
@@ -71,19 +70,20 @@ body {
   margin: 20px 0;
   color: #ffffffd1;
 }
+
 .footer {
-  position: absolute;
+  position: fixed; 
   bottom: 0;
   width: 100%;
   text-align: center;
   padding: 10px 0;
-  background-color: rgba(0, 0, 0, 0.251);
+  background-color: rgba(0, 0, 0, 0.291);
   color: #ffffffb9;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .footer a {
-  color: #fff;
+  color: #ffffff9f;
   text-decoration: none;
 }
 
@@ -91,13 +91,13 @@ body {
   text-decoration: underline;
 }
 
- /*Main text in the page*/
+/*Main text in the page*/
 .main-block {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    color: #fffffff2; 
-    width: 75%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  color: #fffffff2; 
+  width: 75%; 
 }
