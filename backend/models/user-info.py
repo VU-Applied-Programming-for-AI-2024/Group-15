@@ -13,7 +13,7 @@ from utils.crud_operations_azure import server_crud_operations
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/api/create-schedule', methods=['POST'])
+@app.route('/api/create-schedule', methods=['GET'])
 def gather_info():
     try:
         data = request.get_json()
