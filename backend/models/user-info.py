@@ -61,7 +61,7 @@ def gather_info():
         # Insert the custom schedule into MongoDB
         server_crud_operations(
             operation="insert",
-            json_data={"schedule": custom_schedule},
+            json_data={"schedule": json_custom_schedule},
             collection_name="schedules"
         )
         
