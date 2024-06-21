@@ -9,11 +9,11 @@ from models.bodypart import BodyPart
 from pymongo import MongoClient
 import pymongo.errors
 from utils.crud_operations_azure import server_crud_operations
-
+import json
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/api/create-schedule', methods=['POST'])
+@app.route('/api/create-schedule', methods=['GET'])
 def gather_info():
     try:
         data = request.get_json()
@@ -55,7 +55,9 @@ def gather_info():
                 gender = "female"
 
         custom_schedule = create_custom_schedule(gender, weight, goal, muscle_list, days)
-        
+
+        json_custom_schedule = json.dumps(custom_schedule)
+
         # Insert the custom schedule into MongoDB
         server_crud_operations(
             operation="insert",
