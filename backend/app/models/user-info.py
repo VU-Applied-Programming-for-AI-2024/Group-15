@@ -5,6 +5,7 @@ from flask_cors import CORS
 import re
 from typing import Union, Tuple, Optional, List
 from models.bodypart import BodyPart
+from routes import create_custom_schedule
 
 app = Flask(__name__)
 CORS(app)
