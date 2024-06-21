@@ -3,6 +3,12 @@ import requests
 import os 
 from typing import List, Any, Union
 from dotenv import load_dotenv, find_dotenv
+from models.day import Day
+from models.bodypart import BodyPart
+from models.schedule import Schedule
+from models.exercise import Exercise, WorkoutExercise
+from models.workout import Workout
+import re
 
 load_dotenv(find_dotenv())
 
@@ -106,3 +112,94 @@ def register_routes(app):
         }
         data, status_code = fetch_api_data(endpoint, params)
         return jsonify(data), status_code
+
+    def search_exercises(user_input, bodypart, equipment):
+        """
+        Search for exercises based on user input, body part, and equipment.
+        
+        Parameters:
+        - user_input (str): The search string provided by the user.
+        - bodypart (str): The body part to filter exercises.
+        - equipment (str): The equipment to filter exercises.
+        
+        Returns:
+        - list: A list of exercises matching the search criteria.
+        """
+        # Fetch exercises for the specified body part
+        endpoint = f"{BASE_URL}/310/list+exercise+by+body+part"
+        params = {'bodyPart': bodypart}
+        exercises, status_code = fetch_api_data(endpoint, params)
+        
+        if status_code != 200:
+            return {"error": "Failed to fetch exercises"}, status_code
+
+        # Filter exercises based on user input and equipment
+        filtered_exercises = [
+            exercise for exercise in exercises
+            if (user_input.lower() in exercise['name'].lower() or 
+                user_input.lower() in exercise['description'].lower()) and 
+            (equipment.lower() in exercise['equipment'].lower())
+        ]
+
+        return filtered_exercises, 200
+
+    @app.route('/search_exercises', methods=['GET'])
+    def search_exercises_route():
+        user_input = request.args.get('user_input', '')
+        bodypart = request.args.get('bodypart', '')
+        equipment = request.args.get('equipment', '')
+
+        exercises, status_code = search_exercises(user_input, bodypart, equipment)
+        return jsonify(exercises), status_code
+    
+    def create_custom_schedule(gender, weight, goal, bodyparts, days):
+        routines = []
+
+        for bodypart in bodyparts:
+            for target_muscle in bodypart.value:
+                endpoint = f"{BASE_URL}/4824/ai+workout+planner"
+                params = {
+                    'target': target_muscle,
+                    'gender': gender,
+                    'weight': weight,
+                    'goal': goal
+                }
+                data, status_code = fetch_api_data(endpoint, params)
+                if status_code == 200 and 'routine' in data:
+                    routines.append(data['routine'][0])
+
+        custom_schedule = {day: Workout() for day in days}
+        day_index = 0
+
+        exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
+
+        for routine in routines:
+            lines = routine.split('**')
+            current_workout = None
+
+            for line in lines:
+                line = line.strip()
+                if 'Day' in line:
+                    if current_workout:
+                        custom_schedule[days[day_index % len(days)]] = current_workout
+                        day_index += 1
+                    current_workout = Workout()
+                elif current_workout:
+                    exercises = line.split('\n')
+                    for exercise in exercises:
+                        if exercise and not exercise.startswith('Day'):
+                            match = exercise_pattern.match(exercise.strip())
+                            if match:
+                                name = match.group(1).strip()
+                                sets = int(match.group(2))
+                                reps = f"{match.group(3)}-{match.group(4)}"
+                                exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=name, target="unknown")
+                                current_workout.add_exercise(WorkoutExercise(exercise_obj, sets, reps))
+                            else:
+                                exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=exercise.strip(), target="unknown")
+                                current_workout.add_exercise(WorkoutExercise(exercise_obj, 0, ""))
+            if current_workout:
+                custom_schedule[days[day_index % len(days)]] = current_workout
+                day_index += 1
+
+        return Schedule([str(custom_schedule[day]) for day in days])
