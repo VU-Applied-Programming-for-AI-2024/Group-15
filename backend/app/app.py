@@ -1,15 +1,18 @@
-from flask import Flask, jsonify
+from flask import Flask
+from flask_cors import CORS
+import logging
+from routes import register_routes  # Import the register_routes function from routes
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+    CORS(app)
 
-@app.route('/calories_burned', methods=['GET'])
-def calories_burned():
-    exercises = [
-        {"name": "Push-up", "calories": 100},
-        {"name": "Sit-up", "calories": 50},
-        # Add more exercises here
-    ]
-    return jsonify({"exercises": exercises})
+    logging.basicConfig(level=logging.INFO)
+    register_routes(app)
+
+    return app
+
+app = create_app()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
