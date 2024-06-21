@@ -112,3 +112,92 @@ def register_routes(app):
         }
         data, status_code = fetch_api_data(endpoint, params)
         return jsonify(data), status_code
+    
+    @app.route('/api/create-schedule', methods=['POST'])
+    def gather_info():
+        try:
+            data = request.get_json()
+            print("Received data:", data)
+            
+            # Extracting individual fields for debugging
+            age = data.get('age')
+            gender = data.get('gender')
+            weight = data.get('weight')
+            muscles = data.get('muscles')
+            goal = data.get('goal')
+            days = data.get('days')
+
+            #Changes the muscles into BodyParts objects
+            muscle_list: List[BodyPart] = []
+            for muscle in muscles:
+                if muscle == "back":
+                    muscle_list.append(BodyPart.BACK)
+                if muscle == "cardio":
+                    muscle_list.append(BodyPart.CARDIO)
+                if muscle == "chest":
+                    muscle_list.append(BodyPart.CHEST)
+                if muscle == "lower arms":
+                    muscle_list.append(BodyPart.LOWER_ARMS)
+                if muscle == "lower legs":
+                    muscle_list.append(BodyPart.LOWER_LEGS)
+                if muscle == "neck":
+                    muscle_list.append(BodyPart.NECK)
+                if muscle=="shoulders":
+                    muscle_list.append(BodyPart.SHOULDERS)
+                if muscle == "upper arms":
+                    muscle_list.append(BodyPart.UPPER_ARMS)
+                if muscle == "upper legs":
+                    muscle_list.append(BodyPart.UPPER_LEGS)
+                if muscle == "waist":
+                    muscle_list.append (BodyPart.WAIST)
+                #insure that the API isn't cofused about gender   
+                if gender=="other":
+                    gender == "female"
+
+        
+            
+            custom_schedule = create_custom_schedule(gender, weight, goal, muscle_list, days)
+            # Return a success response
+            return jsonify({"status": "success", "message": "Schedule created successfully", "schedule": custom_schedule}), 200
+        except Exception as e:
+            print("Error:", str(e))
+            return jsonify({"status": "error", "message": str(e)}), 500
+        
+    def search_exercises(user_input, bodypart, equipment):
+        """
+        Search for exercises based on user input, body part, and equipment.
+        
+        Parameters:
+        - user_input (str): The search string provided by the user.
+        - bodypart (str): The body part to filter exercises.
+        - equipment (str): The equipment to filter exercises.
+        
+        Returns:
+        - list: A list of exercises matching the search criteria.
+        """
+        # Fetch exercises for the specified body part
+        endpoint = f"{BASE_URL}/310/list+exercise+by+body+part"
+        params = {'bodyPart': bodypart}
+        exercises, status_code = fetch_api_data(endpoint, params)
+        
+        if status_code != 200:
+            return {"error": "Failed to fetch exercises"}, status_code
+
+        # Filter exercises based on user input and equipment
+        filtered_exercises = [
+            exercise for exercise in exercises
+            if (user_input.lower() in exercise['name'].lower() or 
+                user_input.lower() in exercise['description'].lower()) and 
+            (equipment.lower() in exercise['equipment'].lower())
+        ]
+
+        return filtered_exercises, 200
+
+    @app.route('/search_exercises', methods=['GET'])
+    def search_exercises_route():
+        user_input = request.args.get('user_input', '')
+        bodypart = request.args.get('bodypart', '')
+        equipment = request.args.get('equipment', '')
+
+        exercises, status_code = search_exercises(user_input, bodypart, equipment)
+        return jsonify(exercises), status_code
