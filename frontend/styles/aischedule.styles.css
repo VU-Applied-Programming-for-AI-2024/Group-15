@@ -1,18 +1,40 @@
-/*style of the AI schedule page  */
-.aischedule {
-    display: grid;
-    text-align: center;
-    place-items: center;
-    background-color: #1C1F2E;
-    color: #333333;
-    height: 100vh;
-}
-.aischedule h1 a {
+
+aischedule h1 a {
     position: relative;
     z-index: 10;
     text-decoration: none !important;
 }
 
+
+/*Days selection styles*/
+.day-selector {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.days-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.day {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #000;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.day.active {
+    background-color: grey ;
+    color: white;
+}
 
 /* SLIDERS STYLES*/
 

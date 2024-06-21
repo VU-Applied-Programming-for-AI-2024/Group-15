@@ -1,7 +1,7 @@
-from day import Day
-from workout import Workout
-from workout_exercise import WorkoutExercise
-from exercise import Exercise
+from models.day import Day
+from models.workout import Workout
+from models.workout_exercise import WorkoutExercise
+from models.exercise import Exercise
 import re
 
 class Schedule:
@@ -58,5 +58,7 @@ class Schedule:
 
     def __repr__(self):
         return f"Schedule(schedule={self.schedule})"
+    
+
 
 

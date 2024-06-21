@@ -1,15 +1,71 @@
-/*search bar background image and place*/
-.homepage {
-    display: flex;
+.index_page {
     text-align: center;
-    place-items: center;
-    background-color: #1C1F2E;
-    color: #333333;
-    padding: 20px;
+    margin-top: 100px; 
 }
+  .index_page h1 {
+    font-size: 3rem;
+    color: #ffffffe1;
+  }
+  
+  .index_page h2 {
+    font-size: 2rem; 
+   color:#ffffffe1;
 
-.homepage h1 a {
+
+  }
+  .index_boxes_cta {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap; 
+  }
+  
+  .index_boxes-1, .index_boxes-2 {
+    display: inline-block;
+    width: 100%;
+    max-width: 480px;
+    height: 200px;
     position: relative;
-    z-index: 10;
-    text-decoration: none;
-}
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.5s ease, box-shadow 0.4s ease, filter 0.5s ease;
+    text-decoration: none; /* Ensure no underline for links */
+    color: #ffffffc9; /* Text color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    text-shadow: 0.2px 0.2px #d7d7d7e6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .index_boxes-1::before, .index_boxes-2::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .index_boxes-1 p, .index_boxes-2 p {
+    position: relative; 
+    z-index: 2;
+  }
+  
+  .index_boxes-1:hover, .index_boxes-2:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 14px 28px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+  }
+  .index_boxes-1 {
+    background-image: url('../images/ai schedule.jpeg'); /* Replace with your image path */
+  }
+  .index_boxes-2 {
+    background-image: url('../images/download.jpeg'); /* Replace with your image path */
+  }

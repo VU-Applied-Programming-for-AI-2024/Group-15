@@ -3,9 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Gym schedule made by AI and much more">
-  <meta name="keywords" content="gym, fitness, gym planning, AI schedule">
-  <link rel="icon" type="image/jpg" href="images/biceps.jpg">
   <link rel="stylesheet" href="../styles/styles.css">
   <link rel="stylesheet" href="../styles/discover.styles.css">
   <link
@@ -22,70 +19,54 @@
   <title>Discover</title>
 </head>
 <body class="homepage">
-  <h1>
+    <h1>
       <a href="index.html">
             <img src="../images/logo2.png" class="logo" alt="Logo">
         </a>
     </h1>
-  <div class="center-container">
-  <header>
-    <nav>
-      <div class="ham-menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <ul class="off-screen-menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="discover.html">Discover</a></li>
-        <li><a href="manual_schedule.html">Manual Schedule</a></li>
-        <li><a href="AIschedule.component.html">AI Schedule</a></li>
-      </ul>
-    </nav>
-  </header>
+
+  <nav class="navbar">
+    <div class="navbar-links">
+      <a href="index.html">Home</a>
+      <a href="discover.html">Discover</a>
+      <a href="manual_schedule.html">Manual Schedule</a>
+      <a href="AIschedule.component.html">AI Schedule</a>
+    </div>
+  </nav>
   
-  <div class="center-container">
+  <div class="main-block">
     <section class="description">
-      <h1>Discover Exercises</h1>
-      <p>Explore a variety of exercises to enhance your workout routine. Click on an exercise to learn more about its benefits, targeted muscles, and how to perform it correctly.</p>
+      <h1>Discover new exercises</h1>
+      <p>Explore a variety of exercises to enhance your workout routine</p>
     </section>
 
-    <div class="search">
+    <div class="search-bar">
       <form action="discover.html" method="get" class="search-bar">
         <div class="form-group">
           <input type="text" id="search-input" name="q" placeholder="Exercise name" />
         </div>
         
-        <div class="form-group">
-          <select id="muscle-group" name="muscle-group">
-            <option value="" disabled selected>Muscle Group</option>
-            <option value="chest">Chest</option>
-            <option value="back">Back</option>
-            <option value="arms">Arms</option>
-            <option value="legs">Legs</option>
-            <option value="shoulders">Shoulders</option>
-            <option value="abs">Abs</option>
-          </select>
+        <div class="dropdown-discover-exercises">
+          <button class="dropbtn">Muscle Group</button>
+          <div class="dropdown-content">
+            <a href="#">Chest</a>
+            <a href="#">Back</a>
+            <a href="#">Arms</a>
+            <a href="#">Legs</a>
+            <a href="#">Shoulders</a>
+            <a href="#">Abs</a>
+          </div>
         </div>
 
-        <div class="form-group">
-          <select id="difficulty-level" name="difficulty-level">
-            <option value="" disabled selected>Difficulty Level</option>
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <select id="equipment-needed" name="equipment-needed">
-            <option value="" disabled selected>Equipment Needed</option>
-            <option value="none">None</option>
-            <option value="dumbbells">Dumbbells</option>
-            <option value="barbell">Barbell</option>
-            <option value="machines">Machines</option>
-            <option value="bands">Bands</option>
-          </select>
+        <div class="dropdown-discover-exercises">
+          <button class="dropbtn">Equipment Needed</button>
+          <div class="dropdown-content">
+            <a href="#">None</a>
+            <a href="#">Dumbbells</a>
+            <a href="#">Barbell</a>
+            <a href="#">Machines</a>
+            <a href="#">Bands</a>
+          </div>
         </div>
         
         <button type="submit"><img src="../images/magnifying-glass.png" alt="Search"></button>
@@ -93,7 +74,6 @@
     </div>
 
     <section class="exercise-grid">
-      <!-- Exercise cards will be dynamically inserted here by JavaScript -->
     </section>
   </div>
 
