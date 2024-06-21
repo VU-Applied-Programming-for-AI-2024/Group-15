@@ -114,7 +114,18 @@ def register_routes(app):
         data, status_code = fetch_api_data(endpoint, params)
         return jsonify(data), status_code
 
-    def search_exercises(user_input, bodypart, equipment):
+    @app.route('/search_exercises', methods=['GET'])
+    def search_exercises_route():
+        user_input = request.args.get('user_input', '')
+        bodypart = request.args.get('bodypart', '')
+        equipment = request.args.get('equipment', '')
+
+        exercises, status_code = search_exercises(user_input, bodypart, equipment)
+        return jsonify(exercises), status_code
+    
+    
+    
+def search_exercises(user_input, bodypart, equipment):
         """
         Search for exercises based on user input, body part, and equipment.
         
@@ -144,16 +155,7 @@ def register_routes(app):
 
         return filtered_exercises, 200
 
-    @app.route('/search_exercises', methods=['GET'])
-    def search_exercises_route():
-        user_input = request.args.get('user_input', '')
-        bodypart = request.args.get('bodypart', '')
-        equipment = request.args.get('equipment', '')
-
-        exercises, status_code = search_exercises(user_input, bodypart, equipment)
-        return jsonify(exercises), status_code
-    
-    def create_custom_schedule(gender, weight, goal, bodyparts, days):
+def create_custom_schedule(gender, weight, goal, bodyparts, days):
         routines = []
 
         for bodypart in bodyparts:
