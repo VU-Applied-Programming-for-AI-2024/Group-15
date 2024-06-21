@@ -19,6 +19,7 @@ BASE_URL = os.environ.get("API_ENDPOINT")
 
 def fetch_api_data(endpoint, params=None):
     """Fetch data from the external API."""
+    
     headers = {"Authorization": f"Bearer {API_KEY}"}
     response = requests.get(endpoint, headers=headers, params=params)
     
@@ -205,4 +206,6 @@ def create_custom_schedule(gender, weight, goal, bodyparts, days):
                 custom_schedule[days[day_index % len(days)]] = current_workout
                 day_index += 1
 
+
         return Schedule([str(custom_schedule[day]) for day in days])
+

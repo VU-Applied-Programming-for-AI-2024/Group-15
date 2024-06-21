@@ -190,4 +190,3 @@ document.addEventListener('DOMContentLoaded', function() {
   const exerciseList = new ExerciseList(apiUrl, containerId);
   exerciseList.fetchExercises();
 });
-});
