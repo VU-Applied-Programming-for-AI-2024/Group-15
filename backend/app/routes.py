@@ -206,4 +206,6 @@ def create_custom_schedule(gender, weight, goal, bodyparts, days):
                 custom_schedule[days[day_index % len(days)]] = current_workout
                 day_index += 1
 
+
         return Schedule([str(custom_schedule[day]) for day in days])
+
