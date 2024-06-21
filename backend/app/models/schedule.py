@@ -3,6 +3,16 @@ from backend.app.models.workout import Workout
 from backend.app.models.workout_exercise import WorkoutExercise
 from backend.app.models.exercise import Exercise
 import re
+import os
+from utils.crud_operations_azure import create_collection_if_not_exists, read_document
+import pymongo
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
+CONNECTION_STRING = os.environ.get("MONGODB_STRING")
+DB_NAME = "myFitnessAIcoach"
+EXERCISE_COLLECTION = "exercises"
 
 class Schedule:
     def __init__(self, routine):
@@ -56,9 +66,53 @@ class Schedule:
             raise ValueError("Day must be an instance of the Day enum")
         return self.schedule.get(day)
 
+    def generate_stats_for_day(self, day):
+        if not isinstance(day, Day):
+            raise ValueError("Day must be an instance of the Day enum")
+
+        workout = self.get_workout(day)
+        if not workout:
+            return {"error": f"No workout found for {day.name}"}
+
+        # Fetch exercises from the database
+        client = pymongo.MongoClient(CONNECTION_STRING)
+        exercise_collection = create_collection_if_not_exists(client, EXERCISE_COLLECTION)
+
+        exercises = []
+        for workout_exercise in workout.exercises:
+            exercise_data = exercise_collection.find_one({"name": workout_exercise.exercise.name})
+            if exercise_data:
+                exercise = Exercise(
+                    body_part=exercise_data['body_part'],
+                    equipment=exercise_data['equipment'],
+                    gif_url=exercise_data['gif_url'],
+                    exercise_id=exercise_data['exercise_id'],
+                    name=exercise_data['name'],
+                    target=exercise_data['target']
+                )
+                sets, reps = workout_exercise.sets, workout_exercise.reps
+                workout_exercise = WorkoutExercise(
+                    exercise=exercise,
+                    sets=sets,
+                    reps=reps
+                )
+                exercises.append(workout_exercise)
+
+        return self.calculate_statistics(exercises)
+
+    def calculate_statistics(self, exercises):
+        intensity = [40, 35, 25]  # Example static values, you can compute based on exercises
+        calories_burned = sum(exercise.sets * int(exercise.reps.split('-')[1]) * 0.5 for exercise in exercises)  # Example calculation
+        targeted_muscles = list(set(exercise.exercise.target for exercise in exercises))
+        sets_per_muscle_group = {exercise.exercise.target: exercise.sets for exercise in exercises}
+
+        stats = {
+            "intensity": intensity,
+            "calories_burned": calories_burned,
+            "targeted_muscles": targeted_muscles,
+            "sets_per_muscle_group": sets_per_muscle_group
+        }
+        return stats
+
     def __repr__(self):
         return f"Schedule(schedule={self.schedule})"
-    
-
-
-
