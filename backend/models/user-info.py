@@ -9,9 +9,38 @@ from models.bodypart import BodyPart
 from pymongo import MongoClient
 import pymongo.errors
 from utils.crud_operations_azure import server_crud_operations
+from models.exercise import Exercise
+from models.workout_exercise import WorkoutExercise
+from models.workout import Workout
+from models.schedule import Schedule
 import json
 app = Flask(__name__)
 CORS(app)
+
+#This class helps handling the data from the custom_schedule
+class CustomScheduleEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, BodyPart):
+            return obj.value
+        elif isinstance(obj, Exercise):
+            return obj.name
+        elif isinstance(obj, WorkoutExercise):
+            return {
+                'exercise': obj.exercise.name,
+                'sets': obj.sets,
+                'reps': obj.reps
+            }
+        elif isinstance(obj, Workout):
+            return {
+                'exercises': [self.default(ex) for ex in obj.exercises]
+            }
+        elif isinstance(obj, Schedule):
+            return {
+                day.name: self.default(workout)
+                for day, workout in obj.schedule.items()
+            }
+        return super().default(obj)
+
 
 @app.route('/api/create-schedule', methods=['GET'])
 def gather_info():
@@ -56,8 +85,8 @@ def gather_info():
 
         custom_schedule = create_custom_schedule(gender, weight, goal, muscle_list, days)
 
-        json_custom_schedule = json.dumps(custom_schedule)
 
+        json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
         # Insert the custom schedule into MongoDB
         server_crud_operations(
             operation="insert",
@@ -67,6 +96,28 @@ def gather_info():
         
         # Return a success response
         return jsonify({"status": "success", "message": "Schedule created successfully", "schedule": custom_schedule}), 200
+    except Exception as e:
+        print("Error:", str(e))
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route('/api/get-schedule/<schedule_id>', methods=['GET'])
+def get_schedule(schedule_id):
+    try:
+        # Convert the schedule_id to ObjectId
+        schedule_id = ObjectId(schedule_id)
+        
+        # Read the schedule from the database
+        schedule = server_crud_operations(
+            operation="read",
+            collection_name="schedules",
+            key="_id",
+            value=schedule_id
+        )
+        
+        if schedule:
+            return jsonify({"status": "success", "schedule": schedule}), 200
+        else:
+            return jsonify({"status": "error", "message": "Schedule not found"}), 404
     except Exception as e:
         print("Error:", str(e))
         return jsonify({"status": "error", "message": str(e)}), 500
