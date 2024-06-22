@@ -117,12 +117,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const weight = document.querySelector('.weight-input').value;
     const muscles = Array.from(document.querySelectorAll('input[name="target_muscles"]')).map(input => input.value);
     const goal = document.getElementById('goal').value;
-
     const selectedDays = Array.from(days).filter(day => day.classList.contains('active')).map(day => day.getAttribute('data-day'));
 
     const data = { age, gender, weight, muscles, goal, days: selectedDays };
 
-    fetch('http://localhost:500/api/create-schedule', {
+    fetch('http://localhost:5000/api/create-schedule', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -132,8 +131,14 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(response => response.json())
     .then(result => {
       console.log('Success:', result);
-      const redirectUrl = document.getElementById('redirect-url').value;
-      window.location.href = redirectUrl;
+      if (result.status === 'success') {
+        const scheduleId = result.schedule_id;
+        localStorage.setItem('scheduleId', scheduleId); // Store the schedule ID for future use
+        const redirectUrl = document.getElementById('redirect-url').value;
+        window.location.href = redirectUrl;
+      } else {
+        console.error('Error creating schedule:', result.message);
+      }
     })
     .catch(error => {
       console.error('Error:', error);

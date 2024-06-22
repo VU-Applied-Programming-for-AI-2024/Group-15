@@ -14,6 +14,7 @@ from models.workout_exercise import WorkoutExercise
 from models.workout import Workout
 from models.schedule import Schedule
 import json
+from bson import ObjectId
 app = Flask(__name__)
 CORS(app)
 
@@ -48,7 +49,7 @@ def gather_info():
         data = request.get_json()
         print("Received data:", data)
         
-        # Extracting individual fields for debugging
+        
         age = data.get('age')
         gender = data.get('gender')
         weight = data.get('weight')
@@ -88,17 +89,18 @@ def gather_info():
 
         json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
         # Insert the custom schedule into MongoDB
-        server_crud_operations(
+        # Insert the custom schedule into MongoDB
+        inserted_id = server_crud_operations(
             operation="insert",
             json_data={"schedule": json_custom_schedule},
             collection_name="schedules"
         )
         
-        # Return a success response
-        return jsonify({"status": "success", "message": "Schedule created successfully", "schedule": custom_schedule}), 200
+        return jsonify({"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}), 200
     except Exception as e:
         print("Error:", str(e))
         return jsonify({"status": "error", "message": str(e)}), 500
+    
 
 @app.route('/api/get-schedule/<schedule_id>', methods=['GET'])
 def get_schedule(schedule_id):
