@@ -14,7 +14,7 @@ DB_NAME = "myFitnessAIcoach"
 collection_name = "workouts"
 
 @app.route('/api/schedule', methods=['GET'])
-def get_schedule():
+def get_the_schedule():
     collection = client[DB_NAME][collection_name]
     schedule = list(collection.find({}, {'_id': False}))  # Retrieve all data and exclude the MongoDB _id field
     return jsonify(schedule)
