@@ -9,9 +9,7 @@ from models.bodypart import BodyPart
 from pymongo import MongoClient
 import pymongo.errors
 from utils.crud_operations_azure import server_crud_operations
-
-app = Flask(__name__)
-CORS(app)
+from app import app 
 
 @app.route('/api/create-schedule', methods=['POST'])
 def gather_info():
@@ -19,7 +17,7 @@ def gather_info():
         data = request.get_json()
         print("Received data:", data)
         
-        # Extracting individual fields for debugging
+        # Extracting individual fields for debuggign
         age = data.get('age')
         gender = data.get('gender')
         weight = data.get('weight')
