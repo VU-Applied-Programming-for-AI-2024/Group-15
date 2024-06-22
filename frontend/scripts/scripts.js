@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const data = { age, gender, weight, muscles, goal, days: selectedDays };
 
-    fetch('http://localhost:5000/api/create-schedule', {
+    fetch('https://fitnessaicoach.azurewebsites.net/api/create-schedule', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  const apiUrl = 'http://127.0.0.1:5000/calories_burned';
+  const apiUrl = 'https://fitnessaicoach.azurewebsites.net/calories_burned';
   const containerId = 'exercise-list';
 
   class ExerciseList {

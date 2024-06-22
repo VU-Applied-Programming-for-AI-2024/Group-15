@@ -42,6 +42,39 @@ class CustomScheduleEncoder(json.JSONEncoder):
             }
         return super().default(obj)
 
+def treat_gender_data (gender)->str:
+    # Ensure that the API isn't confused about gender   
+    if gender == "other":
+        gender = "female"
+    return gender
+
+def treat_muscles_data (muscles)->List[BodyPart]:
+     # Change the muscles into BodyParts objects
+    muscle_list: List[BodyPart] = []
+    for muscle in muscles:
+        if muscle == "back":
+            muscle_list.append(BodyPart.BACK)
+        if muscle == "cardio":
+            muscle_list.append(BodyPart.CARDIO)
+        if muscle == "chest":
+            muscle_list.append(BodyPart.CHEST)
+        if muscle == "lower arms":
+            muscle_list.append(BodyPart.LOWER_ARMS)
+        if muscle == "lower legs":
+            muscle_list.append(BodyPart.LOWER_LEGS)
+        if muscle == "neck":
+            muscle_list.append(BodyPart.NECK)
+        if muscle == "shoulders":
+            muscle_list.append(BodyPart.SHOULDERS)
+        if muscle == "upper arms":
+            muscle_list.append(BodyPart.UPPER_ARMS)
+        if muscle == "upper legs":
+            muscle_list.append(BodyPart.UPPER_LEGS)
+        if muscle == "waist":
+            muscle_list.append(BodyPart.WAIST)
+        
+    return muscle_list
+
 
 @app.route('/api/create-schedule', methods=['GET'])
 def gather_info():
@@ -57,32 +90,9 @@ def gather_info():
         goal = data.get('goal')
         days = data.get('days')
 
-        # Change the muscles into BodyParts objects
-        muscle_list: List[BodyPart] = []
-        for muscle in muscles:
-            if muscle == "back":
-                muscle_list.append(BodyPart.BACK)
-            if muscle == "cardio":
-                muscle_list.append(BodyPart.CARDIO)
-            if muscle == "chest":
-                muscle_list.append(BodyPart.CHEST)
-            if muscle == "lower arms":
-                muscle_list.append(BodyPart.LOWER_ARMS)
-            if muscle == "lower legs":
-                muscle_list.append(BodyPart.LOWER_LEGS)
-            if muscle == "neck":
-                muscle_list.append(BodyPart.NECK)
-            if muscle == "shoulders":
-                muscle_list.append(BodyPart.SHOULDERS)
-            if muscle == "upper arms":
-                muscle_list.append(BodyPart.UPPER_ARMS)
-            if muscle == "upper legs":
-                muscle_list.append(BodyPart.UPPER_LEGS)
-            if muscle == "waist":
-                muscle_list.append(BodyPart.WAIST)
-            # Ensure that the API isn't confused about gender   
-            if gender == "other":
-                gender = "female"
+       
+        muscles_list = treat_muscles_data(muscles)
+        gender = treat_gender_data(gender)
 
         custom_schedule = create_custom_schedule(gender, weight, goal, muscle_list, days)
 
