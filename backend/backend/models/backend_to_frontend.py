@@ -3,8 +3,9 @@ import pymongo
 from dotenv import load_dotenv
 import os
 from flask_cors import CORS
-from app import app 
 
+app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 load_dotenv()
 
 CONNECTION_STRING = os.environ.get("MONGODB_STRING")

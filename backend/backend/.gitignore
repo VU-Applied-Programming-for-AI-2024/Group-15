@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
-=======
-Group-15-2-env/# Byte-compiled / optimized / DLL files
->>>>>>> origin/master
 __pycache__/
 *.py[cod]
 *$py.class
@@ -10,12 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-<<<<<<< HEAD
-=======
-# Virtual environment
-Group-15-2-env/
-
->>>>>>> origin/master
 # Distribution / packaging
 .Python
 build/
@@ -32,10 +22,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-<<<<<<< HEAD
 *.whl
-=======
->>>>>>> origin/master
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -57,15 +44,9 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-<<<<<<< HEAD
 .hypothesis/
 .pytest_cache/
 cover/
-=======
-*.py,cover
-.hypothesis/
-.pytest_cache/
->>>>>>> origin/master
 
 # Translations
 *.mo
@@ -85,15 +66,11 @@ instance/
 
 # Sphinx documentation
 docs/_build/
-<<<<<<< HEAD
 doc/build/
-=======
->>>>>>> origin/master
 
 # Jupyter Notebook
 .ipynb_checkpoints
 
-<<<<<<< HEAD
 # IPython
 profile_default/
 ipython_config.py
@@ -118,10 +95,5 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
-=======
-# PyCharm
-.idea/
-
->>>>>>> origin/master
 # VS Code
 .vscode/

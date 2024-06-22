@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
               return;
           }
 
-          exerciseList.innerHTML = ''; 
+          exerciseList.innerHTML = ''; // Clear any existing content
           const div = document.createElement('div');
           div.className = 'exercise-item';
           div.innerHTML = `
