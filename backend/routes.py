@@ -191,7 +191,3 @@ def create_custom_schedule(gender, weight, goal, bodyparts, days):
             day_index += 1
 
     return Schedule([str(custom_schedule[day]) for day in days])
-
-
-create_custom_schedule("male", 80, "lose_weight", "CHEST", 7)
-
