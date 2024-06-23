@@ -3,10 +3,9 @@ channels:
   - defaults
 dependencies:
   - python=3.12
-  - flask==2.1.2
+  - flask
   - pip
-  - flask-cors
-  - gunicorn
+  - flask-CORS
   - numpy
   - pandas
   - requests
@@ -26,3 +25,4 @@ dependencies:
   - werkzeug
   - pip:
       - python-dotenv
+      - gunicorn
