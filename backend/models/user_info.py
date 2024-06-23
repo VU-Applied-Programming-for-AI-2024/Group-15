@@ -17,6 +17,7 @@ from models.schedule import Schedule
 import json
 from bson import ObjectId
 
+
 #This class helps handling the data from the custom_schedule
 class CustomScheduleEncoder(json.JSONEncoder):
     def default(self, obj):
