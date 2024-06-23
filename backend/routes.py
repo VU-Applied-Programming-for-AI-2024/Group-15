@@ -9,7 +9,6 @@ from models.schedule import Schedule
 from models.exercise import Exercise
 from models.workout_exercise import WorkoutExercise
 from models.workout import Workout
-from models.user_info import create_custom_schedule, treat_gender_data, CustomScheduleEncoder
 from utils.crud_operations_azure import server_crud_operations 
 import re
 from bson import ObjectId
@@ -22,6 +21,63 @@ API_ENDPOINT = os.environ.get("API_ENDPOINT")
 # API_KEY = os.environ.get("EXERCISE_API_KEY")
 API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
 BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
+
+class CustomScheduleEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, BodyPart):
+            return obj.value
+        elif isinstance(obj, Exercise):
+            return obj.name
+        elif isinstance(obj, WorkoutExercise):
+            return {
+                'exercise': obj.exercise.name,
+                'sets': obj.sets,
+                'reps': obj.reps
+            }
+        elif isinstance(obj, Workout):
+            return {
+                'exercises': [self.default(ex) for ex in obj.exercises]
+            }
+        elif isinstance(obj, Schedule):
+            return {
+                day.name: self.default(workout)
+                for day, workout in obj.schedule.items()
+            }
+        return super().default(obj)
+
+def treat_gender_data (gender)->str:
+    # Ensure that the API isn't confused about gender   
+    if gender == "other":
+        gender = "female"
+    return gender
+
+def treat_muscles_data (muscles)->List[BodyPart]:
+     # Change the muscles into BodyParts objects
+    muscle_list: List[BodyPart] = []
+    for muscle in muscles:
+        if muscle == "back":
+            muscle_list.append(BodyPart.BACK)
+        if muscle == "cardio":
+            muscle_list.append(BodyPart.CARDIO)
+        if muscle == "chest":
+            muscle_list.append(BodyPart.CHEST)
+        if muscle == "lower arms":
+            muscle_list.append(BodyPart.LOWER_ARMS)
+        if muscle == "lower legs":
+            muscle_list.append(BodyPart.LOWER_LEGS)
+        if muscle == "neck":
+            muscle_list.append(BodyPart.NECK)
+        if muscle == "shoulders":
+            muscle_list.append(BodyPart.SHOULDERS)
+        if muscle == "upper arms":
+            muscle_list.append(BodyPart.UPPER_ARMS)
+        if muscle == "upper legs":
+            muscle_list.append(BodyPart.UPPER_LEGS)
+        if muscle == "waist":
+            muscle_list.append(BodyPart.WAIST)
+        
+    return muscle_list
+
 
 def fetch_api_data(endpoint, params=None):
     headers = {"Authorization": f"Bearer {API_KEY}"}
