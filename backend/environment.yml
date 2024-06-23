@@ -24,6 +24,5 @@ dependencies:
   - pytz
   - pyyaml
   - werkzeug
-  - bson
   - pip:
       - python-dotenv
