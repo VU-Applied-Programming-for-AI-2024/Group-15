@@ -19,7 +19,8 @@ from models.bodypart import MuscleGroupDistributor
 load_dotenv(find_dotenv())
 
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
-API_KEY = os.environ.get("EXERCISE_API_KEY")
+# API_KEY = os.environ.get("EXERCISE_API_KEY")
+API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
 BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
 
 def fetch_api_data(endpoint, params=None):
