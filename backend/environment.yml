@@ -7,6 +7,7 @@ dependencies:
   - pip
   - gunicorn
   - flask
+    flask-cors
   - numpy
   - pandas
   - requests

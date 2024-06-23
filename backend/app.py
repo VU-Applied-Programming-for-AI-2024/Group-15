@@ -1,15 +1,18 @@
-from flask import Flask, jsonify, request
+from flask import Flask
 from flask_cors import CORS
-from routes import register_routes
+import logging
 
 def create_app():
     app = Flask(__name__)
     CORS(app)
-    register_routes(app)
-    return app 
+    logging.basicConfig(level=logging.INFO)
 
+    from routes import register_routes
+    register_routes(app)
+
+    return app
 
 app = create_app()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
