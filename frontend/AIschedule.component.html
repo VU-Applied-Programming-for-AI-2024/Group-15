@@ -10,16 +10,18 @@
     <title>AIschedule</title>
 </head>
 <body class="homepage">
-    <h1>
-        <a href="index.html">
-            <img src="../images/logo2.png" class="logo" alt="Logo">
-        </a>
-    </h1>
-    <div class="aischedulepage">
+    <header>
+        <h1>
+            <a href="index.html">
+                <img src="../images/logo2.png" class="logo" alt="Logo">
+            </a>
+        </h1>
+    </header>
+    <main class="aischedulepage">
         <h3>Personal Information</h3>
         <br />
         <form id="user-info-form">
-            <!--Age input-->
+            <!-- Age input -->
             <h4>Age</h4>
             <div class="age-range">
                 <div class="slider-value">
@@ -31,7 +33,6 @@
                     <div class="value right">100</div>
                 </div>
             </div>
-
             <br />
             <h4>Gender</h4>
             <br />
@@ -43,8 +44,8 @@
                 <input type="radio" id="other" name="gender" value="other" />
                 <label for="other">Other</label>
             </div>
-
-            <!--Weight input-->
+            <br />
+            <!-- Weight input -->
             <h4>Weight</h4>
             <div class="weight-range">
                 <div class="slider-value">
@@ -56,8 +57,8 @@
                     <div class="value right">200</div>
                 </div>
             </div>
-
             <br />
+            <!-- Day selection -->
             <div class="day-selector">
                 <h4>Select Days of the Week</h4>
                 <div class="days-container">
@@ -70,7 +71,6 @@
                     <div class="day" data-day="Sunday">Sun</div>
                 </div>
             </div>
-
             <h4>Target Muscle Group</h4>
             <div class="muscle-container">
                 <div id="muscle-list" class="muscle-list">
@@ -78,30 +78,16 @@
                     <button id="add-muscle-btn" type="button">+</button>
                 </div>
             </div>
-
             <div id="muscleModal" class="muscle-modal">
                 <div class="muscle-modal-content">
                     <span class="close">&times;</span>
                     <h4>Select Muscle</h4>
                     <select id="muscle-select"></select>
-                    <button id="save-muscle-btn" type="button">Add Muscle</button>
+                    <button id="save-muscle-btn" type="button">Save</button>
                 </div>
             </div>
-
-            <!--Goal selection-->
-            <div class="goal-selection">
-                <label for="goal">Goal</label>
-                <select id="goal" name="goal">
-                    <option value="weight_loss">Weight Loss</option>
-                    <option value="muscle_gain">Muscle Gain</option>
-                    <option value="strength_training">Strength Training</option>
-                    <option value="cardiovascular_endurance">Cardiovascular Endurance</option>
-                    <option value="flexibility">Flexibility</option>
-                    <option value="general_fitness">General Fitness</option>
-                </select>
-            </div>
-
-            <input type="hidden" id="redirect-url" name="redirect-url" value="schedule_page.component.html">
-            <button id="create-schedule-btn" style="font-size: large; background-size: 2cm; background-color: lightgray; border-radius: 17px;" type="submit" disabled>Create AI Schedule</button>
+            <button id="submit-btn" type="submit">Submit</button>
         </form>
-    </div>
+    </main>
+</body>
+</html>
