@@ -1,7 +1,9 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 import logging
 from routes import register_routes
+
+
 
 def create_app():
     app = Flask(__name__)
@@ -11,6 +13,6 @@ def create_app():
     return app
 
 app = create_app()
-
+CORS(app, resources={r"/create-schedule": {"origins": "https://gentle-bay-09953a810.5.azurestaticapps.net"}})
 if __name__ == '__main__':
     app.run(debug=True)
