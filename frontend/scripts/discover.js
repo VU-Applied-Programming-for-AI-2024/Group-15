@@ -5,6 +5,7 @@ function handleSearch() {
 
     fetch('https://fitnessaicoach.azurewebsites.net/search_exercises', {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/json'
         },
