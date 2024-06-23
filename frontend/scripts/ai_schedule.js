@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+  // Function to activate days of the week
   const days = document.querySelectorAll('.day');
   const createScheduleBtn = document.getElementById('submit-btn');
 
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Attach event listeners to inputs
   document.querySelector('.age-input').addEventListener('input', validateForm);
   document.querySelectorAll('input[name="gender"]').forEach(genderInput => {
     genderInput.addEventListener('change', validateForm);
@@ -37,6 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('.weight-input').addEventListener('input', validateForm);
   document.getElementById('goal').addEventListener('change', validateForm);
   document.getElementById('available-time').addEventListener('input', validateForm);
+
+  // Form submission to communicate data to Flask backend
   document.getElementById('user-info-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -49,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const data = { age, gender, weight, goal, days: selectedDays, available_time: availableTime };
 
-    fetch('https://fitnessaicoach.azurewebsites.net/api/create-schedule', {
+    fetch('https://your-deployed-server-url/api/create-schedule', { // Update to your backend URL
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -61,9 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Success:', result);
       if (result.status === 'success') {
         const scheduleId = result.schedule_id;
-        localStorage.setItem('scheduleId', scheduleId);
-        const redirectUrl = document.getElementById('redirect-url').value;
-        window.location.href = redirectUrl;
+        const scheduleJson = JSON.stringify(result.schedule, null, 2); // Pretty-print the JSON
+        localStorage.setItem('scheduleId', scheduleId); // Store the schedule ID for future use
+
+        // Display success message and schedule JSON
+        const successMessage = document.createElement('div');
+        successMessage.innerHTML = `<p>Schedule created successfully!</p><pre>${scheduleJson}</pre>`;
+        document.body.appendChild(successMessage);
       } else {
         console.error('Error creating schedule:', result.message);
       }
@@ -73,5 +81,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  validateForm();
+  validateForm(); // Initial validation to disable the button if necessary
 });

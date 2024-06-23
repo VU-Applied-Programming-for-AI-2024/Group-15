@@ -97,7 +97,7 @@ def gather_info():
         inserted_id = server_crud_operations(
             operation="insert",
             json_data={"schedule": json_custom_schedule},
-            collection_name="schedules"
+            collection_name="chedules"
         )
         
         return jsonify({"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}), 200
@@ -115,7 +115,7 @@ def get_schedule(schedule_id):
         # Read the schedule from the database
         schedule = server_crud_operations(
             operation="read",
-            collection_name="schedules",
+            collection_name="Schedules",
             key="_id",
             value=schedule_id
         )
