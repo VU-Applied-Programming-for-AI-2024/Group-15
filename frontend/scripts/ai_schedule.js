@@ -56,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('https://fitnessaicoach.azurewebsites.net/create-schedule', { 
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     })
@@ -69,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('scheduleId', scheduleId); // Store the schedule ID for future use
 
         // Redirect to the next page with schedule_id in ID
-         window.location.href = `schedule_page.component.html?scheduleId=${scheduleId}`; 
+        window.location.href = `schedule_page.component.html?scheduleId=${scheduleId}`; 
         // Display success message and schedule JSON
         const successMessage = document.createElement('div');
         successMessage.innerHTML = `<p>Schedule created successfully!</p><pre>${scheduleJson}</pre>`;
