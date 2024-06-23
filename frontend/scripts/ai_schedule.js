@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Function to activate days of the week
   const days = document.querySelectorAll('.day');
   const createScheduleBtn = document.getElementById('submit-btn');
 
@@ -31,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Attach event listeners to inputs
   document.querySelector('.age-input').addEventListener('input', validateForm);
   document.querySelectorAll('input[name="gender"]').forEach(genderInput => {
     genderInput.addEventListener('change', validateForm);
@@ -40,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('goal').addEventListener('change', validateForm);
   document.getElementById('available-time').addEventListener('input', validateForm);
 
-  // Form submission to communicate data to Flask backend
   document.getElementById('user-info-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -53,9 +50,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const data = { age, gender, weight, goal, days: selectedDays, available_time: availableTime };
 
+    console.log('Sending data:', JSON.stringify(data)); // Add this line for debugging
+
     fetch('https://fitnessaicoach.azurewebsites.net/create-schedule', { 
       method: 'POST',
       headers: {
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     })
