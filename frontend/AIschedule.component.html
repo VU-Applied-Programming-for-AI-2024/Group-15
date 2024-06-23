@@ -22,14 +22,16 @@
         <br />
         <form id="user-info-form">
             <!-- Age input -->
-            <h4>Age</h4>
+            <label for="age-input">
+                <h4>Age</h4>
+            </label>
             <div class="age-range">
                 <div class="slider-value">
                     <span class="slider-span">50</span>
                 </div>
                 <div class="field">
                     <div class="value left">0</div>
-                    <input type="range" id="age-input" class="age-input" name="age-input" min="0" max="100" value="50" step="1" />
+                    <input type="range" id="age-input" class="age-input" name="age" min="0" max="100" value="50" step="1" />
                     <div class="value right">100</div>
                 </div>
             </div>
@@ -46,20 +48,24 @@
             </div>
             <br />
             <!-- Weight input -->
-            <h4>Weight</h4>
+            <label for="weight-input">
+                <h4>Weight</h4>
+            </label>
             <div class="weight-range">
                 <div class="slider-value">
                     <span class="slider-span">70</span>
                 </div>
                 <div class="field">
                     <div class="value left">0</div>
-                    <input type="range" id="weight-input" class="weight-input" name="weight-input" min="0" max="200" value="70" step="1" />
+                    <input type="range" id="weight-input" class="weight-input" name="weight" min="0" max="200" value="70" step="1" />
                     <div class="value right">200</div>
                 </div>
             </div>
             <br />
             <!-- Goal selection -->
-            <h4>Goal</h4>
+            <label for="goal">
+                <h4>Goal</h4>
+            </label>
             <div class="form-group">
                 <select id="goal" name="goal" class="form-control">
                     <option value="weight_loss">Weight Loss</option>
@@ -86,14 +92,15 @@
             </div>
             <br />
             <!-- Available time per session -->
-            <h4>Available Time per Session (minutes)</h4>
+            <label for="available-time">
+                <h4>Available Time per Session (minutes)</h4>
+            </label>
             <div class="form-group">
-                <input type="number" id="available-time" name="available-time" min="30" max="120" step="5" class="form-control" />
+                <input type="number" id="available-time" name="available_time" min="30" max="120" step="5" class="form-control" />
             </div>
             <br />
             <button id="submit-btn" type="submit" class="btn btn-primary">Create AI Schedule</button>
         </form>
     </main>
-    <script src="../scripts/ai_schedule.js"></script>
 </body>
 </html>

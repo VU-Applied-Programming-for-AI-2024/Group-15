@@ -9,7 +9,7 @@ from models.schedule import Schedule
 from models.exercise import Exercise
 from models.workout_exercise import WorkoutExercise
 from models.workout import Workout
-from utils.crud_operations_azure import server_crud_operations 
+from utils.crud_operations_azure import server_crud_operations
 import re
 from bson import ObjectId
 import json
@@ -201,13 +201,13 @@ def register_routes(app):
             custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
 
             json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
+
             inserted_id = server_crud_operations(
                 operation="insert",
                 json_data={"schedule": json_custom_schedule},
                 collection_name="schedules"
             )
-            
-            
+
             return jsonify({"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}), 200
         except Exception as e:
             print("Error:", str(e))
