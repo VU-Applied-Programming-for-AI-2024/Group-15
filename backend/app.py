@@ -7,7 +7,7 @@ from routes import register_routes
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, resources={r"/*": {"origins": "*"}})  # Allow CORS for all origins
     logging.basicConfig(level=logging.INFO)
     register_routes(app)
     return app
