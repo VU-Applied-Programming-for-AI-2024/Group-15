@@ -1,16 +1,15 @@
-from flask import Flask, request
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import logging
 from routes import register_routes
 
-
-
 def create_app():
     app = Flask(__name__)
-    CORS(app, resources={r"/*": {"origins": "*"}})  # Allow CORS for all origins
+    CORS(app)
     logging.basicConfig(level=logging.INFO)
     register_routes(app)
-    return app
+    return app 
+
 
 app = create_app()
 
