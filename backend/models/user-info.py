@@ -81,24 +81,19 @@ def gather_info():
         data = request.get_json()
         print("Received data:", data)
         
-        
         age = data.get('age')
         gender = data.get('gender')
         weight = data.get('weight')
-        muscles = data.get('muscles')
         goal = data.get('goal')
         days = data.get('days')
+        available_time_per_session = int(data.get('available_time'))
 
-       
-        muscles_list = treat_muscles_data(muscles)
         gender = treat_gender_data(gender)
 
-        custom_schedule = create_custom_schedule(gender, weight, goal, muscles_list, days)
-
+        custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
 
         json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
-        # Insert the custom schedule into MongoDB
-        # Insert the custom schedule into MongoDB
+
         inserted_id = server_crud_operations(
             operation="insert",
             json_data={"schedule": json_custom_schedule},
