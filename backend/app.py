@@ -13,6 +13,6 @@ def create_app():
     return app
 
 app = create_app()
-CORS(app, resources={r"/create-schedule": {"origins": "https://gentle-bay-09953a810.5.azurestaticapps.net"}})
+
 if __name__ == '__main__':
     app.run(debug=True)
