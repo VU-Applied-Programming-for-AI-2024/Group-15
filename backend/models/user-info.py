@@ -76,7 +76,7 @@ def treat_muscles_data (muscles)->List[BodyPart]:
     return muscle_list
 
 
-@app.route('/api/create-schedule', methods=['GET'])
+@app.route('/create-schedule', methods=['POST'])
 def gather_info():
     try:
         data = request.get_json()
@@ -94,11 +94,11 @@ def gather_info():
         muscles_list = treat_muscles_data(muscles)
         gender = treat_gender_data(gender)
 
-        custom_schedule = create_custom_schedule(gender, weight, goal, muscle_list, days)
+        custom_schedule = create_custom_schedule(gender, weight, goal, muscles_list, days)
 
 
         json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
-        # Insert the custom schedule into MongoDB
+       
         # Insert the custom schedule into MongoDB
         inserted_id = server_crud_operations(
             operation="insert",
@@ -112,7 +112,7 @@ def gather_info():
         return jsonify({"status": "error", "message": str(e)}), 500
     
 
-@app.route('/api/get-schedule/<schedule_id>', methods=['GET'])
+@app.route('/get-schedule/<schedule_id>', methods=['GET'])
 def get_schedule(schedule_id):
     try:
         # Convert the schedule_id to ObjectId

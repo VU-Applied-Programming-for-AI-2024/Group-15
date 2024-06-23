@@ -72,7 +72,7 @@
       const scheduleTemplate = Handlebars.compile(document.getElementById('schedule-template').innerHTML);
 
       // Fetch schedule data from the server
-      fetch('http://localhost:5000/api/get-schedule/{{scheduleId}}') // Replace with your actual endpoint
+      fetch('https://fitnessaicoach.azurewebsites.net/get-schedule/{{scheduleId}}') // Replace with your actual endpoint
         .then(response => response.json())
         .then(data => {
           // Render the schedule using Handlebars template
