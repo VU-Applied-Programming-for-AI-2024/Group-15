@@ -3,6 +3,7 @@ import os
 import requests
 from flask_cors import CORS
 import re
+from app import app 
 from typing import Union, Tuple, Optional, List
 from routes import create_custom_schedule
 from models.bodypart import BodyPart
@@ -15,8 +16,6 @@ from models.workout import Workout
 from models.schedule import Schedule
 import json
 from bson import ObjectId
-app = Flask(__name__)
-CORS(app)
 
 #This class helps handling the data from the custom_schedule
 class CustomScheduleEncoder(json.JSONEncoder):
@@ -82,20 +81,16 @@ def gather_info():
         data = request.get_json()
         print("Received data:", data)
         
-        
         age = data.get('age')
         gender = data.get('gender')
         weight = data.get('weight')
-        muscles = data.get('muscles')
         goal = data.get('goal')
         days = data.get('days')
+        available_time_per_session = int(data.get('available_time'))
 
-       
-        muscles_list = treat_muscles_data(muscles)
         gender = treat_gender_data(gender)
 
-        custom_schedule = create_custom_schedule(gender, weight, goal, muscles_list, days)
-
+        custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
 
         json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
        

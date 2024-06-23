@@ -67,7 +67,7 @@ def retrieve_all_values_for_key(collection: pymongo.collection.Collection, key: 
     return result
 
 def server_crud_operations(operation: str, json_data: Dict[str, Any] = None, collection_name: str = None, key: str = None, value: Any = None, 
-         update_data: Dict[str, Any] = None, document_id: int = None, ) -> None:
+         update_data: Dict[str, Any] = None, document_id: Any = None) -> Any:
     """Connect to the API for MongoDB, create DB and collection, and perform CRUD operations"""
     client = pymongo.MongoClient(CONNECTION_STRING)
     try:
@@ -80,11 +80,12 @@ def server_crud_operations(operation: str, json_data: Dict[str, Any] = None, col
 
     elif operation == "insert" and json_data and collection_name:
         collection = create_collection_if_not_exists(client, collection_name)
-        insert_document(collection, json_data)
+        document_id = insert_document(collection, json_data)
+        return document_id
 
     elif operation == "read" and collection_name and key and value:
         collection = create_collection_if_not_exists(client, collection_name)
-        read_document(collection, key, value)
+        return read_document(collection, value)
 
     elif operation == "update_by_id" and collection_name and document_id and update_data:
         collection = create_collection_if_not_exists(client, collection_name)

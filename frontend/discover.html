@@ -5,26 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../styles/styles.css">
   <link rel="stylesheet" href="../styles/discover.styles.css">
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-    crossorigin="anonymous"
-  />
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"
-  ></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <title>Discover</title>
 </head>
 <body class="homepage">
+  <header>
     <h1>
       <a href="index.html">
-            <img src="../images/logo2.png" class="logo" alt="Logo">
-        </a>
+        <img src="../images/logo2.png" class="logo" alt="Logo">
+      </a>
     </h1>
-
+  </header>
+  
   <nav class="navbar">
     <div class="navbar-links">
       <a href="index.html">Home</a>
@@ -34,20 +27,20 @@
     </div>
   </nav>
   
-  <div class="main-block">
+  <div class="main-block discover">
     <section class="description">
       <h1>Discover new exercises</h1>
       <p>Explore a variety of exercises to enhance your workout routine</p>
     </section>
 
     <div class="search-bar">
-      <form action="discover.html" method="get" class="search-bar">
+      <form action="discover.html" method="get">
         <div class="form-group">
-          <input type="text" id="search-input" name="q" placeholder="Exercise name" />
+          <input type="text" id="search-input" name="q" placeholder="Exercise name">
         </div>
         
         <div class="dropdown-discover-exercises">
-          <button class="dropbtn">Muscle Group</button>
+          <button type="button" class="dropbtn">Muscle Group</button>
           <div class="dropdown-content">
             <a href="#">Chest</a>
             <a href="#">Back</a>
@@ -59,7 +52,7 @@
         </div>
 
         <div class="dropdown-discover-exercises">
-          <button class="dropbtn">Equipment Needed</button>
+          <button type="button" class="dropbtn">Equipment Needed</button>
           <div class="dropdown-content">
             <a href="#">None</a>
             <a href="#">Dumbbells</a>
@@ -69,11 +62,14 @@
           </div>
         </div>
         
-        <button type="submit"><img src="../images/magnifying-glass.png" alt="Search"></button>
+        <button type="submit" class="search-btn">
+          <img src="../images/magnifying-glass.png" alt="Search">
+        </button>
       </form>
     </div>
 
     <section class="exercise-grid">
+      <!-- Exercise cards will be dynamically inserted here -->
     </section>
   </div>
 

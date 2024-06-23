@@ -1,10 +1,13 @@
-# Byte-compiled / optimized / DLL files
+Group-15-2-env/# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
 # C extensions
 *.so
+
+# Virtual environment
+Group-15-2-env/
 
 # Distribution / packaging
 .Python
@@ -22,7 +25,6 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-*.whl
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -44,9 +46,9 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
+*.py,cover
 .hypothesis/
 .pytest_cache/
-cover/
 
 # Translations
 *.mo
@@ -66,7 +68,6 @@ instance/
 
 # Sphinx documentation
 docs/_build/
-doc/build/
 
 # Jupyter Notebook
 .ipynb_checkpoints
