@@ -23,12 +23,12 @@ def fetch_api_data(endpoint, params=None):
     if response.status_code == 200:
         return response.json(), 200
     else:
-        return {"error": "Failed to fetch data from the API. Felix is the best"}, response.status_code
+        return {"error": "Failed to fetch data from the API"}, response.status_code
 
 def register_routes(app):
     @app.route('/')
     def home():
-        return "Welcome to the Exercise Database API!"
+        return "Welcome to the Exercise Database API! FElix is the best "
 
     @app.route('/list_of_body_parts', methods=['GET'])
     def list_of_body_parts():
