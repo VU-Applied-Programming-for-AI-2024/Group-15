@@ -9,9 +9,11 @@ from models.schedule import Schedule
 from models.exercise import Exercise
 from models.workout_exercise import WorkoutExercise
 from models.workout import Workout
-from models.user_info import create_custom_schedule, treat_gender_data
+from models.user_info import create_custom_schedule, treat_gender_data, CustomScheduleEncoder
 from utils.crud_operations_azure import server_crud_operations 
 import re
+from bson import ObjectId
+import json
 from models.bodypart import MuscleGroupDistributor
 
 load_dotenv(find_dotenv())

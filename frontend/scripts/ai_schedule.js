@@ -67,9 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const scheduleId = result.schedule_id;
         const scheduleJson = JSON.stringify(result.schedule, null, 2); // Pretty-print the JSON
         localStorage.setItem('scheduleId', scheduleId); // Store the schedule ID for future use
-        
-        // Redirect to the next page
-        window.location.href = "../schedule_page.component.html";
+
+        // Redirect to the next page with schedule_id in ID
+         window.location.href = `schedule_page.component.html?scheduleId=${scheduleId}`; 
         // Display success message and schedule JSON
         const successMessage = document.createElement('div');
         successMessage.innerHTML = `<p>Schedule created successfully!</p><pre>${scheduleJson}</pre>`;
