@@ -1,13 +1,12 @@
-﻿name: myenv
+name: myenv
 channels:
   - defaults
 dependencies:
   - python=3.12
   - flask==2.1.2
   - pip
+  - flask-cors
   - gunicorn
-  - flask
-    flask-cors
   - numpy
   - pandas
   - requests
