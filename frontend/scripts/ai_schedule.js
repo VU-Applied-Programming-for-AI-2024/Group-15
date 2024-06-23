@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const data = { age, gender, weight, goal, days: selectedDays, available_time: availableTime };
 
-    fetch('https://your-deployed-server-url/api/create-schedule', { // Update to your backend URL
+    fetch('https://fitnessaicoach.azurewebsites.net/api/create-schedule', { // Update to your backend URL
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
