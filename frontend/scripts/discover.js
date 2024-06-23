@@ -3,7 +3,7 @@ function handleSearch() {
     const bodypart = document.getElementById('bodypartSelect').value;
     const equipment = document.getElementById('equipmentSelect').value;
 
-    fetch('/search_exercises', {
+    fetch('https://fitnessaicoach.azurewebsites.net/search_exercises', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
