@@ -41,7 +41,63 @@
       </section>
 
       <div class="search-bar">
-        <form action="discover.html" method="get" class="search-bar">
+        <form id="searchForm">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search for exercises"
+            required
+          />
+          <select id="bodypartSelect" required>
+            <!-- Options for body parts -->
+            <option value="back">Back</option>
+            <option value="chest">Chest</option>
+            <option value="back">Back</option>
+            <option value="cardio">Cardio</option>
+            <option value="chest">Chest</option>
+            <option value="lower arms">Lower Arms</option>
+            <option value="lower legs">Lower Legs</option>
+            <option value="neck">Neck</option>
+            <option value="shoulders">Shoulders</option>
+            <option value="upper arms">Upper Arms</option>
+            <option value="upper legs">Upper Legs</option>
+            <option value="waist">Waist</option>
+          </select>
+          <select id="equipmentSelect" required>
+            <!-- Options for equipment -->
+            <option value="assisted">Assisted</option>
+            <option value="band">Band</option>
+            <option value="barbell">Barbell</option>
+            <option value="body weight">Body Weight</option>
+            <option value="bosu ball">Bosu Ball</option>
+            <option value="cable">Cable</option>
+            <option value="dumbbell">Dumbbell</option>
+            <option value="elliptical machine">Elliptical Machine</option>
+            <option value="ez barbell">EZ Barbell</option>
+            <option value="hammer">Hammer</option>
+            <option value="kettlebell">Kettlebell</option>
+            <option value="leverage machine">Leverage Machine</option>
+            <option value="medicine ball">Medicine Ball</option>
+            <option value="olympic barbell">Olympic Barbell</option>
+            <option value="resistance band">Resistance Band</option>
+            <option value="roller">Roller</option>
+            <option value="rope">Rope</option>
+            <option value="skierg machine">SkiErg Machine</option>
+            <option value="sled machine">Sled Machine</option>
+            <option value="smith machine">Smith Machine</option>
+            <option value="stability ball">Stability Ball</option>
+            <option value="stationary bike">Stationary Bike</option>
+            <option value="stepmill machine">Stepmill Machine</option>
+            <option value="tire">Tire</option>
+            <option value="trap bar">Trap Bar</option>
+            <option value="upper body ergometer">Upper Body Ergometer</option>
+            <option value="weighted">Weighted</option>
+            <option value="wheel roller">Wheel Roller</option>
+          </select>
+          <button type="button" onclick="handleSearch()">Search</button>
+        </form>
+        <div id="results"></div>
+        <!-- <form action="discover.html" method="get" class="search-bar">
           <div class="form-group">
             <input
               type="text"
@@ -105,12 +161,12 @@
           <button type="submit">
             <img src="../images/magnifying-glass.png" alt="Search" />
           </button>
-        </form>
+        </form> -->
       </div>
 
-      <section class="exercise-grid"></section>
+      <!-- <section class="exercise-grid"></section> -->
     </div>
 
-    <script src="../scripts/scripts.js"></script>
+    <script src="../scripts/discover.js"></script>
   </body>
 </html>
