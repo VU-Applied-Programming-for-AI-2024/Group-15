@@ -150,7 +150,7 @@ def register_routes(app):
             weight = data.get('weight')
             goal = data.get('goal')
             days = data.get('days')
-            available_time_per_session = data.get('available_time')
+            available_time_per_session = str(data.get('available_time'))
             
             app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
 
@@ -170,7 +170,7 @@ def register_routes(app):
 
             inserted_id = server_crud_operations(
                 operation="insert",
-                json_data={"schedule": schedule_data},
+                json_data={schedule_data},
                 collection_name="schedules"
             )
 
