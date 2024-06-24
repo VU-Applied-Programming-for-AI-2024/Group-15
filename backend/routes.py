@@ -16,16 +16,21 @@ import json
 from models.bodypart import MuscleGroupDistributor
 import concurrent.futures
 import logging
+import pymongo
 
 load_dotenv(find_dotenv())
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
-API_KEY = os.environ.get("EXERCISE_API_KEY")
+API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
 BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
+
+CONNECTION_STRING = os.getenv("MONGODB_STRING")
 DB_NAME = "myFitnessAIcoach"
-COLLECTION_NAME = "schedules"  # Collection name where schedules will be stored
+
+client = pymongo.MongoClient(CONNECTION_STRING)
+db = client[DB_NAME]
 
 class CustomScheduleEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -56,6 +61,7 @@ class CustomScheduleEncoder(json.JSONEncoder):
                 for day, workout in obj.schedule.items()
             }
         return super().default(obj)
+
 
 def treat_gender_data(gender):
     if gender == "other":
@@ -131,7 +137,7 @@ def gather_info_operations(age, gender, weight, goal, days, available_time_per_s
         inserted_id = server_crud_operations(
             operation="insert",
             json_data={"schedule": schedule_data},
-            collection_name=COLLECTION_NAME
+            collection_name="schedules"
         )
 
         # Return success response with schedule ID
@@ -145,7 +151,7 @@ def gather_info_operations(age, gender, weight, goal, days, available_time_per_s
 def register_routes(app):
     @app.route('/')
     def home():
-        return "Welcome to the Exercise Database API! FElix is the best "
+        return "Welcome to the Exercise Database API! Felix is the best"
 
     @app.route('/list_of_body_parts', methods=['GET'])
     def list_of_body_parts():
@@ -231,44 +237,6 @@ def register_routes(app):
                 app.logger.error("Error: %s", str(e))
                 return jsonify({"status": "error", "message": str(e)}), 500
 
-    # New route for saving the schedule
-    @app.route('/save-schedule', methods=['POST'])
-    def save_schedule():
-        try:
-            data = request.get_json()
-            app.logger.debug("Received schedule data: %s", data)
-
-            # Convert the received JSON data into a Schedule instance
-            schedule = {}
-            for day, exercises in data.items():
-                workout = Workout()
-                for exercise_data in exercises:
-                    exercise = Exercise(
-                        body_part=exercise_data.get('bodyPart', 'unknown'),
-                        equipment=exercise_data.get('equipment', 'unknown'),
-                        gif_url=exercise_data.get('gifUrl', 'unknown'),
-                        exercise_id=exercise_data.get('id', 'unknown'),
-                        name=exercise_data['name'],
-                        target=exercise_data.get('target', 'unknown')
-                    )
-                    workout_exercise = WorkoutExercise(exercise, exercise_data['sets'], exercise_data['reps'])
-                    workout.add_exercise(workout_exercise)
-                schedule[Day[day.upper()]] = workout
-
-            custom_schedule = Schedule([schedule[day] for day in Day])
-
-            # Save the schedule to the database
-            inserted_id = server_crud_operations(
-                operation="insert",
-                json_data={"schedule": json.dumps(custom_schedule, cls=CustomScheduleEncoder)},
-                collection_name=COLLECTION_NAME
-            )
-
-            return jsonify({"status": "success", "message": "Schedule saved successfully", "schedule_id": str(inserted_id)}), 200
-        
-        except Exception as e:
-            app.logger.error("Error saving schedule: %s", str(e))
-            return jsonify({"status": "error", "message": str(e)}), 500
 
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
     def get_schedule(schedule_id):
@@ -279,7 +247,7 @@ def register_routes(app):
             # Read the schedule from the database
             schedule = server_crud_operations(
                 operation="read",
-                collection_name=COLLECTION_NAME,
+                collection_name="schedules",
                 key="_id",
                 value=schedule_id
             )
@@ -291,6 +259,20 @@ def register_routes(app):
         except Exception as e:
             print("Error:", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
+        
+    @app.route('/api/save-schedule', methods=['POST'])
+    def save_schedule():
+        data = request.json
+        schedule_id = db.schedules.insert_one(data).inserted_id
+        return jsonify({'status': 'success', 'schedule_id': str(schedule_id)}), 200
+
+    @app.route('/api/get-schedule/<schedule_id>', methods=['GET'])
+    def get_schedule(schedule_id):
+        schedule = db.schedules.find_one({"_id": ObjectId(schedule_id)})
+        if schedule:
+            return jsonify({'status': 'success', 'schedule': schedule}), 200
+        else:
+            return jsonify({'status': 'error', 'message': 'Schedule not found'}), 404
 
 def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
     headers = {"Authorization": f"Bearer {API_KEY}"}
