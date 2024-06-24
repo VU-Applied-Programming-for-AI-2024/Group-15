@@ -243,6 +243,7 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
                             exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=name, target="unknown")
                             current_workout.add_exercise(WorkoutExercise(exercise_obj, sets, reps))
                         else:
+                            print(f"Exercise does not match pattern: {exercise}")
                             exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=exercise.strip(), target="unknown")
                             current_workout.add_exercise(WorkoutExercise(exercise_obj, 0, ""))
             
