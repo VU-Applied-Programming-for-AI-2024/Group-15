@@ -1,3 +1,8 @@
+import re
+from day import Day
+from workout import Workout
+from workout_exercise import WorkoutExercise
+from exercise import Exercise
 class Schedule:
     def __init__(self, routine):
         self.schedule = {day: None for day in Day}
