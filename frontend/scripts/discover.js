@@ -36,6 +36,7 @@ function displayResults(data) {
     } else {
         data.forEach(exercise => {
             const exerciseElement = document.createElement('div');
+            exerciseElement.classList.add('exercise')
             exerciseElement.innerHTML = `
                 <p><strong>${exercise.name}</strong></p>
                 <img src="${exercise.gifUrl}" alt="${exercise.name}">
