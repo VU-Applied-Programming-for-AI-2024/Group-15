@@ -4,7 +4,7 @@ function handleSearch() {
     const equipment = document.getElementById('equipmentSelect').value;
 
     fetch('https://fitnessaicoach.azurewebsites.net/search_exercises', {
-        method: 'GET',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
