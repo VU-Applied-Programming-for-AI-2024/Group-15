@@ -191,48 +191,39 @@ def register_routes(app):
         exercises, status_code = search_exercises(user_input, bodypart, equipment)
         return jsonify(exercises), status_code
     
-    @app.route('/create_schedule', methods=['GET','POST'])
+    @app.route('/create_schedule', methods=['POST'])
     def gather_info_route():
-        if request.method == 'GET':
-            
-            if received_data:
-                return jsonify({"message": "This is a GET request", "received_data": received_data})
-            else:
-                return jsonify({"message": "No data received yet"})
-           
-        
-        elif request.method == 'POST':
        
-            try:
-                data = request.get_json()
-                app.logger.debug("Received data: %s", data)
-                received_data = data
-                # Validate and extract data from request
-                age = str(data.get('age'))  # Ensure age is an integer
-                gender = data.get('gender')
-                weight = str(data.get('weight'))  # Ensure weight is an integer
-                goal = data.get('goal')
-                days = data.get('days')
-                available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
-                
-                # Log parsed data
-                app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
-                
-                # Treat gender data
-                gender = treat_gender_data(gender)
-                app.logger.debug(f"Treated gender: {gender}")
-
-                # Call function to process schedule creation
-                result, status_code = gather_info_operations(age, gender, weight, goal, days, available_time_per_session)
-                
-                if status_code == 200:
-                    return jsonify(result), status_code
-                else:
-                    return jsonify({"status": "error", "message": result}), status_code
+        try:
+            data = request.get_json()
+            app.logger.debug("Received data: %s", data)
+            received_data = data
+            # Validate and extract data from request
+            age = str(data.get('age'))  # Ensure age is an integer
+            gender = data.get('gender')
+            weight = str(data.get('weight'))  # Ensure weight is an integer
+            goal = data.get('goal')
+            days = data.get('days')
+            available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
             
-            except Exception as e:
-                app.logger.error("Error: %s", str(e))
-                return jsonify({"status": "error", "message": str(e)}), 500
+            # Log parsed data
+            app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
+            
+            # Treat gender data
+            gender = treat_gender_data(gender)
+            app.logger.debug(f"Treated gender: {gender}")
+
+            # Call function to process schedule creation
+            result, status_code = gather_info_operations(age, gender, weight, goal, days, available_time_per_session)
+            
+            if status_code == 200:
+                return jsonify(result), status_code
+            else:
+                return jsonify({"status": "error", "message": result}), status_code
+        
+        except Exception as e:
+            app.logger.error("Error: %s", str(e))
+            return jsonify({"status": "error", "message": str(e)}), 500
 
 
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
