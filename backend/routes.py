@@ -235,8 +235,10 @@ def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any
         return {"error": "Failed to fetch data from the API!"}
 
 def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str], available_time_per_session: int):
+    logger.debug("Starting to create custom schedule")
     distributor = MuscleGroupDistributor(len(days))
     muscle_groups_schedule = distributor.distribute_muscle_groups()
+    logger.debug(f"Muscle groups schedule: {muscle_groups_schedule}")
 
     # Prepare API call parameters for all target muscles
     api_calls = []
@@ -255,6 +257,7 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
     for (day, target), result in api_results.items():
         if 'routine' in result:
             routines[day].append(result['routine'][0])
+    logger.debug(f"Routines organized by day: {routines}")
 
     custom_schedule = {day: Workout() for day in days}
     exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
@@ -284,5 +287,8 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
                 break
 
         custom_schedule[day] = current_workout
+        logger.debug(f"Workout for {day}: {current_workout}")
 
-    return Schedule([custom_schedule[day] for day in days])
+    schedule = Schedule([custom_schedule[day] for day in days])
+    logger.debug(f"Final schedule object: {schedule}")
+    return schedule
