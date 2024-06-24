@@ -20,7 +20,7 @@ import logging
 load_dotenv(find_dotenv())
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-received_data = None  # Global variable to store received data
+
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
 API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
 BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
