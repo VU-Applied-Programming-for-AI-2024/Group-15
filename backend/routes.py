@@ -28,12 +28,19 @@ BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
 class CustomScheduleEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, BodyPart):
-            return obj.value
+            return obj.value  # List of strings
         elif isinstance(obj, Exercise):
-            return obj.name
+            return {
+                'bodyPart': obj.body_part,
+                'equipment': obj.equipment,
+                'gifUrl': obj.gif_url,
+                'id': obj.exercise_id,
+                'name': obj.name,
+                'target': obj.target
+            }
         elif isinstance(obj, WorkoutExercise):
             return {
-                'exercise': obj.exercise.name,
+                'exercise': self.default(obj.exercise),
                 'sets': obj.sets,
                 'reps': obj.reps
             }
@@ -47,6 +54,7 @@ class CustomScheduleEncoder(json.JSONEncoder):
                 for day, workout in obj.schedule.items()
             }
         return super().default(obj)
+
 
 def treat_gender_data(gender):
     if gender == "other":
@@ -145,13 +153,13 @@ def register_routes(app):
             data = request.get_json()
             app.logger.debug("Received data: %s", data)
             
-            age = data.get('age')
+            age = int(data.get('age'))  # Ensure integer
             gender = data.get('gender')
-            weight = data.get('weight')
+            weight = int(data.get('weight'))  # Ensure integer
             goal = data.get('goal')
             days = data.get('days')
-            available_time_per_session = str(data.get('available_time'))
-            
+            available_time_per_session = int(data.get('available_time'))  # Ensure integer
+
             app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
 
             gender = treat_gender_data(gender)
@@ -160,17 +168,15 @@ def register_routes(app):
             custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
             app.logger.debug("Custom schedule created: %s", custom_schedule)
 
-            # Use the custom JSON encoder to convert to a JSON string
             json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
             app.logger.debug("JSON custom schedule: %s", json_custom_schedule)
 
-            # Convert the JSON string back to a dictionary
             schedule_data = json.loads(json_custom_schedule)
             app.logger.debug("Schedule data (dictionary): %s", schedule_data)
 
             inserted_id = server_crud_operations(
                 operation="insert",
-                json_data={schedule_data},
+                json_data={"schedule": schedule_data},
                 collection_name="schedules"
             )
 
