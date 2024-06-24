@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .catch(error => {
       console.error('Error:', error);
-      alert('An error occurred while creating the schedule. Please try again.');
+      alert('An error occurred while creating the schedule. Please try again.' + error);
     });
   });
 
