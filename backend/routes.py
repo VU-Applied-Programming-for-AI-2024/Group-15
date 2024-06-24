@@ -88,6 +88,22 @@ def treat_muscles_data (muscles)->List[BodyPart]:
         
     return muscle_list
 
+def search_exercises(user_input, bodypart, equipment):
+    endpoint = f"{BASE_URL}/310/list+exercise+by+body+part"
+    params = {'bodyPart': bodypart}
+    exercises, status_code = fetch_api_data(endpoint, params)
+    
+    if status_code != 200:
+        return {"error": "Failed to fetch exercises"}, status_code
+
+    filtered_exercises = [
+        exercise for exercise in exercises
+        if (user_input.lower() in exercise['name'].lower() or 
+            user_input.lower() in exercise['description'].lower()) and 
+        (equipment.lower() in exercise['equipment'].lower())
+    ]
+
+    return filtered_exercises, 200
 
 def fetch_api_data(endpoint, params=None):
     headers = {"Authorization": f"Bearer {API_KEY}"}
@@ -153,13 +169,13 @@ def register_routes(app):
             data = request.get_json()
             app.logger.debug("Received data: %s", data)
             
-            age = int(data.get('age'))  # Ensure integer
+            age = int(data.get('age'))  # Ensure age is an integer
             gender = data.get('gender')
-            weight = int(data.get('weight'))  # Ensure integer
+            weight = int(data.get('weight'))  # Ensure weight is an integer
             goal = data.get('goal')
             days = data.get('days')
-            available_time_per_session = int(data.get('available_time'))  # Ensure integer
-
+            available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
+            
             app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
 
             gender = treat_gender_data(gender)
@@ -168,9 +184,11 @@ def register_routes(app):
             custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
             app.logger.debug("Custom schedule created: %s", custom_schedule)
 
+            # Use the custom JSON encoder to convert to a JSON string
             json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
             app.logger.debug("JSON custom schedule: %s", json_custom_schedule)
 
+            # Convert the JSON string back to a dictionary
             schedule_data = json.loads(json_custom_schedule)
             app.logger.debug("Schedule data (dictionary): %s", schedule_data)
 
@@ -185,8 +203,6 @@ def register_routes(app):
             app.logger.error("Error: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
 
-
-        
 
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
     def get_schedule(schedule_id):
@@ -209,24 +225,6 @@ def register_routes(app):
         except Exception as e:
             print("Error:", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
-
-
-def search_exercises(user_input, bodypart, equipment):
-    endpoint = f"{BASE_URL}/310/list+exercise+by+body+part"
-    params = {'bodyPart': bodypart}
-    exercises, status_code = fetch_api_data(endpoint, params)
-    
-    if status_code != 200:
-        return {"error": "Failed to fetch exercises"}, status_code
-
-    filtered_exercises = [
-        exercise for exercise in exercises
-        if (user_input.lower() in exercise['name'].lower() or 
-            user_input.lower() in exercise['description'].lower()) and 
-        (equipment.lower() in exercise['equipment'].lower())
-    ]
-
-    return filtered_exercises, 200
 
 def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
     headers = {"Authorization": f"Bearer {API_KEY}"}
