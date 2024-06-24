@@ -218,7 +218,7 @@ def register_routes(app):
         exercises, status_code = search_exercises(user_input, bodypart, equipment)
         return jsonify(exercises), status_code
     
-    @app.route('/create-schedule', methods=['POST'])
+    @app.route('/create_schedule', methods=['POST'])
     def gather_info():
         try:
             data = request.get_json()
