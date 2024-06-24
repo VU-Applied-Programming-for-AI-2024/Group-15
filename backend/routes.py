@@ -15,11 +15,9 @@ from bson import ObjectId
 import json
 from models.bodypart import MuscleGroupDistributor
 import concurrent.futures
-import logging
 
 load_dotenv(find_dotenv())
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+
 
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
 API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
@@ -124,22 +122,6 @@ def register_routes(app):
         data, status_code = fetch_api_data(endpoint)
         return jsonify(data), status_code
 
-    @app.route('/list_exercise_by_body_part', methods=['GET'])
-    def list_exercise_by_body_part():
-        body_part = request.args.get('bodyPart', 'cardio')
-        endpoint = f"{BASE_URL}/310/list+exercise+by+body+part"
-        params = {'bodyPart': body_part}
-        data, status_code = fetch_api_data(endpoint, params)
-        return jsonify(data), status_code
-
-    @app.route('/list_by_target_muscle', methods=['GET'])
-    def list_by_target_muscle():
-        target = request.args.get('target', 'biceps')
-        endpoint = f"{BASE_URL}/312/list+by+target+muscle"
-        params = {'target': target}
-        data, status_code = fetch_api_data(endpoint, params)
-        return jsonify(data), status_code
-
     @app.route('/exercise_by_id', methods=['GET'])
     def exercise_by_id():
         exercise_id = request.args.get('id', '14')
@@ -167,30 +149,20 @@ def register_routes(app):
     def gather_info():
         try:
             data = request.get_json()
-            app.logger.debug("Received data: %s", data)
             
-            age = int(data.get('age'))  # Ensure age is an integer
+            
+            age = int(data.get('age'))
             gender = data.get('gender')
-            weight = int(data.get('weight'))  # Ensure weight is an integer
+            weight = int(data.get('weight')) 
             goal = data.get('goal')
             days = data.get('days')
-            available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
-            
-            app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
+            available_time_per_session = int(data.get('available_time')) 
 
             gender = treat_gender_data(gender)
-            app.logger.debug(f"Treated gender: {gender}")
 
             custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
-            app.logger.debug("Custom schedule created: %s", custom_schedule)
-
-            # Use the custom JSON encoder to convert to a JSON string
             json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
-            app.logger.debug("JSON custom schedule: %s", json_custom_schedule)
-
-            # Convert the JSON string back to a dictionary
             schedule_data = json.loads(json_custom_schedule)
-            app.logger.debug("Schedule data (dictionary): %s", schedule_data)
 
             inserted_id = server_crud_operations(
                 operation="insert",
@@ -207,10 +179,7 @@ def register_routes(app):
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
     def get_schedule(schedule_id):
         try:
-            # Convert the schedule_id to ObjectId
             schedule_id = ObjectId(schedule_id)
-            
-            # Read the schedule from the database
             schedule = server_crud_operations(
                 operation="read",
                 collection_name="schedules",
@@ -238,14 +207,12 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
     distributor = MuscleGroupDistributor(len(days))
     muscle_groups_schedule = distributor.distribute_muscle_groups()
 
-    # Prepare API call parameters for all target muscles
     api_calls = []
     for i, day_muscles in enumerate(muscle_groups_schedule):
         for muscle in day_muscles:
             for target in muscle.value:
                 api_calls.append((days[i], f"{BASE_URL}/4824/ai+workout+planner", {'target': target, 'gender': gender, 'weight': weight, 'goal': goal}))
 
-    # Execute API calls in parallel
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): (day, params['target']) for day, endpoint, params in api_calls}
         api_results = {(day, target): future.result() for future, (day, target) in future_to_params.items()}
@@ -258,7 +225,7 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
 
     custom_schedule = {day: Workout() for day in days}
     exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
-
+    print(exercise_pattern)
     for day, daily_routines in routines.items():
         current_workout = Workout()
         for routine in daily_routines:

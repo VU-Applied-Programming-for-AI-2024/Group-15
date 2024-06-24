@@ -2,6 +2,7 @@ from backend.models.day import Day
 from backend.models.exercise import Exercise
 from backend.models.workout_exercise import WorkoutExercise
 from backend.models.workout import Workout
+import re 
 
 class Schedule:
     def __init__(self, routine):
