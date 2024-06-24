@@ -41,12 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('user-info-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const age = document.querySelector('.age-input').value;
+    const age = parseInt(document.querySelector('.age-input').value);
     const gender = document.querySelector('input[name="gender"]:checked').value;
-    const weight = document.querySelector('.weight-input').value;
+    const weight = parseInt(document.querySelector('.weight-input').value);
     const goal = document.getElementById('goal').value;
     const selectedDays = Array.from(days).filter(day => day.classList.contains('active')).map(day => day.getAttribute('data-day'));
-    const availableTime = document.getElementById('available-time').value;
+    const availableTime = parseInt(document.getElementById('available-time').value);
 
     const data = { age, gender, weight, goal, days: selectedDays, available_time: availableTime };
 
