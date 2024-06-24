@@ -187,7 +187,7 @@ def register_routes(app):
     def gather_info():
         try:
             data = request.get_json()
-            print("Received data:", data)
+            app.logger.debug("Received data: %s", data)
             
             age = data.get('age')
             gender = data.get('gender')
@@ -200,18 +200,24 @@ def register_routes(app):
 
             custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
 
+            # Use the custom JSON encoder to convert to a JSON string
             json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
+            app.logger.debug("JSON custom schedule: %s", json_custom_schedule)
+
+            # Convert the JSON string back to a dictionary
+            schedule_data = json.loads(json_custom_schedule)
 
             inserted_id = server_crud_operations(
                 operation="insert",
-                json_data={"schedule": json_custom_schedule},
+                json_data={schedule_data},
                 collection_name="schedules"
             )
 
             return jsonify({"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}), 200
         except Exception as e:
-            print("Error:", str(e))
+            app.logger.error("Error: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
+
         
 
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])

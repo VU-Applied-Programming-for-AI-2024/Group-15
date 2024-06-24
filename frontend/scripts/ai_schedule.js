@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const data = { age, gender, weight, goal, days: selectedDays, available_time: availableTime };
 
-    console.log('Sending data:', JSON.stringify(data)); // Add this line for debugging
+    console.log('Sending data:', JSON.stringify(data));
 
     fetch('https://fitnessaicoach.azurewebsites.net/create-schedule', { 
       method: 'POST',
@@ -59,26 +59,27 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       body: JSON.stringify(data),
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
     .then(result => {
       console.log('Success:', result);
       if (result.status === 'success') {
         const scheduleId = result.schedule_id;
-        const scheduleJson = JSON.stringify(result.schedule, null, 2); // Pretty-print the JSON
-        localStorage.setItem('scheduleId', scheduleId); // Store the schedule ID for future use
+        const scheduleJson = JSON.stringify(result.schedule, null, 2);
+        localStorage.setItem('scheduleId', scheduleId);
 
-        // Redirect to the next page with schedule_id in ID
-        window.location.href = `schedule_page.component.html?scheduleId=${scheduleId}`; 
-        // Display success message and schedule JSON
-        const successMessage = document.createElement('div');
-        successMessage.innerHTML = `<p>Schedule created successfully!</p><pre>${scheduleJson}</pre>`;
-        document.body.appendChild(successMessage);
+        window.location.href = `schedule_page.component.html?scheduleId=${scheduleId}`;
       } else {
         console.error('Error creating schedule:', result.message);
       }
     })
     .catch(error => {
       console.error('Error:', error);
+      alert('An error occurred while creating the schedule. Please try again.');
     });
   });
 
