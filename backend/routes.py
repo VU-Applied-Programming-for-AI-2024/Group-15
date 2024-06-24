@@ -48,8 +48,7 @@ class CustomScheduleEncoder(json.JSONEncoder):
             }
         return super().default(obj)
 
-def treat_gender_data (gender)->str:
-    # Ensure that the API isn't confused about gender   
+def treat_gender_data(gender):
     if gender == "other":
         gender = "female"
     return gender
@@ -131,52 +130,6 @@ def register_routes(app):
         data, status_code = fetch_api_data(endpoint)
         return jsonify(data), status_code
 
-    @app.route('/list_by_equipment', methods=['GET'])
-    def list_by_equipment():
-        equipment = request.args.get('equipment', 'medicine ball')
-        endpoint = f"{BASE_URL}/2083/list+by+equipment"
-        params = {'equipment': equipment}
-        data, status_code = fetch_api_data(endpoint, params)
-        return jsonify(data), status_code
-
-    @app.route('/ai_workout_planner', methods=['GET'])
-    def ai_workout_planner():
-        target = request.args.get('target', 'triceps')
-        gender = request.args.get('gender', 'male')
-        weight = request.args.get('weight', '80')
-        goal = request.args.get('goal', 'muscle_gain')
-        endpoint = f"{BASE_URL}/4824/ai+workout+planner"
-        params = {
-            'target': target,
-            'gender': gender,
-            'weight': weight,
-            'goal': goal
-        }
-        data, status_code = fetch_api_data(endpoint, params)
-        return jsonify(data), status_code
-
-    @app.route('/calories_burned', methods=['GET'])
-    def calories_burned():
-        age = request.args.get('age', '24')
-        gender = request.args.get('gender', 'male')
-        weight = request.args.get('weight', '80')
-        exercise_id = request.args.get('exercise_id', '745')
-        reps = request.args.get('reps', '25')
-        lifted_weight = request.args.get('lifted_weight', None)
-        minutes = request.args.get('minutes', None)
-        endpoint = f"{BASE_URL}/4825/calories+burned"
-        params = {
-            'age': age,
-            'gender': gender,
-            'weight': weight,
-            'exercise_id': exercise_id,
-            'reps': reps,
-            'lifted_weight': lifted_weight,
-            'minutes': minutes
-        }
-        data, status_code = fetch_api_data(endpoint, params)
-        return jsonify(data), status_code
-
     @app.route('/search_exercises', methods=['GET'])
     def search_exercises_route():
         user_input = request.args.get('user_input', '')
@@ -197,7 +150,7 @@ def register_routes(app):
             weight = data.get('weight')
             goal = data.get('goal')
             days = data.get('days')
-            available_time_per_session = int(data.get('available_time'))
+            available_time_per_session = data.get('available_time')
             
             app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
 
