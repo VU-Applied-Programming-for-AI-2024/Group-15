@@ -113,60 +113,7 @@ def fetch_api_data(endpoint, params=None):
     else:
         return {"error": "Failed to fetch data from the API!"}, response.status_code
 
-def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
-    headers = {"Authorization": f"Bearer {API_KEY}"}
-    response = requests.get(endpoint, headers=headers, params=params)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return {"error": "Failed to fetch data from the API!"}
 
-def call_external_api(api_data):
-    try:
-        endpoint = f"{API_ENDPOINT}/create-routine"
-        headers = {"Authorization": f"Bearer {API_KEY}"}
-        logging.debug(f"Calling external API at {endpoint} with data: {api_data}")
-        response = requests.post(endpoint, headers=headers, json=api_data)
-        
-        logging.debug(f"External API response status: {response.status_code}")
-        logging.debug(f"External API response data: {response.text}")
-
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return {"status": False, "message": "Failed to create routine"}
-    except Exception as e:
-        logging.error(f"Error calling external API: {str(e)}")
-        return {"status": False, "message": str(e)}
-
-
-def process_api_response(api_response):
-    routine = {}
-    for day_info in api_response['routine']:
-        day_name = extract_day(day_info)  # Extract day from day_info string
-        exercises_reps = extract_exercises_reps(day_info)  # Extract exercises and reps
-        routine[day_name] = exercises_reps
-    return routine
-
-def extract_day(day_info):
-    # Example: "Day 1: Upper Body - Triceps Focus"
-    return day_info.split(":")[0].strip()
-
-def extract_exercises_reps(day_info):
-    # Example: "1. Barbell Close-Grip Bench Press - 4 sets of 8-10 reps\n2. ..."
-    exercises_reps = {}
-    lines = day_info.split("\n")
-    for line in lines:
-        if line.strip().startswith("-"):
-            continue
-        if line.strip().startswith("Notes:"):
-            break
-        parts = line.split("-")
-        if len(parts) > 1:
-            exercise_name = parts[1].strip().split(" - ")[0].strip()
-            sets_reps = parts[1].strip().split(" - ")[1].strip()
-            exercises_reps[exercise_name] = sets_reps
-    return exercises_reps
 
 def register_routes(app):
     @app.route('/')
@@ -222,11 +169,7 @@ def register_routes(app):
     def gather_info():
         try:
             data = request.get_json()
-            if not data:
-                logging.error("No data received")
-                return jsonify({"status": "error", "message": "No data received"}), 400
-            logger.debug("Received data: %s", data)
-
+            app.logger.debug("Received data: %s", data)
             
             age = int(data.get('age'))  # Ensure age is an integer
             gender = data.get('gender')
@@ -235,55 +178,32 @@ def register_routes(app):
             days = data.get('days')
             available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
             
-            logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
-
+            app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
             gender = treat_gender_data(gender)
-            logger.debug(f"Treated gender: {gender}")
+            app.logger.debug(f"Treated gender: {gender}")
 
-            distributor = MuscleGroupDistributor(len(days))
-            muscle_groups = distributor.distribute_muscle_groups()
-            logger.debug(f"Treated muscles: {muscle_groups}")
+            custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
+            app.logger.debug("Custom schedule created: %s", custom_schedule)
 
-             # Prepare data to send to external API
-            api_data = {
-                "gender": gender,
-                "weight": weight,
-                "goal": goal,
-                "target_muscles": [muscle.value for muscle_group in muscle_groups for muscle in muscle_group]
-            }
+            # Use the custom JSON encoder to convert to a JSON string
+            json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
+            app.logger.debug("JSON custom schedule: %s", json_custom_schedule)
 
-            logger.debug(f"API data: {api_data}")
-            # Make API request
-            api_response = call_external_api(api_data)
-            logger.debug(f"API response: {api_response}")
-            if api_response.get('status'):
-                # Process API response to format into dictionary with days as keys
-                routine = process_api_response(api_response)
-                logger.debug(f"Routine: {routine}")
+            # Convert the JSON string back to a dictionary
+            schedule_data = json.loads(json_custom_schedule)
+            app.logger.debug("Schedule data (dictionary): %s", schedule_data)
 
-            
-       
+            inserted_id = server_crud_operations(
+                operation="insert",
+                json_data={"schedule": schedule_data},
+                collection_name="schedules"
+            )
 
-                # Use the custom JSON encoder to convert to a JSON string
-                json_custom_schedule = json.dumps(routine, cls=CustomScheduleEncoder)
-                app.logger.debug("JSON custom schedule: %s", json_custom_schedule)
-
-                # Convert the JSON string back to a dictionary
-                schedule_data = json.loads(json_custom_schedule)
-                app.logger.debug("Schedule data (dictionary): %s", schedule_data)
-
-                inserted_id = server_crud_operations(
-                    operation="insert",
-                    json_data={"schedule": schedule_data},
-                    collection_name="schedules"
-                )
-
-                return jsonify({"status": "success", "routine": routine}), 200
-            else:
-                return jsonify({"status": "error", "message": "Failed to create routine"}), 500
-
+            return jsonify({"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}), 200
         except Exception as e:
+            app.logger.error("Error: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
+
 
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
     def get_schedule(schedule_id):
@@ -306,3 +226,74 @@ def register_routes(app):
         except Exception as e:
             print("Error:", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
+        
+def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+    response = requests.get(endpoint, headers=headers, params=params)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {"error": "Failed to fetch data from the API!"}
+
+def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str], available_time_per_session: int):
+    logging.debug("Creating custom schedule...")
+
+    distributor = MuscleGroupDistributor(len(days))
+    muscle_groups_schedule = distributor.distribute_muscle_groups()
+
+    # Prepare API call parameters for all target muscles
+    api_calls = []
+    for i, day_muscles in enumerate(muscle_groups_schedule):
+        for muscle in day_muscles:
+            for target in muscle.value:
+                api_calls.append((days[i], f"{BASE_URL}/4824/ai+workout+planner", {'target': target, 'gender': gender, 'weight': weight, 'goal': goal}))
+
+    logging.debug(f"Number of API calls: {len(api_calls)}")
+
+    # Execute API calls in parallel
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): (day, params['target']) for day, endpoint, params in api_calls}
+        api_results = {(day, target): future.result() for future, (day, target) in future_to_params.items()}
+
+    logging.debug("API calls completed.")
+
+    # Organize routines by day
+    routines = {day: [] for day in days}
+    for (day, target), result in api_results.items():
+        if 'routine' in result:
+            routines[day].append(result['routine'][0])
+
+    logging.debug("Routines organized by day.")
+
+    custom_schedule = {day: Workout() for day in days}
+    exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
+
+    for day, daily_routines in routines.items():
+        current_workout = Workout()
+        for routine in daily_routines:
+            lines = routine.split('**')
+            for line in lines:
+                line = line.strip()
+                exercises = line.split('\n')
+                for exercise in exercises:
+                    if exercise and not exercise.startswith('Day'):
+                        match = exercise_pattern.match(exercise.strip())
+                        if match:
+                            name = match.group(1).strip()
+                            sets = int(match.group(2))
+                            reps = f"{match.group(3)}-{match.group(4)}"
+                            exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=name, target="unknown")
+                            current_workout.add_exercise(WorkoutExercise(exercise_obj, sets, reps))
+                        else:
+                            exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=exercise.strip(), target="unknown")
+                            current_workout.add_exercise(WorkoutExercise(exercise_obj, 0, ""))
+
+            total_time, _ = current_workout.calculate_workout_time()
+            if total_time > available_time_per_session:
+                break
+
+        custom_schedule[day] = current_workout
+
+    logging.debug("Custom schedule created.")
+
+    return Schedule([custom_schedule[day] for day in days])
