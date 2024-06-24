@@ -112,7 +112,34 @@ def fetch_api_data(endpoint, params=None):
     else:
         return {"error": "Failed to fetch data from the API!"}, response.status_code
 
+def gather_info_operations(age, gender, weight, goal, days, available_time_per_session):
+    try:
+        # Create custom schedule
+        custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
+        logger.debug("Custom schedule created: %s", custom_schedule)
 
+        # Convert custom schedule to JSON string
+        json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
+        logger.debug("JSON custom schedule: %s", json_custom_schedule)
+
+        # Convert JSON string back to dictionary
+        schedule_data = json.loads(json_custom_schedule)
+        logger.debug("Schedule data (dictionary): %s", schedule_data)
+
+        # Perform CRUD operation to insert schedule into database
+        inserted_id = server_crud_operations(
+            operation="insert",
+            json_data={"schedule": schedule_data},
+            collection_name="schedules"
+        )
+
+        # Return success response with schedule ID
+        return {"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}, 200
+    
+    except Exception as e:
+        # Log and return error response
+        logger.error("Error creating schedule: %s", str(e))
+        return str(e), 500
 
 def register_routes(app):
     @app.route('/')
@@ -165,11 +192,12 @@ def register_routes(app):
         return jsonify(exercises), status_code
     
     @app.route('/create_schedule', methods=['POST'])
-    def gather_info():
+    def gather_info_route():
         try:
             data = request.get_json()
             app.logger.debug("Received data: %s", data)
             
+            # Validate and extract data from request
             age = int(data.get('age'))  # Ensure age is an integer
             gender = data.get('gender')
             weight = int(data.get('weight'))  # Ensure weight is an integer
@@ -177,28 +205,21 @@ def register_routes(app):
             days = data.get('days')
             available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
             
+            # Log parsed data
             app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
+            
+            # Treat gender data
             gender = treat_gender_data(gender)
             app.logger.debug(f"Treated gender: {gender}")
 
-            custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
-            app.logger.debug("Custom schedule created: %s", custom_schedule)
-
-            # Use the custom JSON encoder to convert to a JSON string
-            json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
-            app.logger.debug("JSON custom schedule: %s", json_custom_schedule)
-
-            # Convert the JSON string back to a dictionary
-            schedule_data = json.loads(json_custom_schedule)
-            app.logger.debug("Schedule data (dictionary): %s", schedule_data)
-
-            inserted_id = server_crud_operations(
-                operation="insert",
-                json_data={"schedule": schedule_data},
-                collection_name="schedules"
-            )
-
-            return jsonify({"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}), 200
+            # Call function to process schedule creation
+            result, status_code = gather_info_operations(age, gender, weight, goal, days, available_time_per_session)
+            
+            if status_code == 200:
+                return jsonify(result), status_code
+            else:
+                return jsonify({"status": "error", "message": result}), status_code
+        
         except Exception as e:
             app.logger.error("Error: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
