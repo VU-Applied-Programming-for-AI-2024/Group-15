@@ -208,9 +208,9 @@ def register_routes(app):
                 app.logger.debug("Received data: %s", data)
                 received_data = data
                 # Validate and extract data from request
-                age = int(data.get('age'))  # Ensure age is an integer
+                age = str(data.get('age'))  # Ensure age is an integer
                 gender = data.get('gender')
-                weight = int(data.get('weight'))  # Ensure weight is an integer
+                weight = str(data.get('weight'))  # Ensure weight is an integer
                 goal = data.get('goal')
                 days = data.get('days')
                 available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
