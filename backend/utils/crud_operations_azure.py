@@ -11,14 +11,6 @@ load_dotenv(find_dotenv())
 CONNECTION_STRING = os.environ.get("MONGODB_STRING")
 DB_NAME = "myFitnessAIcoach"
 
-REQUIRED_KEYS = {"intensity", "calories_burned", "targeted_muscles"}
-
-def validate_keys(data: Dict[str, Any], required_keys: set) -> bool:
-    """Validate that the provided data contain the required keys."""
-    if set(data.keys()) != required_keys:
-        raise ValueError(f"JSON data keys do not match required keys: {required_keys}")
-    return True
-
 def delete_document(collection: pymongo.collection.Collection, document_id: Any) -> None:
     """Delete the document containing document_id from the collection"""
     collection.delete_one({"_id": document_id})
@@ -32,13 +24,11 @@ def read_document(collection: pymongo.collection.Collection, document_id: Any) -
 
 def update_document_id(collection: pymongo.collection.Collection, document_id: Any, update_data: Dict[str, Any]) -> None:
     """Update the document containing document_id with update_data"""
-    validate_keys(update_data, REQUIRED_KEYS)
     collection.update_one({"_id": document_id}, {"$set": update_data})
     logger.info("Updated document with _id {}: {}".format(document_id, collection.find_one({"_id": document_id})))
 
 def insert_document(collection: pymongo.collection.Collection, document_data: Dict[str, Any]) -> Any:
     """Insert a document with document_data and return the contents of its _id field"""
-    validate_keys(document_data, REQUIRED_KEYS)
     document_id = collection.insert_one(document_data).inserted_id
     logger.info("Inserted document with _id {}".format(document_id))
     return document_id
@@ -76,14 +66,14 @@ def server_crud_operations(operation: str, json_data: Dict[str, Any] = None, col
         raise TimeoutError("Invalid API for MongoDB connection string or timed out when attempting to connect")
 
     if operation == "create" and collection_name:
-        create_collection_if_not_exists(client, collection_name)
+        return create_collection_if_not_exists(client, collection_name)
 
     elif operation == "insert" and json_data and collection_name:
         collection = create_collection_if_not_exists(client, collection_name)
         document_id = insert_document(collection, json_data)
         return document_id
 
-    elif operation == "read" and collection_name and key and value:
+    elif operation == "read" and collection_name and value:
         collection = create_collection_if_not_exists(client, collection_name)
         return read_document(collection, value)
 
@@ -96,3 +86,4 @@ def server_crud_operations(operation: str, json_data: Dict[str, Any] = None, col
         delete_document(collection, document_id)
     else:
         logger.error("Invalid operation or missing parameters")
+        raise ValueError("Invalid operation or missing parameters")
