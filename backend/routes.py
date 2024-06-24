@@ -221,8 +221,8 @@ def register_routes(app):
                 return jsonify({"status": "error", "message": result}), status_code
         
         except Exception as e:
-            app.logger.error("Error: %s", str("TARA" + e))
-            return jsonify({"status": "error", "message": str("Tiri"+e)}), 500
+            app.logger.error("Error: %s", str(e))
+            return jsonify({"status": "error", "message": str(e)}), 500
 
 
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
