@@ -234,6 +234,8 @@ def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any
         return {"error": "Failed to fetch data from the API!"}
 
 def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str], available_time_per_session: int):
+    logging.debug("Creating custom schedule...")
+
     distributor = MuscleGroupDistributor(len(days))
     muscle_groups_schedule = distributor.distribute_muscle_groups()
 
@@ -244,16 +246,22 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
             for target in muscle.value:
                 api_calls.append((days[i], f"{BASE_URL}/4824/ai+workout+planner", {'target': target, 'gender': gender, 'weight': weight, 'goal': goal}))
 
+    logging.debug(f"Number of API calls: {len(api_calls)}")
+
     # Execute API calls in parallel
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): (day, params['target']) for day, endpoint, params in api_calls}
         api_results = {(day, target): future.result() for future, (day, target) in future_to_params.items()}
+
+    logging.debug("API calls completed.")
 
     # Organize routines by day
     routines = {day: [] for day in days}
     for (day, target), result in api_results.items():
         if 'routine' in result:
             routines[day].append(result['routine'][0])
+
+    logging.debug("Routines organized by day.")
 
     custom_schedule = {day: Workout() for day in days}
     exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
@@ -283,5 +291,7 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
                 break
 
         custom_schedule[day] = current_workout
+
+    logging.debug("Custom schedule created.")
 
     return Schedule([custom_schedule[day] for day in days])
