@@ -15,8 +15,11 @@ from bson import ObjectId
 import json
 from models.bodypart import MuscleGroupDistributor
 import concurrent.futures
+import logging
 
 load_dotenv(find_dotenv())
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
 API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
@@ -195,10 +198,14 @@ def register_routes(app):
             goal = data.get('goal')
             days = data.get('days')
             available_time_per_session = int(data.get('available_time'))
+            
+            app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
 
             gender = treat_gender_data(gender)
+            app.logger.debug(f"Treated gender: {gender}")
 
             custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
+            app.logger.debug("Custom schedule created: %s", custom_schedule)
 
             # Use the custom JSON encoder to convert to a JSON string
             json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
@@ -206,6 +213,7 @@ def register_routes(app):
 
             # Convert the JSON string back to a dictionary
             schedule_data = json.loads(json_custom_schedule)
+            app.logger.debug("Schedule data (dictionary): %s", schedule_data)
 
             inserted_id = server_crud_operations(
                 operation="insert",
@@ -217,6 +225,7 @@ def register_routes(app):
         except Exception as e:
             app.logger.error("Error: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
+
 
         
 
@@ -272,27 +281,24 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
     distributor = MuscleGroupDistributor(len(days))
     muscle_groups_schedule = distributor.distribute_muscle_groups()
 
-    # Flatten the list of muscle group days to reduce nested loops
-    target_muscles = [(days[i], muscle.value) for i, day in enumerate(muscle_groups_schedule) for muscle in day]
-    
     # Prepare API call parameters for all target muscles
-    api_calls = [
-        (f"{BASE_URL}/4824/ai+workout+planner", {'target': target, 'gender': gender, 'weight': weight, 'goal': goal})
-        for day, targets in target_muscles for target in targets
-    ]
+    api_calls = []
+    for i, day_muscles in enumerate(muscle_groups_schedule):
+        for muscle in day_muscles:
+            for target in muscle.value:
+                api_calls.append((days[i], f"{BASE_URL}/4824/ai+workout+planner", {'target': target, 'gender': gender, 'weight': weight, 'goal': goal}))
 
     # Execute API calls in parallel
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): params for endpoint, params in api_calls}
-        api_results = {future_to_params[future]['target']: future.result() for future in concurrent.futures.as_completed(future_to_params)}
+        future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): (day, params['target']) for day, endpoint, params in api_calls}
+        api_results = {(day, target): future.result() for future, (day, target) in future_to_params.items()}
 
     # Organize routines by day
     routines = {day: [] for day in days}
-    for day, targets in target_muscles:
-        for target in targets:
-            if 'routine' in api_results[target]:
-                routines[day].append(api_results[target]['routine'][0])
-    
+    for (day, target), result in api_results.items():
+        if 'routine' in result:
+            routines[day].append(result['routine'][0])
+
     custom_schedule = {day: Workout() for day in days}
     exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
 
