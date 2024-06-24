@@ -16,21 +16,14 @@ import json
 from models.bodypart import MuscleGroupDistributor
 import concurrent.futures
 import logging
-import pymongo
 
 load_dotenv(find_dotenv())
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
 API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
 BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
-
-CONNECTION_STRING = os.getenv("MONGODB_STRING")
-DB_NAME = "myFitnessAIcoach"
-
-client = pymongo.MongoClient(CONNECTION_STRING)
-db = client[DB_NAME]
 
 class CustomScheduleEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -105,7 +98,8 @@ def search_exercises(user_input, bodypart, equipment):
 
     filtered_exercises = [
         exercise for exercise in exercises
-        if (user_input.lower() in exercise['name'].lower()) and 
+        if (user_input.lower() in exercise['name'].lower() or 
+            user_input.lower() in exercise['description'].lower()) and 
         (equipment.lower() in exercise['equipment'].lower())
     ]
 
@@ -119,39 +113,10 @@ def fetch_api_data(endpoint, params=None):
     else:
         return {"error": "Failed to fetch data from the API!"}, response.status_code
 
-def gather_info_operations(age, gender, weight, goal, days, available_time_per_session):
-    try:
-        # Create custom schedule
-        custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
-        logger.debug("Custom schedule created: %s", custom_schedule)
-
-        # Convert custom schedule to JSON string
-        json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
-        logger.debug("JSON custom schedule: %s", json_custom_schedule)
-
-        # Convert JSON string back to dictionary
-        schedule_data = json.loads(json_custom_schedule)
-        logger.debug("Schedule data (dictionary): %s", schedule_data)
-
-        # Perform CRUD operation to insert schedule into database
-        inserted_id = server_crud_operations(
-            operation="insert",
-            json_data={"schedule": schedule_data},
-            collection_name="schedules"
-        )
-
-        # Return success response with schedule ID
-        return {"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}, 200
-    
-    except Exception as e:
-        # Log and return error response
-        logger.error("Error creating schedule: %s", str(e))
-        return str(e), 500
-
 def register_routes(app):
     @app.route('/')
     def home():
-        return "Welcome to the Exercise Database API! Felix is the best"
+        return "Welcome to the Exercise Database API! FElix is the best "
 
     @app.route('/list_of_body_parts', methods=['GET'])
     def list_of_body_parts():
@@ -198,44 +163,45 @@ def register_routes(app):
         exercises, status_code = search_exercises(user_input, bodypart, equipment)
         return jsonify(exercises), status_code
     
-    @app.route('/create_schedule', methods=['GET','POST'])
-    def gather_info_route():
-        if request.method == 'GET':
-            # Handle GET request logic
-            return jsonify({"message": "This is a GET request"})
-        
-        elif request.method == 'POST':
-       
-            try:
-                data = request.get_json()
-                app.logger.debug("Received data: %s", data)
-                
-                # Validate and extract data from request
-                age = int(data.get('age'))  # Ensure age is an integer
-                gender = data.get('gender')
-                weight = int(data.get('weight'))  # Ensure weight is an integer
-                goal = data.get('goal')
-                days = data.get('days')
-                available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
-                
-                # Log parsed data
-                app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
-                
-                # Treat gender data
-                gender = treat_gender_data(gender)
-                app.logger.debug(f"Treated gender: {gender}")
-
-                # Call function to process schedule creation
-                result, status_code = gather_info_operations(age, gender, weight, goal, days, available_time_per_session)
-                
-                if status_code == 200:
-                    return jsonify(result), status_code
-                else:
-                    return jsonify({"status": "error", "message": result}), status_code
+    @app.route('/create-schedule', methods=['POST'])
+    def gather_info():
+        try:
+            data = request.get_json()
+            app.logger.debug("Received data: %s", data)
             
-            except Exception as e:
-                app.logger.error("Error: %s", str(e))
-                return jsonify({"status": "error", "message": str(e)}), 500
+            age = int(data.get('age'))  # Ensure age is an integer
+            gender = data.get('gender')
+            weight = int(data.get('weight'))  # Ensure weight is an integer
+            goal = data.get('goal')
+            days = data.get('days')
+            available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
+            
+            app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
+
+            gender = treat_gender_data(gender)
+            app.logger.debug(f"Treated gender: {gender}")
+
+            custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
+            app.logger.debug("Custom schedule created: %s", custom_schedule)
+
+            # Use the custom JSON encoder to convert to a JSON string
+            json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
+            app.logger.debug("JSON custom schedule: %s", json_custom_schedule)
+
+            # Convert the JSON string back to a dictionary
+            schedule_data = json.loads(json_custom_schedule)
+            app.logger.debug("Schedule data (dictionary): %s", schedule_data)
+
+            inserted_id = server_crud_operations(
+                operation="insert",
+                json_data={"schedule": schedule_data},
+                collection_name="schedules"
+            )
+
+            return jsonify({"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}), 200
+        except Exception as e:
+            app.logger.error("Error: %s", str(e))
+            return jsonify({"status": "error", "message": str(e)}), 500
 
 
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
@@ -259,20 +225,6 @@ def register_routes(app):
         except Exception as e:
             print("Error:", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
-        
-    @app.route('/api/save-schedule', methods=['POST'])
-    def save_schedule():
-        data = request.json
-        schedule_id = db.schedules.insert_one(data).inserted_id
-        return jsonify({'status': 'success', 'schedule_id': str(schedule_id)}), 200
-
-    @app.route('/api/get-schedule/<schedule_id>', methods=['GET'])
-    def get_schedule(schedule_id):
-        schedule = db.schedules.find_one({"_id": ObjectId(schedule_id)})
-        if schedule:
-            return jsonify({'status': 'success', 'schedule': schedule}), 200
-        else:
-            return jsonify({'status': 'error', 'message': 'Schedule not found'}), 404
 
 def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
     headers = {"Authorization": f"Bearer {API_KEY}"}
@@ -283,8 +235,6 @@ def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any
         return {"error": "Failed to fetch data from the API!"}
 
 def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str], available_time_per_session: int):
-    logging.debug("Creating custom schedule...")
-
     distributor = MuscleGroupDistributor(len(days))
     muscle_groups_schedule = distributor.distribute_muscle_groups()
 
@@ -295,22 +245,16 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
             for target in muscle.value:
                 api_calls.append((days[i], f"{BASE_URL}/4824/ai+workout+planner", {'target': target, 'gender': gender, 'weight': weight, 'goal': goal}))
 
-    logging.debug(f"Number of API calls: {len(api_calls)}")
-
     # Execute API calls in parallel
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): (day, params['target']) for day, endpoint, params in api_calls}
         api_results = {(day, target): future.result() for future, (day, target) in future_to_params.items()}
-
-    logging.debug("API calls completed.")
 
     # Organize routines by day
     routines = {day: [] for day in days}
     for (day, target), result in api_results.items():
         if 'routine' in result:
             routines[day].append(result['routine'][0])
-
-    logging.debug("Routines organized by day.")
 
     custom_schedule = {day: Workout() for day in days}
     exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
@@ -334,13 +278,11 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
                         else:
                             exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=exercise.strip(), target="unknown")
                             current_workout.add_exercise(WorkoutExercise(exercise_obj, 0, ""))
-
+            
             total_time, _ = current_workout.calculate_workout_time()
             if total_time > available_time_per_session:
                 break
 
         custom_schedule[day] = current_workout
-
-    logging.debug("Custom schedule created.")
 
     return Schedule([custom_schedule[day] for day in days])

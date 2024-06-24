@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('Sending data:', JSON.stringify(data));
 
-    fetch('https://fitnessaicoach.azurewebsites.net/create_schedule', { 
+    fetch('https://fitnessaicoach.azurewebsites.net/create-schedule', { 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
