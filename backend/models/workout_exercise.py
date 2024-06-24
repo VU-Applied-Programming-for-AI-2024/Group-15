@@ -1,4 +1,4 @@
-from exercise import Exercise
+from models.exercise import Exercise
 
 class WorkoutExercise:
     def __init__(self, exercise, sets, reps):
