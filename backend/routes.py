@@ -1,7 +1,7 @@
 from flask import jsonify, request
 import requests
 import os
-from typing import List, Any, Union
+from typing import List, Any, Union, Dict
 from dotenv import load_dotenv, find_dotenv
 from models.day import Day
 from models.bodypart import BodyPart
@@ -14,11 +14,11 @@ import re
 from bson import ObjectId
 import json
 from models.bodypart import MuscleGroupDistributor
+import concurrent.futures
 
 load_dotenv(find_dotenv())
 
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
-# API_KEY = os.environ.get("EXERCISE_API_KEY")
 API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
 BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
 
@@ -260,35 +260,44 @@ def search_exercises(user_input, bodypart, equipment):
 
     return filtered_exercises, 200
 
+def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+    response = requests.get(endpoint, headers=headers, params=params)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {"error": "Failed to fetch data from the API!"}
+
 def create_custom_schedule(gender, weight, goal, days, available_time_per_session):
     distributor = MuscleGroupDistributor(len(days))
     muscle_groups_schedule = distributor.distribute_muscle_groups()
-    routines = []
 
-    for muscle_group_day in muscle_groups_schedule:
-        daily_routines = []
-        for bodypart in muscle_group_day:
-            for target_muscle in bodypart.value:
-                endpoint = f"{BASE_URL}/4824/ai+workout+planner"
-                params = {
-                    'target': target_muscle,
-                    'gender': gender,
-                    'weight': weight,
-                    'goal': goal
-                }
-                data, status_code = fetch_api_data(endpoint, params)
-                if status_code == 200 and 'routine' in data:
-                    daily_routines.append(data['routine'][0])
-        routines.append(daily_routines)
+    # Flatten the list of muscle group days to reduce nested loops
+    target_muscles = [(day, muscle.value) for day in muscle_groups_schedule for muscle in day]
+    
+    # Prepare API call parameters for all target muscles
+    api_calls = [
+        (f"{BASE_URL}/4824/ai+workout+planner", {'target': target, 'gender': gender, 'weight': weight, 'goal': goal})
+        for day, targets in target_muscles for target in targets
+    ]
 
+    # Execute API calls in parallel
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): params for endpoint, params in api_calls}
+        api_results = {future_to_params[future]['target']: future.result() for future in concurrent.futures.as_completed(future_to_params)}
+
+    # Organize routines by day
+    routines = {day: [] for day in days}
+    for day, targets in target_muscles:
+        for target in targets:
+            if 'routine' in api_results[target]:
+                routines[day].append(api_results[target]['routine'][0])
+    
     custom_schedule = {day: Workout() for day in days}
-    day_index = 0
-
     exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
 
-    for i, daily_routines in enumerate(routines):
+    for day, daily_routines in routines.items():
         current_workout = Workout()
-
         for routine in daily_routines:
             lines = routine.split('**')
             for line in lines:
@@ -311,7 +320,6 @@ def create_custom_schedule(gender, weight, goal, days, available_time_per_sessio
             if total_time > available_time_per_session:
                 break
 
-        custom_schedule[days[day_index % len(days)]] = current_workout
-        day_index += 1
+        custom_schedule[day] = current_workout
 
     return Schedule([custom_schedule[day] for day in days])

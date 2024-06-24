@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error:', error);
       alert('An error occurred while creating the schedule. Please try again.');
     });
-  });
+  });S
 
   validateForm(); // Initial validation to disable the button if necessary
 });
