@@ -1,9 +1,3 @@
-from models.day import Day
-from models.workout import Workout
-from models.workout_exercise import WorkoutExercise
-from models.exercise import Exercise
-import re
-
 class Schedule:
     def __init__(self, routine):
         self.schedule = {day: None for day in Day}
@@ -41,11 +35,9 @@ class Schedule:
                             name = match.group(1).strip()
                             sets = int(match.group(2))
                             reps = f"{match.group(3)}-{match.group(4)}"
-                            # Creating a dummy Exercise instance
                             exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=name, target="unknown")
                             workout.add_exercise(WorkoutExercise(exercise_obj, sets, reps))
                         else:
-                            # Creating a dummy Exercise instance for unmatched exercises
                             exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=exercise.strip(), target="unknown")
                             workout.add_exercise(WorkoutExercise(exercise_obj, 0, ""))
         if current_day and workout:
@@ -58,7 +50,3 @@ class Schedule:
 
     def __repr__(self):
         return f"Schedule(schedule={self.schedule})"
-    
-
-
-
