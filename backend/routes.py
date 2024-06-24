@@ -115,6 +115,7 @@ def fetch_api_data(endpoint, params=None):
 def gather_info_operations(age, gender, weight, goal, days, available_time_per_session):
     try:
         # Create custom schedule
+        
         custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
         logger.debug("Custom schedule created: %s", custom_schedule)
 
@@ -138,7 +139,10 @@ def gather_info_operations(age, gender, weight, goal, days, available_time_per_s
     
     except Exception as e:
         # Log and return error response
-        logger.error("Error creating schedule: %s", str(e))
+        if custom_schedule: 
+            logger.error(f"Error creating schedule: {custom_schedule} %s", str(e))
+        else: 
+            logger.error("Error creating schedule: %s", str(e))
         return str(e), 500
 
 def register_routes(app):
@@ -276,7 +280,7 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
         future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): (day, params['target']) for day, endpoint, params in api_calls}
         api_results = {(day, target): future.result() for future, (day, target) in future_to_params.items()}
 
-    logging.debug("API calls completed.")
+    logging.debug(f"API calls completed. {api_results}")
 
     # Organize routines by day
     routines = {day: [] for day in days}
