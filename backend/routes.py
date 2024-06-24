@@ -206,7 +206,7 @@ def register_routes(app):
             try:
                 data = request.get_json()
                 app.logger.debug("Received data: %s", data)
-                
+                received_data = data
                 # Validate and extract data from request
                 age = int(data.get('age'))  # Ensure age is an integer
                 gender = data.get('gender')
