@@ -209,7 +209,7 @@ def register_routes(app):
 
             inserted_id = server_crud_operations(
                 operation="insert",
-                json_data={schedule_data},
+                json_data={"schedule": schedule_data},
                 collection_name="schedules"
             )
 
@@ -268,12 +268,12 @@ def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any
     else:
         return {"error": "Failed to fetch data from the API!"}
 
-def create_custom_schedule(gender, weight, goal, days, available_time_per_session):
+def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str], available_time_per_session: int):
     distributor = MuscleGroupDistributor(len(days))
     muscle_groups_schedule = distributor.distribute_muscle_groups()
 
     # Flatten the list of muscle group days to reduce nested loops
-    target_muscles = [(day, muscle.value) for day in muscle_groups_schedule for muscle in day]
+    target_muscles = [(days[i], muscle.value) for i, day in enumerate(muscle_groups_schedule) for muscle in day]
     
     # Prepare API call parameters for all target muscles
     api_calls = [

@@ -83,5 +83,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  validateForm(); // Initial validation to disable the button if necessary
+  validateForm();
 });
