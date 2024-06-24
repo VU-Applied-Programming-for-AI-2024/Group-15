@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
   
-      fetch('http://localhost:5000/api/save-schedule', {
+      fetch('http://localhost:5000/save-schedule', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,4 +65,3 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   });
-  

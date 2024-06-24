@@ -22,8 +22,10 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
-API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
+API_KEY = os.environ.get("EXERCISE_API_KEY")
 BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
+DB_NAME = "myFitnessAIcoach"
+COLLECTION_NAME = "schedules"  # Collection name where schedules will be stored
 
 class CustomScheduleEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -54,7 +56,6 @@ class CustomScheduleEncoder(json.JSONEncoder):
                 for day, workout in obj.schedule.items()
             }
         return super().default(obj)
-
 
 def treat_gender_data(gender):
     if gender == "other":
@@ -98,7 +99,7 @@ def search_exercises(user_input, bodypart, equipment):
 
     filtered_exercises = [
         exercise for exercise in exercises
-        if ((user_input.lower() in exercise['name'].lower()) or (user_input.lower() in exercise['target'].lower())) and  
+        if (user_input.lower() in exercise['name'].lower()) and 
         (equipment.lower() in exercise['equipment'].lower())
     ]
 
@@ -115,7 +116,6 @@ def fetch_api_data(endpoint, params=None):
 def gather_info_operations(age, gender, weight, goal, days, available_time_per_session):
     try:
         # Create custom schedule
-        
         custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
         logger.debug("Custom schedule created: %s", custom_schedule)
 
@@ -131,7 +131,7 @@ def gather_info_operations(age, gender, weight, goal, days, available_time_per_s
         inserted_id = server_crud_operations(
             operation="insert",
             json_data={"schedule": schedule_data},
-            collection_name="schedules"
+            collection_name=COLLECTION_NAME
         )
 
         # Return success response with schedule ID
@@ -139,10 +139,7 @@ def gather_info_operations(age, gender, weight, goal, days, available_time_per_s
     
     except Exception as e:
         # Log and return error response
-        if custom_schedule: 
-            logger.error(f"Error creating schedule: {custom_schedule} %s", str(e))
-        else: 
-            logger.error("Error creating schedule: %s", str(e))
+        logger.error("Error creating schedule: %s", str(e))
         return str(e), 500
 
 def register_routes(app):
@@ -195,40 +192,83 @@ def register_routes(app):
         exercises, status_code = search_exercises(user_input, bodypart, equipment)
         return jsonify(exercises), status_code
     
-    @app.route('/create_schedule', methods=['POST'])
+    @app.route('/create_schedule', methods=['GET','POST'])
     def gather_info_route():
+        if request.method == 'GET':
+            # Handle GET request logic
+            return jsonify({"message": "This is a GET request"})
+        
+        elif request.method == 'POST':
        
+            try:
+                data = request.get_json()
+                app.logger.debug("Received data: %s", data)
+                
+                # Validate and extract data from request
+                age = int(data.get('age'))  # Ensure age is an integer
+                gender = data.get('gender')
+                weight = int(data.get('weight'))  # Ensure weight is an integer
+                goal = data.get('goal')
+                days = data.get('days')
+                available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
+                
+                # Log parsed data
+                app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
+                
+                # Treat gender data
+                gender = treat_gender_data(gender)
+                app.logger.debug(f"Treated gender: {gender}")
+
+                # Call function to process schedule creation
+                result, status_code = gather_info_operations(age, gender, weight, goal, days, available_time_per_session)
+                
+                if status_code == 200:
+                    return jsonify(result), status_code
+                else:
+                    return jsonify({"status": "error", "message": result}), status_code
+            
+            except Exception as e:
+                app.logger.error("Error: %s", str(e))
+                return jsonify({"status": "error", "message": str(e)}), 500
+
+    # New route for saving the schedule
+    @app.route('/save-schedule', methods=['POST'])
+    def save_schedule():
         try:
             data = request.get_json()
-            app.logger.debug("Received data: %s", data)
-            received_data = data
-            # Validate and extract data from request
-            age = str(data.get('age'))  # Ensure age is an integer
-            gender = data.get('gender')
-            weight = str(data.get('weight'))  # Ensure weight is an integer
-            goal = data.get('goal')
-            days = data.get('days')
-            available_time_per_session = int(data.get('available_time'))  # Ensure available time is an integer
-            
-            # Log parsed data
-            app.logger.debug(f"Parsed data - age: {age}, gender: {gender}, weight: {weight}, goal: {goal}, days: {days}, available_time: {available_time_per_session}")
-            
-            # Treat gender data
-            gender = treat_gender_data(gender)
-            app.logger.debug(f"Treated gender: {gender}")
+            app.logger.debug("Received schedule data: %s", data)
 
-            # Call function to process schedule creation
-            result, status_code = gather_info_operations(age, gender, weight, goal, days, available_time_per_session)
-            
-            if status_code == 200:
-                return jsonify(result), status_code
-            else:
-                return jsonify({"status": "error", "message": result}), status_code
+            # Convert the received JSON data into a Schedule instance
+            schedule = {}
+            for day, exercises in data.items():
+                workout = Workout()
+                for exercise_data in exercises:
+                    exercise = Exercise(
+                        body_part=exercise_data.get('bodyPart', 'unknown'),
+                        equipment=exercise_data.get('equipment', 'unknown'),
+                        gif_url=exercise_data.get('gifUrl', 'unknown'),
+                        exercise_id=exercise_data.get('id', 'unknown'),
+                        name=exercise_data['name'],
+                        target=exercise_data.get('target', 'unknown')
+                    )
+                    workout_exercise = WorkoutExercise(exercise, exercise_data['sets'], exercise_data['reps'])
+                    workout.add_exercise(workout_exercise)
+                schedule[Day[day.upper()]] = workout
+
+            custom_schedule = Schedule([schedule[day] for day in Day])
+
+            # Save the schedule to the database
+            inserted_id = server_crud_operations(
+                operation="insert",
+                json_data={"schedule": json.dumps(custom_schedule, cls=CustomScheduleEncoder)},
+                collection_name=COLLECTION_NAME
+            )
+
+            return jsonify({"status": "success", "message": "Schedule saved successfully", "schedule_id": str(inserted_id)}), 200
         
         except Exception as e:
-            app.logger.error("Error: %s", str(e))
+            app.logger.error("Error saving schedule: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
-
 
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
     def get_schedule(schedule_id):
@@ -239,7 +279,7 @@ def register_routes(app):
             # Read the schedule from the database
             schedule = server_crud_operations(
                 operation="read",
-                collection_name="schedules",
+                collection_name=COLLECTION_NAME,
                 key="_id",
                 value=schedule_id
             )
@@ -251,7 +291,7 @@ def register_routes(app):
         except Exception as e:
             print("Error:", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
-        
+
 def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
     headers = {"Authorization": f"Bearer {API_KEY}"}
     response = requests.get(endpoint, headers=headers, params=params)
@@ -280,7 +320,7 @@ def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str],
         future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): (day, params['target']) for day, endpoint, params in api_calls}
         api_results = {(day, target): future.result() for future, (day, target) in future_to_params.items()}
 
-    logging.debug(f"API calls completed. {api_results}")
+    logging.debug("API calls completed.")
 
     # Organize routines by day
     routines = {day: [] for day in days}
