@@ -125,13 +125,20 @@ def call_external_api(api_data):
     try:
         endpoint = f"{API_ENDPOINT}/create-routine"
         headers = {"Authorization": f"Bearer {API_KEY}"}
+        logging.debug(f"Calling external API at {endpoint} with data: {api_data}")
         response = requests.post(endpoint, headers=headers, json=api_data)
+        
+        logging.debug(f"External API response status: {response.status_code}")
+        logging.debug(f"External API response data: {response.text}")
+
         if response.status_code == 200:
             return response.json()
         else:
             return {"status": False, "message": "Failed to create routine"}
     except Exception as e:
+        logging.error(f"Error calling external API: {str(e)}")
         return {"status": False, "message": str(e)}
+
 
 def process_api_response(api_response):
     routine = {}
