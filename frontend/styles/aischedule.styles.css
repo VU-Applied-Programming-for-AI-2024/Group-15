@@ -1,10 +1,12 @@
+
 aischedule h1 a {
     position: relative;
     z-index: 10;
     text-decoration: none !important;
 }
 
-/* Days selection styles */
+
+/*Days selection styles*/
 .day-selector {
     text-align: center;
     margin-top: 20px;
@@ -30,12 +32,13 @@ aischedule h1 a {
 }
 
 .day.active {
-    background-color: grey;
+    background-color: #80d0c7 ;
     color: white;
 }
 
-/* Sliders styles */
-/* sliders background */
+/* SLIDERS STYLES*/
+
+/* sliders background*/
 .age-range, .weight-range {
     height: 50px;
     width: 100%;
@@ -47,7 +50,7 @@ aischedule h1 a {
     margin: auto;
 }
 
-/* number showed when selecting */
+/*number showed when selecting*/
 .age-range .slider-value, .weight-range .slider-value {
     position: relative;
     width: 100%;
@@ -75,13 +78,13 @@ aischedule h1 a {
     transform: translateX(-50%) scale(1);
 }
 
-/* slider surrounding when using */
+/*slider surrounding when using */
 .age-range .slider-value .slider-span:after, .weight-range .slider-value .slider-span:after {
     position: absolute;
     content: "";
     height: 45px;
     width: 45px;
-    background: linear-gradient(135deg, #2A3D66, #2A3D66);
+    background: linear-gradient(135deg, #1b98e1 0%, #80d0c7 100%);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     left: 50%;
     transform: translateX(-50%) rotate(45deg);
@@ -91,13 +94,12 @@ aischedule h1 a {
     border-top-right-radius: 50%;
     border-bottom-left-radius: 50%;
 }
-
-/* Thumb styling (the button we actually touch) */
+/*Thumb styling (the button we actually touch)*/
 .age-range .field input::-webkit-slider-thumb, .weight-range .field input::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
-    background: linear-gradient(135deg, #2A3D66, #586175);
+    background: linear-gradient(135deg, #1b98e1 0%, #80d0c7 100%);
     border-radius: 50%;
     border: 2px solid #B0B3B8;
     cursor: pointer;
@@ -106,14 +108,105 @@ aischedule h1 a {
 
 /* Thumb hover effect */
 .age-range .field input::-webkit-slider-thumb:hover, .weight-range .field input::-webkit-slider-thumb:hover {
-    background: linear-gradient(135deg, #00A8A8, #2A3D66);
+    background: linear-gradient(135deg, #2A3D66, #80d0c7);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Slider and values */
+/*Slider and values*/
 .age-range .field, .weight-range .field {
     position: relative;
     display: flex;
     align-items: center;
-    
+    justify-content: center;
+    height: 100%;
+}
+/*numbers on the side*/
+.age-range .field .value, .weight-range .field .value {
+    position: absolute;
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+}
+.age-range .field .value.left, .weight-range .field .value.left {
+    left: -22px;
+}
+.age-range .field .value.right, .weight-range .field .value.right {
+    right: -43px;
+}
+
+/*Track style*/
+.age-range .field input, .weight-range .field input {
+    appearance: none;
+    height: 10px;
+    width: 100%;
+    background: linear-gradient(90deg, #80d0c7 100%,#1b98e1 0%);
+    border-radius: 5px;
+    outline: none;
+    border: none;
+}
+
+
+
+/* Gender selection buttons */
+.gender-selection {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+.gender-selection input[type="radio"] {
+    display: none;
+}
+
+/* Style for the label */
+.gender-selection label {
+    position: relative;
+    color: #D0D3D4;
+    font-family: sans-serif;
+    font-size: 20px;
+    border: 2px solid rgba(245, 245, 245, 0.678);
+    background: linear-gradient(135deg, #80d0c7, #586175);
+    border-radius: 10px;
+    padding: 10px 50px;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+/* Style for non-checked labels */
+.gender-selection label::before {
+    content: "";
+    height: 30px;
+    width: 30px;
+    border: 3px solid #D0D3D4;
+    border-radius: 50%;
+    margin-right: 10px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+/* Style for checked label */
+.gender-selection input[type="radio"]:checked + label {
+    background-color: #4A627D;
+    color: #B0B3B8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gender-selection input[type="radio"]:checked + label:before {
+    height: 25px;
+    width: 25px;
+    border: 5px solid #B0B3B8;
+    background-color: black;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gender-selection label:hover {
+    background-color: #2A3D66;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
