@@ -77,7 +77,7 @@ def search_exercises(user_input, bodypart, equipment):
     filtered_exercises = [
         exercise for exercise in exercises
         if (user_input.lower() in exercise['name'].lower() or 
-            user_input.lower() in exercise['description'].lower()) and 
+            user_input.lower() in exercise['target'].lower()) and 
         (equipment.lower() in exercise['equipment'].lower())
     ]
 
