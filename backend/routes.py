@@ -1,6 +1,8 @@
 from flask import jsonify, request
 import requests
 import os
+from requests.adapters import HTTPAdapter
+
 from typing import List, Any, Union, Dict
 from dotenv import load_dotenv, find_dotenv
 from models.day import Day
@@ -13,12 +15,15 @@ from utils.crud_operations_azure import server_crud_operations
 import re
 from bson import ObjectId
 import json
-from models.bodypart import MuscleGroupDistributor
+from models.bodypart import MuscleGroupDistributor, BodyPart
+from urllib3.util.retry import Retry
 import concurrent.futures
-
+import random
+import logging
 load_dotenv(find_dotenv())
 
-
+logging.basicConfig(level=logging.DEBUG) 
+logger = logging.getLogger(__name__)
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
 API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
 BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
@@ -26,7 +31,7 @@ BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
 class CustomScheduleEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, BodyPart):
-            return obj.value  # List of strings
+            return obj.value  
         elif isinstance(obj, Exercise):
             return {
                 'bodyPart': obj.body_part,
@@ -59,32 +64,7 @@ def treat_gender_data(gender):
         gender = "female"
     return gender
 
-def treat_muscles_data (muscles)->List[BodyPart]:
-     # Change the muscles into BodyParts objects
-    muscle_list: List[BodyPart] = []
-    for muscle in muscles:
-        if muscle == "back":
-            muscle_list.append(BodyPart.BACK)
-        if muscle == "cardio":
-            muscle_list.append(BodyPart.CARDIO)
-        if muscle == "chest":
-            muscle_list.append(BodyPart.CHEST)
-        if muscle == "lower arms":
-            muscle_list.append(BodyPart.LOWER_ARMS)
-        if muscle == "lower legs":
-            muscle_list.append(BodyPart.LOWER_LEGS)
-        if muscle == "neck":
-            muscle_list.append(BodyPart.NECK)
-        if muscle == "shoulders":
-            muscle_list.append(BodyPart.SHOULDERS)
-        if muscle == "upper arms":
-            muscle_list.append(BodyPart.UPPER_ARMS)
-        if muscle == "upper legs":
-            muscle_list.append(BodyPart.UPPER_LEGS)
-        if muscle == "waist":
-            muscle_list.append(BodyPart.WAIST)
-        
-    return muscle_list
+
 
 def search_exercises(user_input, bodypart, equipment):
     endpoint = f"{BASE_URL}/310/list+exercise+by+body+part"
@@ -105,16 +85,36 @@ def search_exercises(user_input, bodypart, equipment):
 
 def fetch_api_data(endpoint, params=None):
     headers = {"Authorization": f"Bearer {API_KEY}"}
-    response = requests.get(endpoint, headers=headers, params=params)
-    if response.status_code == 200:
-        return response.json(), 200
-    else:
-        return {"error": "Failed to fetch data from the API!"}, response.status_code
+    
+  
+    retry_strategy = Retry(
+        total=5,
+        backoff_factor=1,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["HEAD", "GET", "OPTIONS"]
+    )
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    
+  
+    session = requests.Session()
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+
+    try:
+        response = session.get(endpoint, headers=headers, params=params, verify=False)  # Set verify=False temporarily
+        if response.status_code == 200:
+            return response.json(), 200
+        else:
+            return {"error": "Failed to fetch data from the API!"}, response.status_code
+    except requests.exceptions.SSLError as ssl_error:
+        return {"error": f"SSL Error: {str(ssl_error)}"}, 500
+    except requests.exceptions.RequestException as req_error:
+        return {"error": f"Request Error: {str(req_error)}"}, 500
 
 def register_routes(app):
     @app.route('/')
     def home():
-        return "Welcome to the Exercise Database API! FElix is the best "
+        return "Welcome to the Exercise Database API! Felix is the best"
 
     @app.route('/list_of_body_parts', methods=['GET'])
     def list_of_body_parts():
@@ -149,19 +149,28 @@ def register_routes(app):
     def gather_info():
         try:
             data = request.get_json()
+            if not data:
+                raise ValueError("No JSON data received")
             
-            
+
             age = int(data.get('age'))
             gender = data.get('gender')
+            
             weight = int(data.get('weight')) 
             goal = data.get('goal')
             days = data.get('days')
             available_time_per_session = int(data.get('available_time')) 
 
+
+            print(f"Received data for creating schedule: %s,gender: {gender}, {weight}, {goal}, {days}, {available_time_per_session}")
             gender = treat_gender_data(gender)
+
+             
+            
 
             custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
             json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
+            logger.info('Creating custom schedule...')
             schedule_data = json.loads(json_custom_schedule)
 
             inserted_id = server_crud_operations(
@@ -169,12 +178,11 @@ def register_routes(app):
                 json_data={"schedule": schedule_data},
                 collection_name="schedules"
             )
-
+            logger.info('Custom schedule created successfully')
             return jsonify({"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}), 200
         except Exception as e:
-            app.logger.error("Error: %s", str(e))
+            logger.error("Error: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
-
 
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
     def get_schedule(schedule_id):
@@ -203,53 +211,88 @@ def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any
     else:
         return {"error": "Failed to fetch data from the API!"}
 
+import logging
+
+
+
 def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str], available_time_per_session: int):
     distributor = MuscleGroupDistributor(len(days))
     muscle_groups_schedule = distributor.distribute_muscle_groups()
 
-    api_calls = []
-    for i, day_muscles in enumerate(muscle_groups_schedule):
-        for muscle in day_muscles:
-            for target in muscle.value:
-                api_calls.append((days[i], f"{BASE_URL}/4824/ai+workout+planner", {'target': target, 'gender': gender, 'weight': weight, 'goal': goal}))
-
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): (day, params['target']) for day, endpoint, params in api_calls}
-        api_results = {(day, target): future.result() for future, (day, target) in future_to_params.items()}
-
-    # Organize routines by day
-    routines = {day: [] for day in days}
-    for (day, target), result in api_results.items():
-        if 'routine' in result:
-            routines[day].append(result['routine'][0])
-
     custom_schedule = {day: Workout() for day in days}
-    exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
-    print(exercise_pattern)
-    for day, daily_routines in routines.items():
+
+    for i, day_muscles in enumerate(muscle_groups_schedule):
         current_workout = Workout()
-        for routine in daily_routines:
-            lines = routine.split('**')
-            for line in lines:
-                line = line.strip()
-                exercises = line.split('\n')
-                for exercise in exercises:
-                    if exercise and not exercise.startswith('Day'):
-                        match = exercise_pattern.match(exercise.strip())
-                        if match:
-                            name = match.group(1).strip()
-                            sets = int(match.group(2))
-                            reps = f"{match.group(3)}-{match.group(4)}"
-                            exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=name, target="unknown")
-                            current_workout.add_exercise(WorkoutExercise(exercise_obj, sets, reps))
-                        else:
-                            exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=exercise.strip(), target="unknown")
-                            current_workout.add_exercise(WorkoutExercise(exercise_obj, 0, ""))
-            
-            total_time, _ = current_workout.calculate_workout_time()
-            if total_time > available_time_per_session:
-                break
+        day_enum = days[i].upper()  
 
-        custom_schedule[day] = current_workout
+        #
+        random_body_part = random.choice(day_muscles)
+        muscles = distributor.get_specific_muscles(random_body_part)  
 
-    return Schedule([custom_schedule[day] for day in days])
+        for muscle in muscles:
+            exercise_added = False
+            tries = 0
+            exercises = []
+            status_code = 500
+
+            logger.info(f"Fetching exercises for muscle: {muscle}")
+
+          
+            while not exercise_added and tries < 10:
+                try:
+                    exercises, status_code = search_exercises(user_input='', bodypart=muscle, equipment='') 
+                except Exception as e:
+                    logger.error(f"Error fetching exercises: {e}")
+
+                logger.info(f"Fetched {len(exercises)} exercises with status code {status_code}")
+
+                if status_code == 200 and exercises:
+                    try:
+                        exercise_data = random.choice(exercises)
+                        exercise_obj = Exercise(
+                            body_part=random_body_part,  
+                            equipment=exercise_data['equipment'],
+                            gif_url=exercise_data['gifUrl'],
+                            exercise_id=exercise_data['id'],
+                            name=exercise_data['name'],
+                            target=exercise_data['target']
+                        )
+                        workout_exercise = WorkoutExercise(exercise=exercise_obj, sets=3, reps="8-12")
+                        current_workout.add_exercise(workout_exercise)
+                        exercise_added = True
+                    except Exception as e:
+                        logger.error(f"Error adding exercise: {e}")
+                tries += 1
+
+            # If no exercise was added after 10 tries, fallback to the quickest exercise
+            if not exercise_added and exercises:
+                try:
+                    quickest_exercise = min(exercises, key=lambda ex: ex['duration'])
+                    exercise_obj = Exercise(
+                        body_part=random_body_part,  # Use random_body_part as string
+                        equipment=quickest_exercise['equipment'],
+                        gif_url=quickest_exercise['gifUrl'],
+                        exercise_id=quickest_exercise['id'],
+                        name=quickest_exercise['name'],
+                        target=quickest_exercise['target']
+                    )
+                    workout_exercise = WorkoutExercise(exercise=exercise_obj, sets=3, reps="8-12")
+                    current_workout.add_exercise(workout_exercise)
+                except Exception as e:
+                    logger.error(f"Error adding fallback exercise: {e}")
+
+        # Check if the workout exceeds available time per session
+        total_time, _ = current_workout.calculate_workout_time()
+        if total_time <= available_time_per_session:
+            custom_schedule[day_enum] = current_workout
+        else:
+            # Handle the case where the workout exceeds available time
+            while total_time > available_time_per_session and current_workout.exercises:
+                current_workout.exercises.pop()
+                total_time, _ = current_workout.calculate_workout_time()
+            custom_schedule[day_enum] = current_workout
+
+
+    schedule_input = {day: custom_schedule[day] for day in custom_schedule.keys()}
+
+    return Schedule([schedule_input[day] for day in custom_schedule.keys()])
