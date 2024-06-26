@@ -60,121 +60,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.exercises {
-    margin-top: 10px;
-}
-
-.day-icon {
-    display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    align-items: center; /* Center buttons horizontally */
-  }
-
-.exercises {
-    margin-top: 10px;
-}
-
-/* Button Styles */
-.btn {
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-}
-
-.add-exercise {
-    background: #1F2C33;
-    color: white;
-}
-
-.stats-btn {
-    background: #6E645D;
-    color: white;
-}
-
-.edit-btn {
-    background: #6E645D;
-    color: white;
-}
-
-#save-schedule-btn {
-    margin-top: 20px; /* Adjust as needed */
-    background: #ED9053;
-    color: white;
-}
-#add-exercise-btn{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-
-
-
-
-
-
-/* General Styles */
-.manual_schedule {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #1c1f2e00;
-    color: #333333;
-    min-height: 100vh;
-    padding: 20px;
-}
-
-.manual_schedule h1 a {
-    position: relative;
-    z-index: 10;
-    text-decoration: none !important;
-}
-
-.schedule-center-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto;
-    padding: 20px;
-}
-
-.schedule-description {
-    margin-top: 10px;
-    font-style: italic;
-    color: #ffffff;
-    text-align: center;
-}
-
-.schedule {
-    width: 100%; /* Ensure each day takes full width */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px; /* Adjust spacing between days */
-}
-.day {
-    width: 80%;
-    max-width: 800px;
-    background: linear-gradient(80deg, rgba(27, 152, 225, 0.7) 0%, rgba(128, 208, 199, 0.7) 100%);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.day-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-.day-text {
     flex: 1; /* Take up the available space */
 }
 
@@ -184,11 +69,7 @@
 
 .icon {
     display: flex;
-    gap: 10px;
-}
-
-.exercises {
-    margin-top: 10px;
+    gap: 5px;
 }
 
 /* Button Styles */
@@ -198,7 +79,7 @@
     cursor: pointer;
 }
 
-.add-exercise {
+.add-exercise-btn {
     background: #1F2C33;
     color: white;
 }
@@ -218,9 +99,18 @@
     background: #ED9053;
     color: white;
 }
-#add-exercise-btn{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
+
+
+
+.modal-header{
+    background: linear-gradient(280deg, rgba(27, 152, 225, 0.7) 0%, rgba(128, 208, 199, 0.7) 100%);
+    z-index: 1000;
+}
+.modal-title {
+    text-align: center; /* Center the text horizontally */
+   
+    display: block; /* Ensure it's a block-level element */
+    width: 100%; /* Set width to 100% for full width */
+    font-size: 1.8rem;
+}
