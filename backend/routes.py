@@ -1,8 +1,6 @@
 from flask import jsonify, request
 import requests
 import os
-from requests.adapters import HTTPAdapter
-
 from typing import List, Any, Union, Dict
 from dotenv import load_dotenv, find_dotenv
 from models.day import Day
@@ -15,23 +13,27 @@ from utils.crud_operations_azure import server_crud_operations
 import re
 from bson import ObjectId
 import json
-from models.bodypart import MuscleGroupDistributor, BodyPart
-from urllib3.util.retry import Retry
+from models.bodypart import MuscleGroupDistributor
 import concurrent.futures
-import random
-import logging
+import openai
+import logging 
+
 load_dotenv(find_dotenv())
 
-logging.basicConfig(level=logging.DEBUG) 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
-API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
-BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
+API_KEY = os.environ.get("EXERCISE_API_KEY")
+BASE_URL = os.environ.get("API_ENDPOINT")
+OPENAI_KEY = os.environ.get("OPENAI_KEY")
+openai.api_key = os.getenv("OPENAI_KEY")
 
 class CustomScheduleEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, BodyPart):
-            return obj.value  
+            return obj.value  # List of strings
         elif isinstance(obj, Exercise):
             return {
                 'bodyPart': obj.body_part,
@@ -58,12 +60,88 @@ class CustomScheduleEncoder(json.JSONEncoder):
             }
         return super().default(obj)
 
-
 def treat_gender_data(gender):
     if gender == "other":
         gender = "female"
     return gender
 
+def treat_muscles_data (muscles)->List[BodyPart]:
+     # Change the muscles into BodyParts objects
+    muscle_list: List[BodyPart] = []
+    for muscle in muscles:
+        if muscle == "back":
+            muscle_list.append(BodyPart.BACK)
+        if muscle == "cardio":
+            muscle_list.append(BodyPart.CARDIO)
+        if muscle == "chest":
+            muscle_list.append(BodyPart.CHEST)
+        if muscle == "lower arms":
+            muscle_list.append(BodyPart.LOWER_ARMS)
+        if muscle == "lower legs":
+            muscle_list.append(BodyPart.LOWER_LEGS)
+        if muscle == "neck":
+            muscle_list.append(BodyPart.NECK)
+        if muscle == "shoulders":
+            muscle_list.append(BodyPart.SHOULDERS)
+        if muscle == "upper arms":
+            muscle_list.append(BodyPart.UPPER_ARMS)
+        if muscle == "upper legs":
+            muscle_list.append(BodyPart.UPPER_LEGS)
+        if muscle == "waist":
+            muscle_list.append(BodyPart.WAIST)
+        
+    return muscle_list
+
+def parse_exercise_response(response_text):
+    try:
+        prompt = f"""
+        Extract the exercises from the following response and provide them in a structured JSON format, but remember you don't have to cpy the input or leave comments or anything else, I just want the pure json file from you, with only the name of the exercise, the sets and the number of reps per each set. In this format: 
+        
+
+        {response_text}
+
+        The format should be:
+        {{
+          "Day 1": [
+            {{
+              "exercise": "exercise_name",
+              "sets": x,
+              "reps": y,
+            }},
+            ...
+          ]
+        }}
+
+        Please only return the JSON data without any additional text or formatting. Here is the provided data:
+        {response_text}
+        """
+        completion = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        # Extracting the response content
+        structured_data = completion.choices[0].message['content'].strip()
+        logger.info(f"Structured data from OpenAI: {structured_data}")
+
+        # Ensure the response is a valid JSON
+        try:
+            # Only take the part inside the JSON block
+            start_idx = structured_data.find('{')
+            end_idx = structured_data.rfind('}') + 1
+            json_str = structured_data[start_idx:end_idx]
+            return json.loads(json_str)
+        except json.JSONDecodeError as json_err:
+            logger.error(f"JSON decode error: {json_err}")
+            raise ValueError("Invalid JSON response from OpenAI")
+        
+    except Exception as e:
+        logger.error(f"Error in parsing exercise response: {str(e)}")
+        logger.error(f"Response from OpenAI: {response_text}")
+        raise
 
 
 def search_exercises(user_input, bodypart, equipment):
@@ -85,36 +163,16 @@ def search_exercises(user_input, bodypart, equipment):
 
 def fetch_api_data(endpoint, params=None):
     headers = {"Authorization": f"Bearer {API_KEY}"}
-    
-  
-    retry_strategy = Retry(
-        total=5,
-        backoff_factor=1,
-        status_forcelist=[429, 500, 502, 503, 504],
-        allowed_methods=["HEAD", "GET", "OPTIONS"]
-    )
-    adapter = HTTPAdapter(max_retries=retry_strategy)
-    
-  
-    session = requests.Session()
-    session.mount("https://", adapter)
-    session.mount("http://", adapter)
-
-    try:
-        response = session.get(endpoint, headers=headers, params=params, verify=False)  # Set verify=False temporarily
-        if response.status_code == 200:
-            return response.json(), 200
-        else:
-            return {"error": "Failed to fetch data from the API!"}, response.status_code
-    except requests.exceptions.SSLError as ssl_error:
-        return {"error": f"SSL Error: {str(ssl_error)}"}, 500
-    except requests.exceptions.RequestException as req_error:
-        return {"error": f"Request Error: {str(req_error)}"}, 500
+    response = requests.get(endpoint, headers=headers, params=params)
+    if response.status_code == 200:
+        return response.json(), 200
+    else:
+        return {"error": "Failed to fetch data from the API!"}, response.status_code
 
 def register_routes(app):
     @app.route('/')
     def home():
-        return "Welcome to the Exercise Database API! Felix is the best"
+        return "Welcome to the Exercise Database API! FElix is the best "
 
     @app.route('/list_of_body_parts', methods=['GET'])
     def list_of_body_parts():
@@ -146,43 +204,28 @@ def register_routes(app):
         return jsonify(exercises), status_code
     
     @app.route('/create-schedule', methods=['POST'])
-    def gather_info():
+    def create_schedule():
         try:
             data = request.get_json()
-            if not data:
-                raise ValueError("No JSON data received")
+            app.logger.info(f"Received data: {data}")
             
-
             age = int(data.get('age'))
             gender = data.get('gender')
-            
-            weight = int(data.get('weight')) 
+            weight = int(data.get('weight'))
             goal = data.get('goal')
             days = data.get('days')
-            available_time_per_session = int(data.get('available_time')) 
+            available_time_per_session = int(data.get('available_time'))
 
-
-            print(f"Received data for creating schedule: %s,gender: {gender}, {weight}, {goal}, {days}, {available_time_per_session}")
-            gender = treat_gender_data(gender)
-
-             
-            
+            gender = "female" if gender == "other" else gender
 
             custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
-            json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
-            logger.info('Creating custom schedule...')
-            schedule_data = json.loads(json_custom_schedule)
-
-            inserted_id = server_crud_operations(
-                operation="insert",
-                json_data={"schedule": schedule_data},
-                collection_name="schedules"
-            )
-            logger.info('Custom schedule created successfully')
-            return jsonify({"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}), 200
+            structured_workout = structure_workout_by_time(custom_schedule, len(days), available_time_per_session)
+            
+            return jsonify(structured_workout), 200
         except Exception as e:
-            logger.error("Error: %s", str(e))
+            app.logger.error("Error: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
+
 
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
     def get_schedule(schedule_id):
@@ -202,97 +245,88 @@ def register_routes(app):
         except Exception as e:
             print("Error:", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
+        
+    @app.route('/store-schedule', methods=['POST'])
+    def store_schedule():
+        try:
+            schedule = request.get_json()
+            
+            inserted_id = server_crud_operations(
+                operation="insert",
+                json_data={"schedule": schedule},
+                collection_name="schedules"
+            )
 
-def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
-    headers = {"Authorization": f"Bearer {API_KEY}"}
+            return jsonify({"status": "success", "message": "Schedule stored successfully", "schedule_id": str(inserted_id)}), 200
+        except Exception as e:
+            app.logger.error("Error: %s", str(e))
+            return jsonify({"status": "error", "message": str(e)}), 500
+
+def fetch_api_data_async(endpoint, params):
+    headers = {'Authorization': 'Bearer 4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh'}
     response = requests.get(endpoint, headers=headers, params=params)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return {"error": "Failed to fetch data from the API!"}
+    return response.json()
 
-import logging
-
-
-
-def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str], available_time_per_session: int):
+def create_custom_schedule(gender, weight, goal, days, available_time_per_session):
     distributor = MuscleGroupDistributor(len(days))
     muscle_groups_schedule = distributor.distribute_muscle_groups()
 
-    custom_schedule = {day: Workout() for day in days}
+    api_calls = []
+    for day_muscles in muscle_groups_schedule:
+        for muscle in day_muscles:
+            for target in muscle.value:
+                api_calls.append((f"{BASE_URL}/4824/ai+workout+planner", {'target': target, 'gender': gender, 'weight': weight, 'goal': goal}))
 
-    for i, day_muscles in enumerate(muscle_groups_schedule):
-        current_workout = Workout()
-        day_enum = days[i].upper()  
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): (endpoint, params) for endpoint, params in api_calls}
+        api_results = [future.result() for future in future_to_params]
 
-        #
-        random_body_part = random.choice(day_muscles)
-        muscles = distributor.get_specific_muscles(random_body_part)  
+    workout_data = {}
+    for i, api_response in enumerate(api_results):
+        try:
+            day = f"Day {i + 1}"
+            logger.info(f"API response for {day}: {api_response}")
+            workout_data[day] = parse_exercise_response(api_response['routine'][0])
+        except Exception as e:
+            logger.error(f"Error processing day {i + 1}: {e}")
+            continue
 
-        for muscle in muscles:
-            exercise_added = False
-            tries = 0
-            exercises = []
-            status_code = 500
+    return workout_data
 
-            logger.info(f"Fetching exercises for muscle: {muscle}")
+def structure_workout_by_time(all_exercises, days, available_time_per_session):
+    workout_schedule = {f"Day {i+1}": [] for i in range(days)}
+    current_day = 1
+    workout = Workout()
 
-          
-            while not exercise_added and tries < 10:
-                try:
-                    exercises, status_code = search_exercises(user_input='', bodypart=muscle, equipment='') 
-                except Exception as e:
-                    logger.error(f"Error fetching exercises: {e}")
+    for day, exercises in all_exercises.items():
+        for exercise in exercises:
+            workout_exercise = WorkoutExercise(
+                exercise=Exercise(
+                    body_part=exercise['bodyPart'],
+                    equipment=exercise['equipment'],
+                    gif_url=exercise['gifUrl'],
+                    exercise_id=exercise['id'],
+                    name=exercise['name'],
+                    target=exercise['target'],
+                ),
+                sets=exercise['sets'],
+                reps=exercise['reps'],
+            )
+            
+            workout.add_exercise(workout_exercise)
+            total_time, _ = workout.calculate_workout_time()
+            
+            if total_time > available_time_per_session * 60:
+                current_day += 1
+                if current_day > days:
+                    break
+                workout = Workout()
+                workout.add_exercise(workout_exercise)
+            
+            workout_schedule[f"Day {current_day}"].append({
+                'exercise': exercise['name'],
+                'sets': exercise['sets'],
+                'reps': exercise['reps'],
+            })
 
-                logger.info(f"Fetched {len(exercises)} exercises with status code {status_code}")
-
-                if status_code == 200 and exercises:
-                    try:
-                        exercise_data = random.choice(exercises)
-                        exercise_obj = Exercise(
-                            body_part=random_body_part,  
-                            equipment=exercise_data['equipment'],
-                            gif_url=exercise_data['gifUrl'],
-                            exercise_id=exercise_data['id'],
-                            name=exercise_data['name'],
-                            target=exercise_data['target']
-                        )
-                        workout_exercise = WorkoutExercise(exercise=exercise_obj, sets=3, reps="8-12")
-                        current_workout.add_exercise(workout_exercise)
-                        exercise_added = True
-                    except Exception as e:
-                        logger.error(f"Error adding exercise: {e}")
-                tries += 1
-
-            # If no exercise was added after 10 tries, fallback to the quickest exercise
-            if not exercise_added and exercises:
-                try:
-                    quickest_exercise = min(exercises, key=lambda ex: ex['duration'])
-                    exercise_obj = Exercise(
-                        body_part=random_body_part,  # Use random_body_part as string
-                        equipment=quickest_exercise['equipment'],
-                        gif_url=quickest_exercise['gifUrl'],
-                        exercise_id=quickest_exercise['id'],
-                        name=quickest_exercise['name'],
-                        target=quickest_exercise['target']
-                    )
-                    workout_exercise = WorkoutExercise(exercise=exercise_obj, sets=3, reps="8-12")
-                    current_workout.add_exercise(workout_exercise)
-                except Exception as e:
-                    logger.error(f"Error adding fallback exercise: {e}")
-
-        # Check if the workout exceeds available time per session
-        total_time, _ = current_workout.calculate_workout_time()
-        if total_time <= available_time_per_session:
-            custom_schedule[day_enum] = current_workout
-        else:
-            # Handle the case where the workout exceeds available time
-            while total_time > available_time_per_session and current_workout.exercises:
-                current_workout.exercises.pop()
-                total_time, _ = current_workout.calculate_workout_time()
-            custom_schedule[day_enum] = current_workout
-
-
-    schedule_input = {day: custom_schedule[day] for day in custom_schedule.keys()}
-
-    return Schedule([schedule_input[day] for day in custom_schedule.keys()])
+    return workout_schedule
