@@ -151,35 +151,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   
     //SENDING TO BACKEND
-    function saveChangesToServer() {
-      const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule"; // Replace with your actual URL
+    // function saveChangesToServer() {
+    //   const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule"; // Replace with your actual URL
   
-      fetch(userScheduleUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: userToken,
-          schedule: schedule,
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            return response.text().then((text) => {
-              throw new Error(text);
-            });
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Schedule saved successfully:", data);
-          window.location.href = `manual_schedule_${userToken}.html`;
-        })
-        .catch((error) => {
-          console.error("Error saving schedule:", error);
-        });
-    }
+    //   fetch(userScheduleUrl, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       token: userToken,
+    //       schedule: schedule,
+    //     }),
+    //   })
+    //     .then((response) => {
+    //       if (!response.ok) {
+    //         return response.text().then((text) => {
+    //           throw new Error(text);
+    //         });
+    //       }
+    //       return response.json();
+    //     })
+    //     .then((data) => {
+    //       console.log("Schedule saved successfully:", data);
+    //       window.location.href = `manual_schedule_${userToken}.html`;
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error saving schedule:", error);
+    //     });
+    // }
   
 
     //TOKEN STUFF
