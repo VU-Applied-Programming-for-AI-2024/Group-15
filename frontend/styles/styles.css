@@ -16,6 +16,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-attachment: fixed;
   justify-content: flex-start; /* Ensure content starts at the top */
 }
 
