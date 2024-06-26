@@ -2,6 +2,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const schedule = JSON.parse(localStorage.getItem("schedule")) || {};
     let userToken = getUserToken(); // Declare userToken outside the function scope
     console.log(userToken)
+    const overlay = document.getElementById("start-overlay");
+
+    const isOnUserTokenPage = window.location.href.includes(`manual_schedule.html?token=${userToken}`);
+
   
     const days = [
       "Monday",
@@ -81,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
           userToken = getUserToken(); // Update userToken if necessary
       
           // Check if already on the correct modal page
-          if (!window.location.href.endsWith(`${userToken}`)) {
+          if ((!isOnUserTokenPage) ) {
             // Redirect to the manual_schedule.html with userToken
             window.location.href = `https://fitnessaicoach.azurewebsites.net/manual_schedule.html?token=${userToken}`;
           } else {
@@ -195,6 +199,17 @@ document.addEventListener("DOMContentLoaded", function () {
     function generateUniqueToken() {
       return "user-" + Math.random().toString(36).substr(2, 9);
     }
+
+    if (!isOnUserTokenPage) {
+        overlay.style.visibility = "visible";
+        overlay.style.opacity = "1";
+        overlay.addEventListener("click", () => {
+          window.location.href = `https://fitnessaicoach.azurewebsites.net/manual_schedule.html?token=${userToken}`;
+        });
+      } else {
+        overlay.style.visibility = "hidden";
+        overlay.style.opacity = "0";
+      }
   });
   
 
