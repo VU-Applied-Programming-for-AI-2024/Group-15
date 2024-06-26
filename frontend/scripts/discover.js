@@ -1,4 +1,29 @@
-function handleSearch() {
+// Function to check modal context
+function checkModalContext() {
+    // Check if the page is loaded within an iframe and the parent is the modal
+    if (window.self !== window.top && window.parent.document.getElementById('discoverModal')) {
+        return true;
+    }
+    return false;
+}
+
+// Function to add the "Add to Schedule" button
+function addScheduleButton(exerciseElement, exercise) {
+    var buttonHtml = '<button class="btn btn-primary add-to-schedule-btn">Add to Schedule</button>';
+    exerciseElement.innerHTML += buttonHtml;
+
+    // Attach click event listener to the button
+    const addToScheduleBtn = exerciseElement.querySelector('.add-to-schedule-btn');
+    addToScheduleBtn.addEventListener('click', function() {
+        const clickedExerciseName = exercise.name;
+        localStorage.setItem('clickedExercise', JSON.stringify({ name: clickedExerciseName }));
+        console.log(clickedExerciseName)
+       
+    });
+}
+
+// Function to fetch data and display results
+function fetchAndDisplayResults() {
     const userInput = document.getElementById('searchInput').value;
     const bodypart = document.getElementById('bodypartSelect').value;
     const equipment = document.getElementById('equipmentSelect').value;
@@ -20,67 +45,43 @@ function handleSearch() {
         }
         return response.json();
     })
-    .then(data => displayResults(data))
+    .then(data => {
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = '';
+
+        if (data.error) {
+            resultsDiv.textContent = data.error;
+        } else {
+            data.forEach(exercise => {
+                const exerciseElement = document.createElement('div');
+                exerciseElement.classList.add('exercise');
+
+                exerciseElement.innerHTML = `
+                    <p><strong>${exercise.name}</strong></p>
+                    <img src="${exercise.gifUrl}" alt="${exercise.name}">
+                    <p>Equipment: ${exercise.equipment}</p>
+                    <p>Body Part: ${exercise.bodyPart}</p>
+                    <p>Target: ${exercise.target}</p>
+                `;
+
+                // Add "Add to Schedule" button if within modal
+                if (checkModalContext()) {
+                    addScheduleButton(exerciseElement, exercise);
+                }
+
+                resultsDiv.appendChild(exerciseElement);
+            });
+        }
+    })
     .catch(error => {
-        console.error('Error:', error);
-        displayError(error.message);
+        console.error('Error fetching data:', error);
+        // Display error message in resultsDiv
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.textContent = 'Error fetching data: ' + error.message;
     });
 }
 
-function displayResults(data) {
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = '';
-
-    if (data.error) {
-        resultsDiv.textContent = data.error;
-    } else {
-        data.forEach(exercise => {
-            const exerciseElement = document.createElement('div');
-            exerciseElement.classList.add('exercise')
-            exerciseElement.innerHTML = `
-                <p><strong>${exercise.name}</strong></p>
-                <img src="${exercise.gifUrl}" alt="${exercise.name}">
-                <p>Equipment: ${exercise.equipment}</p>
-                <p>Body Part: ${exercise.bodyPart}</p>
-                <p>Target: ${exercise.target}</p>
-                <button class="btn btn-primary add-to-schedule-btn">Add to Schedule</button>
-            `;
-            resultsDiv.appendChild(exerciseElement);
-
-           
-            // Add event listener to the "Add to Schedule" button
-            const addToScheduleBtn = exerciseElement.querySelector('.add-to-schedule-btn');
-            addToScheduleBtn.addEventListener('click', function() {
-                addToSchedule(exercise);
-            });
-        });
-    }
-
-    function addToSchedule(exercise) {
-        // Get the existing schedule from localStorage or initialize an empty object
-        const schedule = JSON.parse(localStorage.getItem('schedule')) || {};
-    
-        // Assuming you have a way to dynamically select the day (for demonstration, let's use Monday)
-        const selectedDay = 'Monday'; // Modify this as per your application logic
-    
-        // Push the exercise object to the schedule for the selected day
-        if (!schedule[selectedDay]) {
-            schedule[selectedDay] = [];
-        }
-        schedule[selectedDay].push(exercise);
-    
-        // Store the updated schedule back in localStorage
-        localStorage.setItem('schedule', JSON.stringify(schedule));
-    
-        // Update the UI to reflect the new schedule (if necessary)
-        updateScheduleUI(schedule);
-    
-        // Optionally, provide user feedback that the exercise was added to the schedule
-        alert(`${exercise.name} added to ${selectedDay}'s schedule!`);
-    }
-    
-function displayError(errorMessage) {
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = `<p>Error: ${errorMessage}</p>`;
-}
-}
+// Automatically fetch and display results when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    fetchAndDisplayResults();
+});
