@@ -146,7 +146,11 @@
   
   .blur {
     filter: blur(5px);
-  }.rep-set {
+  }
+  
+  
+  /*REPS */
+  .rep-set {
     margin-left: 10px;
   }
   
@@ -162,4 +166,3 @@
     padding: 2px 4px;
     border-radius: 4px;
   }
-  
