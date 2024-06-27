@@ -209,5 +209,30 @@ document.addEventListener("DOMContentLoaded", function () {
       overlay.style.visibility = "hidden";
       overlay.style.opacity = "0";
     }
+
+    // Show the favorites form when the button is clicked
+    const showFavoritesFormBtn = document.getElementById("show-favorites-form-btn");
+    const favoritesForm = document.getElementById("favorites-form");
+
+    showFavoritesFormBtn.addEventListener("click", () => {
+        favoritesForm.style.display = "block";
+    });
+
+    // Handle the add to favorites form submission
+    const addToFavoritesBtn = document.getElementById("add-to-favorites-btn");
+
+    addToFavoritesBtn.addEventListener("click", () => {
+        const email = document.getElementById("favorites-email").value;
+        const scheduleName = document.getElementById("favorites-name").value;
+        if (email && scheduleName) {
+            add_to_favorites(email, scheduleName, schedule);
+        } else {
+            alert("Please fill in both the email and schedule name.");
+        }
+    });
+
+    function add_to_favorites(email, scheduleName, schedule) {
+        
+    }
   });
   
