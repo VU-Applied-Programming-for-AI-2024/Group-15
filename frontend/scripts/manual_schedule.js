@@ -224,15 +224,27 @@ document.addEventListener("DOMContentLoaded", function () {
     addToFavoritesBtn.addEventListener("click", () => {
         const email = document.getElementById("favorites-email").value;
         const scheduleName = document.getElementById("favorites-name").value;
+        const addToFavesUrl = new URL('https://fitnessaicoach.azurewebsites.net/add_to_favorites');
         if (email && scheduleName) {
-            add_to_favorites(email, scheduleName, schedule);
+          const response = fetch(addToFavesUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, scheduleName, schedule }),
+          });
+          const result = response.json();
+          if (result.status === 'success') {
+              alert('Schedule added to favorites successfully!');
+          } else {
+              alert('Failed to add schedule to favorites: ' + result.message);
+          }
+          document.getElementById('favorites-form').style.display = 'none';
         } else {
             alert("Please fill in both the email and schedule name.");
         }
     });
 
-    function add_to_favorites(email, scheduleName, schedule) {
-        
-    }
+    
   });
   

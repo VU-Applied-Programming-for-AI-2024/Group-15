@@ -261,6 +261,31 @@ def register_routes(app):
         except Exception as e:
             app.logger.error("Error: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
+        
+    @app.route('/add_to_favorites', methods=['POST'])
+    def add_to_favorites():
+        try:
+            data = request.json
+            email = data['email']
+            schedule_name = data['scheduleName']
+            schedule = data['schedule']
+
+            # Insert into the favorites collection
+            favorite = {
+                "email": email,
+                "schedule_name": schedule_name,
+                "schedule": schedule
+            }
+            server_crud_operations(
+                operation="insert",
+                json_data={"favorite": favorite},
+                collection_name="favorites"
+            )
+
+            return jsonify({"status": "success", "message": "Schedule added to favorites successfully"}), 200
+        except Exception as e:
+            logger.error(f"Error adding schedule to favorites: {str(e)}")
+            return jsonify({"status": "error", "message": str(e)}), 500
 
 def fetch_api_data_async(endpoint, params):
     headers = {'Authorization': 'Bearer 4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh'}
@@ -330,3 +355,5 @@ def structure_workout_by_time(all_exercises, days, available_time_per_session):
             })
 
     return workout_schedule
+
+
