@@ -16,82 +16,88 @@ document.addEventListener("DOMContentLoaded", function () {
     let editMode = false; // Track if edit mode is active
   
     function displayExercises(day) {
-      const dayExercisesContainer = document.getElementById(`${day}-exercises`);
-  
-      if (dayExercisesContainer) {
-        dayExercisesContainer.innerHTML = ""; // Clear previous content
-  
-        // Check if current URL matches the expected manual_schedule.html with userToken
-        if (
-          window.location.href.includes(`manual_schedule.html?token=${userToken}`)
-        ) {
-          if (schedule[day] && schedule[day].length > 0) {
-            schedule[day].forEach((exercise, index) => {
+        const dayExercisesContainer = document.getElementById(`${day}-exercises`);
+      
+        if (dayExercisesContainer) {
+          dayExercisesContainer.innerHTML = ""; // Clear previous content
+      
+          if (
+            window.location.href.includes(`manual_schedule.html?token=${userToken}`)
+          ) {
+            if (schedule[day] && schedule[day].length > 0) {
+              schedule[day].forEach((exercise, index) => {
                 const exerciseElement = document.createElement("div");
                 exerciseElement.classList.add("exercise-item");
-                exerciseElement.textContent = exercise.name;
-                
+      
+                const exerciseName = document.createElement("span");
+                exerciseName.textContent = exercise.name;
+                exerciseElement.appendChild(exerciseName);
+      
                 // Create rep x set element
-                const repSetElement = document.createElement("div");
+                const repSetElement = document.createElement("span");
                 repSetElement.classList.add("rep-set");
                 repSetElement.textContent = "0 x 0";
                 exerciseElement.appendChild(repSetElement);
-
-              if (editMode) {
-                const deleteButton = document.createElement("button");
-                deleteButton.textContent = "X";
-                deleteButton.classList.add(
-                  "btn",
-                  "btn-danger",
-                  "delete-exercise-btn"
-                );
-                deleteButton.dataset.day = day;
-                deleteButton.dataset.index = index;
-  
-                const swapButton = document.createElement("button");
-                swapButton.textContent = "🔀";
-                swapButton.classList.add(
-                  "btn",
-                  "btn-secondary",
-                  "swap-exercise-btn"
-                );
-                swapButton.dataset.day = day;
-                swapButton.dataset.index = index;
-  
-                deleteButton.addEventListener("click", function () {
-                  deleteExercise(day, index);
-                });
-  
-                swapButton.addEventListener("click", function () {
-                  swapExercise(day, index);
-                });
-  
-                exerciseElement.appendChild(deleteButton);
-                exerciseElement.appendChild(swapButton);
-              
-              // Allow modifying rep x set
-                repSetElement.contentEditable = "true";
-                repSetElement.addEventListener("input", function () {
-              updateRepSet(day, index, repSetElement.textContent);
-            });
-            }
-  
-              dayExercisesContainer.appendChild(exerciseElement);
-            });
+      
+                if (editMode) {
+                  // If in edit mode, allow modification
+                  const deleteButton = document.createElement("button");
+                  deleteButton.textContent = "X";
+                  deleteButton.classList.add(
+                    "btn",
+                    "btn-danger",
+                    "delete-exercise-btn"
+                  );
+                  deleteButton.dataset.day = day;
+                  deleteButton.dataset.index = index;
+      
+                  const swapButton = document.createElement("button");
+                  swapButton.textContent = "🔀";
+                  swapButton.classList.add(
+                    "btn",
+                    "btn-secondary",
+                    "swap-exercise-btn"
+                  );
+                  swapButton.dataset.day = day;
+                  swapButton.dataset.index = index;
+      
+                  deleteButton.addEventListener("click", function () {
+                    deleteExercise(day, index);
+                  });
+      
+                  swapButton.addEventListener("click", function () {
+                    swapExercise(day, index);
+                  });
+      
+                  exerciseElement.appendChild(deleteButton);
+                  exerciseElement.appendChild(swapButton);
+      
+                  // Allow modifying rep x set
+                  repSetElement.contentEditable = "true";
+                  repSetElement.style.border = "1px dashed #ccc"; // Indicate editable
+                  repSetElement.style.padding = "2px";
+                  repSetElement.title = "Click to edit reps x sets";
+                  repSetElement.addEventListener("input", function () {
+                    updateRepSet(day, index, repSetElement.textContent);
+                  });
+                }
+      
+                dayExercisesContainer.appendChild(exerciseElement);
+              });
             } else {
-            const noExerciseElement = document.createElement("div");
-            noExerciseElement.textContent = "Rest";
-            dayExercisesContainer.appendChild(noExerciseElement);
+              const noExerciseElement = document.createElement("div");
+              noExerciseElement.textContent = "Rest";
+              dayExercisesContainer.appendChild(noExerciseElement);
+            }
+          } else {
+            // If not on the correct page, clear the content
+            dayExercisesContainer.innerHTML = "";
           }
         } else {
-          // If not on the correct page, clear the content
-          dayExercisesContainer.innerHTML = "";
+          console.error(`Element with ID '${day}-exercises' not found.`);
         }
-      } else {
-        console.error(`Element with ID '${day}-exercises' not found.`);
       }
-    }
-  
+      
     days.forEach((day) => {
       displayExercises(day);
     });
@@ -122,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!schedule[selectedDay]) {
         schedule[selectedDay] = [];
       }
+      clickedExercise.repSet = "0 x 0"; // Initial rep x set value
       schedule[selectedDay].push(clickedExercise);
       localStorage.setItem("schedule", JSON.stringify(schedule));
       localStorage.removeItem("clickedExercise");
