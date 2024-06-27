@@ -27,10 +27,16 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
           if (schedule[day] && schedule[day].length > 0) {
             schedule[day].forEach((exercise, index) => {
-              const exerciseElement = document.createElement("div");
-              exerciseElement.classList.add("exercise-item");
-              exerciseElement.textContent = exercise.name;
-  
+                const exerciseElement = document.createElement("div");
+                exerciseElement.classList.add("exercise-item");
+                exerciseElement.textContent = exercise.name;
+                
+                // Create rep x set element
+                const repSetElement = document.createElement("div");
+                repSetElement.classList.add("rep-set");
+                repSetElement.textContent = "0 x 0";
+                exerciseElement.appendChild(repSetElement);
+
               if (editMode) {
                 const deleteButton = document.createElement("button");
                 deleteButton.textContent = "X";
@@ -62,11 +68,17 @@ document.addEventListener("DOMContentLoaded", function () {
   
                 exerciseElement.appendChild(deleteButton);
                 exerciseElement.appendChild(swapButton);
-              }
+              
+              // Allow modifying rep x set
+                repSetElement.contentEditable = "true";
+                repSetElement.addEventListener("input", function () {
+              updateRepSet(day, index, repSetElement.textContent);
+            });
+            }
   
               dayExercisesContainer.appendChild(exerciseElement);
             });
-          } else {
+            } else {
             const noExerciseElement = document.createElement("div");
             noExerciseElement.textContent = "Rest";
             dayExercisesContainer.appendChild(noExerciseElement);
