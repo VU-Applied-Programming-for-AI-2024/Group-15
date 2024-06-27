@@ -1,167 +1,155 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const schedule = JSON.parse(localStorage.getItem("schedule")) || {};
-    let userToken = getUserToken(); // Declare userToken outside the function scope
-    console.log(userToken);
-    const overlay = document.getElementById("start-overlay");
+function displayExercises(day) {
+    const dayExercisesContainer = document.getElementById(`${day}-exercises`);
   
-    const days = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
-    let editMode = false; // Track if edit mode is active
+    if (dayExercisesContainer) {
+      dayExercisesContainer.innerHTML = ""; // Clear previous content
   
-    function displayExercises(day) {
-        const dayExercisesContainer = document.getElementById(`${day}-exercises`);
-      
-        if (dayExercisesContainer) {
-          dayExercisesContainer.innerHTML = ""; // Clear previous content
-      
-          if (
-            window.location.href.includes(`manual_schedule.html?token=${userToken}`)
-          ) {
-            if (schedule[day] && schedule[day].length > 0) {
-              schedule[day].forEach((exercise, index) => {
-                const exerciseElement = document.createElement("div");
-                exerciseElement.classList.add("exercise-item");
-      
-                const exerciseName = document.createElement("span");
-                exerciseName.textContent = exercise.name;
-                exerciseElement.appendChild(exerciseName);
-      
-                // Create rep x set element
-                const repSetElement = document.createElement("span");
-                repSetElement.classList.add("rep-set");
-                repSetElement.textContent = "0 x 0";
-                exerciseElement.appendChild(repSetElement);
-      
-                if (editMode) {
-                  // If in edit mode, allow modification
-                  const deleteButton = document.createElement("button");
-                  deleteButton.textContent = "X";
-                  deleteButton.classList.add(
-                    "btn",
-                    "btn-danger",
-                    "delete-exercise-btn"
-                  );
-                  deleteButton.dataset.day = day;
-                  deleteButton.dataset.index = index;
-      
-                  const swapButton = document.createElement("button");
-                  swapButton.textContent = "🔀";
-                  swapButton.classList.add(
-                    "btn",
-                    "btn-secondary",
-                    "swap-exercise-btn"
-                  );
-                  swapButton.dataset.day = day;
-                  swapButton.dataset.index = index;
-      
-                  deleteButton.addEventListener("click", function () {
-                    deleteExercise(day, index);
-                  });
-      
-                  swapButton.addEventListener("click", function () {
-                    swapExercise(day, index);
-                  });
-      
-                  exerciseElement.appendChild(deleteButton);
-                  exerciseElement.appendChild(swapButton);
-      
-                  // Allow modifying rep x set
-                  repSetElement.contentEditable = "true";
-                  repSetElement.style.border = "1px dashed #ccc"; // Indicate editable
-                  repSetElement.style.padding = "2px";
-                  repSetElement.title = "Click to edit reps x sets";
-                  repSetElement.addEventListener("input", function () {
-                    updateRepSet(day, index, repSetElement.textContent);
-                  });
-                }
-      
-                dayExercisesContainer.appendChild(exerciseElement);
+      if (
+        window.location.href.includes(`manual_schedule.html?token=${userToken}`)
+      ) {
+        if (schedule[day] && schedule[day].length > 0) {
+          schedule[day].forEach((exercise, index) => {
+            const exerciseElement = document.createElement("div");
+            exerciseElement.classList.add("exercise-item");
+  
+            const exerciseName = document.createElement("span");
+            exerciseName.textContent = exercise.name;
+            exerciseElement.appendChild(exerciseName);
+  
+            // Create rep x set element
+            const repSetElement = document.createElement("span");
+            repSetElement.classList.add("rep-set");
+  
+            const repElement = document.createElement("span");
+            repElement.classList.add("rep-element");
+            repElement.textContent = exercise.repSet ? exercise.repSet.split(' x ')[0] : "0";
+            repSetElement.appendChild(repElement);
+  
+            const xElement = document.createElement("span");
+            xElement.textContent = " x ";
+            repSetElement.appendChild(xElement);
+  
+            const setElement = document.createElement("span");
+            setElement.classList.add("set-element");
+            setElement.textContent = exercise.repSet ? exercise.repSet.split(' x ')[1] : "0";
+            repSetElement.appendChild(setElement);
+  
+            exerciseElement.appendChild(repSetElement);
+  
+            if (editMode) {
+              // If in edit mode, allow modification
+              const deleteButton = document.createElement("button");
+              deleteButton.textContent = "X";
+              deleteButton.classList.add(
+                "btn",
+                "btn-danger",
+                "delete-exercise-btn"
+              );
+              deleteButton.dataset.day = day;
+              deleteButton.dataset.index = index;
+  
+              const swapButton = document.createElement("button");
+              swapButton.textContent = "🔀";
+              swapButton.classList.add(
+                "btn",
+                "btn-secondary",
+                "swap-exercise-btn"
+              );
+              swapButton.dataset.day = day;
+              swapButton.dataset.index = index;
+  
+              deleteButton.addEventListener("click", function () {
+                deleteExercise(day, index);
               });
-            } else {
-              const noExerciseElement = document.createElement("div");
-              noExerciseElement.textContent = "Rest";
-              dayExercisesContainer.appendChild(noExerciseElement);
+  
+              swapButton.addEventListener("click", function () {
+                swapExercise(day, index);
+              });
+  
+              exerciseElement.appendChild(deleteButton);
+              exerciseElement.appendChild(swapButton);
+  
+              // Allow modifying rep and set elements
+              repElement.contentEditable = "true";
+              setElement.contentEditable = "true";
+              repElement.style.border = "1px dashed #ccc"; // Indicate editable
+              setElement.style.border = "1px dashed #ccc";
+              repElement.style.padding = "2px";
+              setElement.style.padding = "2px";
+              repElement.title = "Click to edit reps";
+              setElement.title = "Click to edit sets";
+  
+              repElement.addEventListener("input", function () {
+                updateRepSet(day, index, repElement.textContent, setElement.textContent);
+              });
+              setElement.addEventListener("input", function () {
+                updateRepSet(day, index, repElement.textContent, setElement.textContent);
+              });
             }
-          } else {
-            // If not on the correct page, clear the content
-            dayExercisesContainer.innerHTML = "";
-          }
+  
+            dayExercisesContainer.appendChild(exerciseElement);
+          });
         } else {
-          console.error(`Element with ID '${day}-exercises' not found.`);
+          const noExerciseElement = document.createElement("div");
+          noExerciseElement.textContent = "Rest";
+          dayExercisesContainer.appendChild(noExerciseElement);
         }
+      } else {
+        // If not on the correct page, clear the content
+        dayExercisesContainer.innerHTML = "";
       }
-      
-    days.forEach((day) => {
-      displayExercises(day);
-    });
-  
-    document
-      .querySelectorAll(".add-exercise-btn")
-      .forEach((button) => {
-        button.addEventListener("click", function (event) {
-          const day = event.target.dataset.day;
-          localStorage.setItem("selectedDay", day);
-          userToken = getUserToken(); // Update userToken if necessary
-  
-          // Check if already on the correct modal page
-          if (!window.location.href.endsWith(`${userToken}`)) {
-            // Redirect to the manual_schedule.html with userToken
-            window.location.href = `https://gentle-bay-09953a810.5.azurestaticapps.net/manual_schedule.html?token=${userToken}`;
-          } else {
-            // Open DiscoverModal or perform other actions as needed
-            openDiscoverModal();
-          }
-        });
-      });
-  
-    const clickedExercise = JSON.parse(localStorage.getItem("clickedExercise"));
-    const selectedDay = localStorage.getItem("selectedDay");
-  
-    if (clickedExercise && selectedDay) {
-      if (!schedule[selectedDay]) {
-        schedule[selectedDay] = [];
-      }
-      clickedExercise.repSet = "0 x 0"; // Initial rep x set value
-      schedule[selectedDay].push(clickedExercise);
-      localStorage.setItem("schedule", JSON.stringify(schedule));
-      localStorage.removeItem("clickedExercise");
-  
-      saveChangesToServer(); // Call saveChangesToServer function immediately
-      if (window.location.href.endsWith(`manual_schedule_${userToken}.html`)) {
-        // Open your modal here or perform necessary actions
-        console.log("Open modal or perform actions for the correct URL");
-      }
+    } else {
+      console.error(`Element with ID '${day}-exercises' not found.`);
     }
+  }
   
-    // EDIT AND STATS BUTTONS
-    document.addEventListener("click", function (event) {
-      const target = event.target;
+  function updateRepSet(day, index, newRep, newSet) {
+    if (schedule[day] && schedule[day][index]) {
+      schedule[day][index].repSet = `${newRep} x ${newSet}`;
+      localStorage.setItem("schedule", JSON.stringify(schedule));
+    }
+  }
   
-      if (target.classList.contains("stats-btn")) {
-        const day = target.dataset.day;
-        console.log(`Stats button clicked for ${day}`);
-      } else if (target.classList.contains("edit-btn")) {
-        const day = target.dataset.day;
-        console.log(`Edit button clicked for ${day}`);
-        editMode = !editMode; // Toggle edit mode
-        days.forEach(displayExercises); // Refresh the exercise list with edit buttons
-      } else if (target.classList.contains("delete-exercise-btn")) {
-        const day = target.dataset.day;
-        const index = target.dataset.index;
-        deleteExercise(day, index);
-      } else if (target.classList.contains("swap-exercise-btn")) {
-        const day = target.dataset.day;
-        const index = parseInt(target.dataset.index, 10);
-        swapExercise(day, index);
-      }
-    });
+  if (clickedExercise && selectedDay) {
+    if (!schedule[selectedDay]) {
+      schedule[selectedDay] = [];
+    }
+    clickedExercise.repSet = "0 x 0"; // Initial rep x set value
+    schedule[selectedDay].push(clickedExercise);
+    localStorage.setItem("schedule", JSON.stringify(schedule));
+    localStorage.removeItem("clickedExercise");
+  
+    saveChangesToServer(); // Call saveChangesToServer function immediately
+  
+    if (window.location.href.endsWith(`manual_schedule_${userToken}.html`)) {
+      // Open your modal here or perform necessary actions
+      console.log("Open modal or perform actions for the correct URL");
+    }
+  }
+  
+  // EDIT AND STATS BUTTONS
+  document.addEventListener("click", function (event) {
+    const target = event.target;
+  
+    if (target.classList.contains("stats-btn")) {
+      const day = target.dataset.day;
+      console.log(`Stats button clicked for ${day}`);
+    } else if (target.classList.contains("edit-btn")) {
+      const day = target.dataset.day;
+      console.log(`Edit button clicked for ${day}`);
+      editMode = !editMode; // Toggle edit mode
+      days.forEach(displayExercises); // Refresh the exercise list with edit buttons
+    } else if (target.classList.contains("delete-exercise-btn")) {
+      const day = target.dataset.day;
+      const index = target.dataset.index;
+      deleteExercise(day, index);
+    } else if (target.classList.contains("swap-exercise-btn")) {
+      const day = target.dataset.day;
+      const index = parseInt(target.dataset.index, 10);
+      swapExercise(day, index);
+    }
+  });
+  
   
     function deleteExercise(day, index) {
       schedule[day].splice(index, 1); // Remove the exercise
@@ -245,5 +233,5 @@ document.addEventListener("DOMContentLoaded", function () {
       overlay.style.visibility = "hidden";
       overlay.style.opacity = "0";
     }
-  });
+  ;
   
