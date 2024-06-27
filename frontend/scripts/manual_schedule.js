@@ -221,19 +221,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // Handle the add to favorites form submission
     const addToFavoritesBtn = document.getElementById("add-to-favorites-btn");
 
-    addToFavoritesBtn.addEventListener("click", () => {
+    addToFavoritesBtn.addEventListener("click", async function() {
         const email = document.getElementById("favorites-email").value;
         const scheduleName = document.getElementById("favorites-name").value;
         const addToFavesUrl = new URL('https://fitnessaicoach.azurewebsites.net/add_to_favorites');
         if (email && scheduleName) {
-          const response = fetch(addToFavesUrl, {
+          const response = await fetch(addToFavesUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, scheduleName, schedule }),
           });
-          const result = response.json();
+          const result = await response.json();
           if (result.status === 'success') {
               alert('Schedule added to favorites successfully!');
           } else {
