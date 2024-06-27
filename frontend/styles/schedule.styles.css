@@ -146,13 +146,17 @@
   
   .blur {
     filter: blur(5px);
-  }
-  .rep-set {
+  }.rep-set {
     margin-left: 10px;
+  }
+  
+  .rep-element,
+  .set-element {
     cursor: pointer;
   }
   
-  .rep-set[contenteditable="true"] {
+  .rep-element[contenteditable="true"],
+  .set-element[contenteditable="true"] {
     background-color: #f9f9f9;
     border: 1px dashed #ccc;
     padding: 2px 4px;
