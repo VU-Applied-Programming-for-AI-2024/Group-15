@@ -286,6 +286,30 @@ def register_routes(app):
         except Exception as e:
             logger.error(f"Error adding schedule to favorites: {str(e)}")
             return jsonify({"status": "error", "message": str(e)}), 500
+        
+    @app.route('/get_favorites', methods=['GET'])
+    def get_favorites_by_email():
+        try:
+            email = request.args.get('email')
+            
+            if not email:
+                return jsonify({"status": "error", "message": "Email parameter is required"}), 400
+            
+            favorites = server_crud_operations(
+                operation="read",
+                collection_name="favorites",
+                key="email",
+                value=email
+            )
+            
+            if favorites:
+                return jsonify({"status": "success", "favorites": favorites}), 200
+            else:
+                return jsonify({"status": "error", "message": "No favorites found for the provided email"}), 404
+        
+        except Exception as e:
+            logging.error(f"Error in get_favorites_by_email: {str(e)}")
+            return jsonify({"status": "error", "message": str(e)}), 500
 
 def fetch_api_data_async(endpoint, params):
     headers = {'Authorization': 'Bearer 4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh'}

@@ -1,38 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta tags and CSS links -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../styles/styles.css" />
-    <link rel="stylesheet" href="../styles/discover.styles.css" />
+    <!-- Bootstrap CSS link -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <!-- JavaScript scripts -->
     <script src="../scripts/manual_schedule.js" type="text/javascript"></script>
     <script src="../scripts/favorites.js" type="text/javascript"></script>
+    <!-- Bootstrap JavaScript bundle -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    <title>Discover</title>
+    <title>Favorite Schedules</title>
   </head>
   <body class="homepage">
+    <!-- Header section with logo -->
     <h1>
       <a href="index.html">
         <img src="../images/logo2.png" class="logo" alt="Logo" />
       </a>
     </h1>
 
+    <!-- Navigation menu -->
     <nav class="menu">
       <div class="menu-links">
         <a href="index.html">Home</a>
@@ -43,12 +42,14 @@
       </div>
     </nav>
 
+    <!-- Main content block -->
     <div class="main-block">
       <section class="description">
-        <h1>Favorite schedules</h1>
+        <h1>Favorite Schedules</h1>
         <p>View and edit your favorite schedules</p>
       </section>
 
+      <!-- Search bar section -->
       <div class="search-bar">
         <form id="searchForm">
           <input
@@ -57,10 +58,11 @@
             placeholder="Enter your email"
             required
           />
-          <button type="button" onclick="">Search</button>
+          <button type="button" onclick="searchFavorites()">Search</button>
         </form>
       </div>
 
+      <!-- Results section where favorites will be displayed -->
       <div id="results"></div>
     </div>
   </body>
