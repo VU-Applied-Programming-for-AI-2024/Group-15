@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
         userToken = getUserToken();
   
         if (!window.location.href.endsWith(userToken)) {
-          window.location.href = `http://127.0.0.1:5500/frontend/manual_schedule.html?token=${userToken}`;
+          window.location.href = `https://gentle-bay-09953a810.5.azurestaticapps.net/manual_schedule.html?token=${userToken}`;
         } else {
           openDiscoverModal();
         }
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   
     function saveChangesToServer() {
-      const userScheduleUrl = "http://127.0.0.1:5000/save_schedule";
+      const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule";
   
       fetch(userScheduleUrl, {
         method: "POST",
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
     overlay.addEventListener("click", () => {
       userToken = generateUniqueToken();
       localStorage.setItem("userToken", userToken);
-      window.location.href = `http://127.0.0.1:5500/frontend/manual_schedule.html?token=${userToken}`;
+      window.location.href = `https://gentle-bay-09953a810.5.azurestaticapps.net/manual_schedule.html?token=${userToken}`;
     });
   
     if (!window.location.href.endsWith(userToken)) {
