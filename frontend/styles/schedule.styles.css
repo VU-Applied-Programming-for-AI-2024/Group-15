@@ -147,4 +147,15 @@
   .blur {
     filter: blur(5px);
   }
+  .rep-set {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .rep-set[contenteditable="true"] {
+    background-color: #f9f9f9;
+    border: 1px dashed #ccc;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
   
