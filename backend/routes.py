@@ -137,7 +137,7 @@ def register_routes(app):
             
             favorites = server_crud_operations(
                 operation="read",
-                collection_name="favorites",
+                collection_name="Users",
                 key="email",
                 value=email
             )
@@ -168,7 +168,7 @@ def register_routes(app):
             server_crud_operations(
                 operation="insert",
                 json_data={"favorite": favorite},
-                collection_name="favorites"
+                collection_name="Users"
             )
 
             return jsonify({"status": "success", "message": "Schedule added to favorites successfully"}), 200
