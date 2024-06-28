@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
       userToken = getUserToken();
 
       if (!window.location.href.endsWith(userToken)) {
-        window.location.href = `http://127.0.0.1:8000/manual_schedule.html?token=${userToken}`;
+        window.location.href = `https://fitnessaicoach.azurewebsites.net/manual_schedule.html?token=${userToken}`;
       } else {
         openDiscoverModal();
       }
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function saveChangesToServer() {
-      const userScheduleUrl = "http://127.0.0.1:5000/api/save_schedule";
+      const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule";
   
       fetch(userScheduleUrl, {
           method: "POST",
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((data) => {
           console.log("Schedule saved successfully:", data);
-          window.location.href = `http://127.0.0.1:8000/manual_schedule.html?token=${userToken}`;
+          window.location.href = `https://fitnessaicoach.azurewebsites.net/manual_schedule.html?token=${userToken}`;
       })
       .catch((error) => {
           console.error("Error saving schedule:", error);
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
   overlay.addEventListener("click", () => {
     userToken = generateUniqueToken();
     localStorage.setItem("userToken", userToken);
-    window.location.href = `http://127.0.0.1:8000/manual_schedule.html?token=${userToken}`;
+    window.location.href = `https://fitnessaicoach.azurewebsites.net/manual_schedule.html?token=${userToken}`;
   });
 
   if (!window.location.href.endsWith(userToken)) {
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
   addToFavoritesBtn.addEventListener("click", async function() {
       const email = document.getElementById("favorites-email").value;
       const scheduleName = document.getElementById("favorites-name").value;
-      const addToFavesUrl = new URL('http://127.0.0.1:5000/api/add_to_favorites');
+      const addToFavesUrl = new URL('https://fitnessaicoach.azurewebsites.net/add_to_favorites');
       if (email && scheduleName) {
         const response = await fetch(addToFavesUrl, {
           method: 'POST',
