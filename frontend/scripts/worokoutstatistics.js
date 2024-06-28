@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const day = urlParams.get('day');
     const scheduleId = localStorage.getItem('scheduleId');
 
-    fetch(`http://localhost:5000/api/get-schedule/${scheduleId}`)
+    fetch(`https://fitnessaicoach.azurewebsites.net//get-schedule/${scheduleId}`)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {

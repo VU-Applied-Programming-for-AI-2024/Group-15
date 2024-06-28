@@ -150,12 +150,12 @@ document.addEventListener("DOMContentLoaded", function () {
   
     function updateRepSet(day, index, newRepSet) {
       if (schedule[day] && schedule[day][index]) {
-          const [newSets, newReps] = newRepSet.split(' x ');
-          schedule[day][index].sets = parseInt(newSets);
-          schedule[day][index].reps = parseInt(newReps);
-          localStorage.setItem("schedule", JSON.stringify(schedule));
+        const [newSets, newReps] = newRepSet.split(' x ');
+        schedule[day][index].sets = parseInt(newSets);
+        schedule[day][index].reps = parseInt(newReps);
+        localStorage.setItem("schedule", JSON.stringify(schedule));
       }
-  }
+    }
   
     function saveChangesToServer() {
         const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule";
@@ -232,41 +232,122 @@ document.addEventListener("DOMContentLoaded", function () {
       overlay.style.opacity = "0";
     }
 
-    // Show the favorites form when the button is clicked
-    const showFavoritesFormBtn = document.getElementById("show-favorites-form-btn");
-    const favoritesForm = document.getElementById("favorites-form");
+  const showFavoritesFormBtn = document.getElementById("show-favorites-form-btn");
+  const favoritesForm = document.getElementById("favorites-form");
 
-    showFavoritesFormBtn.addEventListener("click", () => {
-        favoritesForm.style.display = "block";
-    });
-
-    // Handle the add to favorites form submission
-    const addToFavoritesBtn = document.getElementById("add-to-favorites-btn");
-
-    addToFavoritesBtn.addEventListener("click", async function() {
-        const email = document.getElementById("favorites-email").value;
-        const scheduleName = document.getElementById("favorites-name").value;
-        const addToFavesUrl = new URL('https://fitnessaicoach.azurewebsites.net/add_to_favorites');
-        if (email && scheduleName) {
-          const response = await fetch(addToFavesUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, scheduleName, schedule }),
-          });
-          const result = await response.json();
-          if (result.status === 'success') {
-              alert('Schedule added to favorites successfully!');
-          } else {
-              alert('Failed to add schedule to favorites: ' + result.message);
-          }
-          document.getElementById('favorites-form').style.display = 'none';
-        } else {
-            alert("Please fill in both the email and schedule name.");
-        }
-    });
-
-    
+  showFavoritesFormBtn.addEventListener("click", () => {
+      favoritesForm.style.display = "block";
   });
-  
+
+  const addToFavoritesBtn = document.getElementById("add-to-favorites-btn");
+
+  addToFavoritesBtn.addEventListener("click", async function() {
+      const email = document.getElementById("favorites-email").value;
+      const scheduleName = document.getElementById("favorites-name").value;
+      const addToFavesUrl = new URL('https://gentle-bay-09953a810.5.azurestaticapps.net/add_to_favorites');
+      if (email && scheduleName) {
+        const response = await fetch(addToFavesUrl, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, scheduleName, schedule }),
+        });
+        const result = await response.json();
+        if (result.status === 'success') {
+            alert('Schedule added to favorites successfully!');
+        } else {
+            alert('Failed to add schedule to favorites: ' + result.message);
+        }
+        document.getElementById('favorites-form').style.display = 'none';
+      } else {
+          alert("Please fill in both the email and schedule name.");
+      }
+  });
+
+  function showStats(day) {
+    const exercises = schedule[day] || [];
+    if (exercises.length === 0) {
+      alert("No exercises for this day.");
+      return;
+    }
+
+    let totalCalories = 0;
+    const muscleGroups = {};
+    const setsPerMuscleGroup = {};
+
+    exercises.forEach(exercise => {
+      const reps = exercise.reps || 0;
+      const sets = exercise.sets || 0;
+      const muscleGroup = exercise.muscleGroup || "Other";
+
+      totalCalories += 0.5 * reps * sets;
+
+      if (!muscleGroups[muscleGroup]) {
+        muscleGroups[muscleGroup] = 0;
+        setsPerMuscleGroup[muscleGroup] = 0;
+      }
+
+      muscleGroups[muscleGroup] += reps * sets;
+      setsPerMuscleGroup[muscleGroup] += sets;
+    });
+
+    const muscleGroupLabels = Object.keys(muscleGroups);
+    const muscleGroupData = muscleGroupLabels.map(group => muscleGroups[group]);
+    const setsPerMuscleGroupData = muscleGroupLabels.map(group => setsPerMuscleGroup[group]);
+
+    const statsContent = `
+      <p>Total Calories Burned: ${totalCalories.toFixed(2)}</p>
+      <div class="chart-container">
+        <canvas id="muscleGroupChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <canvas id="setsPerMuscleGroupChart"></canvas>
+      </div>
+    `;
+
+    document.getElementById('statsContent').innerHTML = statsContent;
+
+    const ctx1 = document.getElementById('muscleGroupChart').getContext('2d');
+    const ctx2 = document.getElementById('setsPerMuscleGroupChart').getContext('2d');
+
+    new Chart(ctx1, {
+      type: 'pie',
+      data: {
+        labels: muscleGroupLabels,
+        datasets: [{
+          data: muscleGroupData,
+          backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0'],
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: muscleGroupLabels,
+        datasets: [{
+          label: 'Sets per Muscle Group',
+          data: setsPerMuscleGroupData,
+          backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0'],
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    const statsModal = new bootstrap.Modal(document.getElementById('statsModal'));
+    statsModal.show();
+  }
+});

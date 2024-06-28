@@ -37,8 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('user-info-form').addEventListener('submit', function (e) {
         e.preventDefault();
-        
-        waitingPopup.style.display = 'flex';
 
         const age = parseInt(document.querySelector('.age-input').value);
         const gender = document.querySelector('input[name="gender"]:checked').value;
@@ -51,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.log('Sending data:', JSON.stringify(data));
 
-        fetch('http://127.0.0.1:5000/create-schedule', {
+        fetch('https://fitnessaicoach.azurewebsites.net//create-schedule', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const scheduleJson = JSON.stringify(result.schedule, null, 2);
                 localStorage.setItem('scheduleId', scheduleId);
 
-                window.location.href = `schedule_page.component.html?scheduleId=${scheduleId}`;
+                window.location.href = `schedule_display.html?scheduleId=${scheduleId}`;
             } else {
                 console.error('Error creating schedule:', result.message);
             }

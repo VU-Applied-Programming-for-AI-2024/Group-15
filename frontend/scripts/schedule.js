@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const scheduleId = urlParams.get('scheduleId');
 
-    fetch(`http://127.0.0.1:5000/get-schedule/${scheduleId}`)
+    fetch(`https://fitnessaicoach.azurewebsites.net/get-schedule/${scheduleId}`)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {

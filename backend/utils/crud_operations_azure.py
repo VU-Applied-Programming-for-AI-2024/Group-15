@@ -3,13 +3,13 @@ from typing import Any, Dict, List, Union
 import logging 
 import os
 from dotenv import load_dotenv, find_dotenv
-from bson import ObjectId
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 load_dotenv(find_dotenv())
 
-CONNECTION_STRING = os.environ.get("MONGODB_STRING")
+CONNECTION_STRING = os.environ.get("CONNECTION_STRING")
 DB_NAME = "myFitnessAIcoach"
 
 def delete_document(collection: pymongo.collection.Collection, document_id: Any) -> None:
