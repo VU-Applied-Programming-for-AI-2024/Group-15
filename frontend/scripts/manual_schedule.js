@@ -150,25 +150,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateRepSet(day, index, newRepSet) {
     if (schedule[day] && schedule[day][index]) {
-        const [newSetsStr, newRepsStr] = newRepSet.split(' x ');
-        
-        // Convert to integers, using parseInt with radix 10 (decimal)
-        const newSets = parseInt(newSetsStr.trim(), 10);
-        const newReps = parseInt(newRepsStr.trim(), 10);
+        const [newSets, newReps] = newRepSet.split(' x ');
+        const sets = parseInt(newSets, 10); 
+        const reps = parseInt(newReps, 10); 
 
-        // Check if parsing was successful (not NaN)
-        if (!isNaN(newSets) && !isNaN(newReps)) {
-            schedule[day][index].sets = newSets;
-            schedule[day][index].reps = newReps;
-            localStorage.setItem("schedule", JSON.stringify(schedule));
-        } else {
-            console.error(`Invalid input for sets or reps: ${newRepSet}`);
-        }
+        schedule[day][index].sets = sets;
+        schedule[day][index].reps = reps;
+        localStorage.setItem("schedule", JSON.stringify(schedule));
     }
 }
-
-
-
   function saveChangesToServerAndReload() {
       const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule";
 
