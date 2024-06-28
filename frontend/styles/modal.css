@@ -1,0 +1,29 @@
+/* Modal Styles */
+.modal-body {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+#statsContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#statsContent h5 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#statsContent canvas {
+    max-width: 100%;
+    height: auto;
+}
