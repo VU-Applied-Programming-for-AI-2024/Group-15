@@ -28,13 +28,12 @@ def read_document(collection: pymongo.collection.Collection, document_id: Any) -
 
 def update_document_id(collection: pymongo.collection.Collection, document_id: Any, update_data: Dict[str, Any]) -> None:
     """Update the document containing document_id with update_data"""
-    if not isinstance(document_id, ObjectId):
-        document_id = ObjectId(document_id)
     collection.update_one({"_id": document_id}, {"$set": update_data})
     logger.info("Updated document with _id {}: {}".format(document_id, collection.find_one({"_id": document_id})))
 
 def insert_document(collection: pymongo.collection.Collection, document_data: Dict[str, Any]) -> Any:
     """Insert a document with document_data and return the contents of its _id field"""
+    document_data["_id"] = str(document_data["_id"])  # Ensure _id is stored as a string
     document_id = collection.insert_one(document_data).inserted_id
     logger.info("Inserted document with _id {}".format(document_id))
     return document_id
