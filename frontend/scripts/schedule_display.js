@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
                           });
   
                           swapButton.addEventListener("click", function () {
-                              swapExercise(day, groupIndex, exerciseIndex);
+                              //swapExercise(day, groupIndex, exerciseIndex);
                           });
   
                           buttonsWrapper.appendChild(deleteButton);
