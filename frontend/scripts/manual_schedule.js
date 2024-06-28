@@ -150,10 +150,12 @@ document.addEventListener("DOMContentLoaded", function () {
   
     function updateRepSet(day, index, newRepSet) {
       if (schedule[day] && schedule[day][index]) {
-        schedule[day][index].repSet = newRepSet;
-        localStorage.setItem("schedule", JSON.stringify(schedule));
+          const [newSets, newReps] = newRepSet.split(' x ');
+          schedule[day][index].sets = parseInt(newSets);
+          schedule[day][index].reps = parseInt(newReps);
+          localStorage.setItem("schedule", JSON.stringify(schedule));
       }
-    }
+  }
   
     function saveChangesToServer() {
         const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule";
