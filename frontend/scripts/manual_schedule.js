@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
       userToken = getUserToken();
 
       if (!window.location.href.endsWith(userToken)) {
-        window.location.href = `https://fitnessaicoach.azurewebsites.net/manual_schedule.html?token=${userToken}`;
+        window.location.href = `https://gentle-bay-09953a810.5.azurestaticapps.net/manual_schedule.html?token=${userToken}`;
       } else {
         openDiscoverModal();
       }
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
   overlay.addEventListener("click", () => {
     userToken = generateUniqueToken();
     localStorage.setItem("userToken", userToken);
-    window.location.href = `https://fitnessaicoach.azurewebsites.net/manual_schedule.html?token=${userToken}`;
+    window.location.href = `https://gentle-bay-09953a810.5.azurestaticapps.net/manual_schedule.html?token=${userToken}`;
   });
 
   if (!window.location.href.endsWith(userToken)) {
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
   addToFavoritesBtn.addEventListener("click", async function() {
       const email = document.getElementById("favorites-email").value;
       const scheduleName = document.getElementById("favorites-name").value;
-      const addToFavesUrl = new URL('https://fitnessaicoach.azurewebsites.net/add_to_favorites');
+      const addToFavesUrl = new URL('https://gentle-bay-09953a810.5.azurestaticapps.net/add_to_favorites');
       if (email && scheduleName) {
         const response = await fetch(addToFavesUrl, {
           method: 'POST',
