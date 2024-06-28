@@ -148,21 +148,25 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   }
 
-  function updateRepSet(day, index, newSets, newReps) {
+  function updateRepSet(day, index, newRepSet) {
     if (schedule[day] && schedule[day][index]) {
-        const sets = parseInt(newSets);
-        const reps = parseInt(newReps);
+        // Split newRepSet at 'x' to separate sets and reps
+        const parts = newRepSet.split('x').map(part => parseInt(part.trim()));
 
-        if (!isNaN(sets) && !isNaN(reps)) { // Check if parsed values are valid integers
+        // Ensure there are exactly two parts (sets and reps)
+        if (parts.length === 2 && !parts.some(isNaN)) {
+            const [sets, reps] = parts;
+
             schedule[day][index].sets = sets;
             schedule[day][index].reps = reps;
             localStorage.setItem("schedule", JSON.stringify(schedule));
+
+            displayExercises(day); // Update display after modification
         } else {
             // Handle invalid input (optional)
-            console.error(`Invalid sets (${newSets}) or reps (${newReps}) input.`);
+            console.error(`Invalid repSet format: ${newRepSet}`);
+            // Optionally, revert to previous valid values or notify the user
         }
-
-        displayExercises(day); // Update display after modification
     }
 }
 
