@@ -72,6 +72,7 @@ docs/_build/
 # Jupyter Notebook
 .ipynb_checkpoints
 
+<<<<<<< HEAD
 # IPython
 profile_default/
 ipython_config.py
@@ -96,5 +97,10 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
+=======
+# PyCharm
+.idea/
+
+>>>>>>> heroku/master
 # VS Code
 .vscode/
