@@ -10,6 +10,18 @@ myFitnessAI Coach is an AI-powered platform designed to create personalized fitn
 #### Timothé Van Damme
 ## Installation details
 Our website is accessible via url link (It was deployed on azure web static app): https://gentle-bay-09953a810.5.azurestaticapps.net/
+The backend server is accesible via this li k: https://fitnessaicoach.azurewebsites.net/
+
+For running the application on a local machine the steps are the following: 
+
+1. Install the repository on local;
+2. go to the project directory;
+3. create a virtual environment;
+4. install the dependencies (pip install -r requirements.txt);
+5. Set up a .env file with all the keys;
+6. go to the backend folder directory and run on terminal "flask run";
+7. for running at the same time the frontend, open another terminal and run "python -m http.server", then go on a browser and type in the search bar:"http:localhost:8000". if the port is different, you can specify the port by running:"python -m http.server 8000";
+
 ## Architecture
 ![image](https://github.com/VU-Applied-Programming-for-AI-2024/Group-15/assets/156012070/4bdc002a-67b3-4541-bfed-74f537f3df2a)
 
