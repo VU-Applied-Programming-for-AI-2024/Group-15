@@ -161,6 +161,7 @@ def register_routes(app):
 
             # Insert into the favorites collection
             favorite = {
+                "_id": email + schedule_name,
                 "email": email,
                 "schedule_name": schedule_name,
                 "schedule": schedule
