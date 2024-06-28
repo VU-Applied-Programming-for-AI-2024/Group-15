@@ -49,7 +49,9 @@ async function searchFavorites() {
 
     const favoritesHTML = favorites.map((favorite) => {
         return `<div class="favorite-item">
-                    <button class="favorite-button">${favorite.schedule_name}</button>
+                    <button class="favorite-button" data-email="${favorite.email}" data-schedule-name="${favorite.schedule_name}">
+                        ${favorite.schedule_name}
+                    </button>
                     <p>Email: ${favorite.email}</p>
                 </div>`;
     });
@@ -57,11 +59,15 @@ async function searchFavorites() {
     resultsDiv.innerHTML = favoritesHTML.join('');
 
     const favoriteButtons = resultsDiv.querySelectorAll('.favorite-button');
-    favoriteButtons.forEach((button, index) => {
+    favoriteButtons.forEach((button) => {
         button.addEventListener('click', () => {
-            alert(`Clicked on favorite ${favorites[index].schedule_name}`);
+            const email = button.dataset.email;
+            const scheduleName = button.dataset.scheduleName;
+            loadSchedule(email, scheduleName);
         });
     });
 }
 
-  
+function loadSchedule(email, scheduleName) {
+    window.location.href = `schedule_display.html?email=${email}&schedule_name=${scheduleName}`;
+  }

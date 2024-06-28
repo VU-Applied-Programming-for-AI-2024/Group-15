@@ -227,25 +227,35 @@ def register_routes(app):
             return jsonify({"status": "error", "message": str(e)}), 500
 
 
-    @app.route('/get-schedule/<schedule_id>', methods=['GET'])
-    def get_schedule(schedule_id):
+    @app.route('/get-schedule', methods=['GET'])
+    def get_schedule():
+        schedule_id = request.args.get('schedule_id')
+        email = request.args.get('email')
+        schedule_name = request.args.get('schedule_name')
+        
         try:
-            schedule_id = ObjectId(schedule_id)
-            schedule = server_crud_operations(
-                operation="read",
-                collection_name="schedules",
-                key="_id",
-                value=schedule_id
-            )
-            
-            if schedule:
-                return jsonify({"status": "success", "schedule": schedule}), 200
+            if schedule_id:
+                schedule_id = ObjectId(schedule_id)
+                schedule = server_crud_operations("read", "schedules", "_id", schedule_id)
+                if schedule:
+                    return jsonify({"status": "success", "schedule": schedule}), 200
+                else:
+                    return jsonify({"status": "error", "message": "Schedule not found"}), 404
+            elif email and schedule_name:
+                schedule = server_crud_operations("read", "favorites", "email_schedule_name", {"email": email, "schedule_name": schedule_name})
+                if schedule:
+                    return jsonify({"status": "success", "schedule": schedule}), 200
+                else:
+                    return jsonify({"status": "error", "message": "Schedule not found"}), 404
             else:
-                return jsonify({"status": "error", "message": "Schedule not found"}), 404
+                return jsonify({"status": "error", "message": "Missing parameters"}), 400
+            
+           
         except Exception as e:
             print("Error:", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
         
+
     @app.route('/store-schedule', methods=['POST'])
     def store_schedule():
         try:
