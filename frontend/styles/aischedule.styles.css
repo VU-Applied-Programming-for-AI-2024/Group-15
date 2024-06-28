@@ -1,72 +1,8 @@
-<<<<<<< HEAD
-body {
-    font-family: 'Arial', sans-serif;
-    background: #1b98e1;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-header h1 a {
-=======
 
 aischedule h1 a {
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     position: relative;
     z-index: 10;
     text-decoration: none !important;
-    color: #fff;
-}
-
-header img.logo {
-    width: 150px;
-}
-
-nav.menu {
-    background: #2A3D66;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-nav.menu .menu-links a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
-}
-
-nav.menu .menu-links a:hover {
-    text-decoration: underline;
-}
-
-main.aischedulepage {
-    background: #2A3D66;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-h3 {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-h4 {
-    font-size: 20px;
-    margin-bottom: 10px;
 }
 
 
@@ -89,21 +25,13 @@ h4 {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #fff;
+    border: 2px solid #000;
     border-radius: 50%;
     cursor: pointer;
     user-select: none;
-    transition: background-color 0.3s, color 0.3s;
 }
 
 .day.active {
-<<<<<<< HEAD
-    background-color: #80d0c7;
-    color: #2A3D66;
-}
-
-/* Sliders styles */
-=======
     background-color: #80d0c7 ;
     color: white;
 }
@@ -111,32 +39,28 @@ h4 {
 /* SLIDERS STYLES*/
 
 /* sliders background*/
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
 .age-range, .weight-range {
     height: 50px;
     width: 100%;
+    max-width: 1000px;
     background: linear-gradient(135deg, #e0e0e0ae, #c0c0c017);
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 0 45px;
-    margin: 20px auto;
+    padding: 0 65px 0 45px;
+    margin: auto;
 }
 
-<<<<<<< HEAD
-.slider-value {
-=======
 /*number showed when selecting*/
 .age-range .slider-value, .weight-range .slider-value {
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     position: relative;
     width: 100%;
 }
 
-.slider-span {
+.age-range .slider-value .slider-span, .weight-range .slider-value .slider-span {
     position: absolute;
     height: 45px;
     width: 45px;
-    color: #fff;
+    color: #D0D3D4;
     font-weight: 500;
     top: -40px;
     transform: translateX(-50%) scale(0);
@@ -150,16 +74,12 @@ h4 {
     text-align: center;
 }
 
-.slider-span.show {
+.age-range .slider-value .slider-span.show, .weight-range .slider-value .slider-span.show {
     transform: translateX(-50%) scale(1);
 }
 
-<<<<<<< HEAD
-.slider-span:after {
-=======
 /*slider surrounding when using */
 .age-range .slider-value .slider-span:after, .weight-range .slider-value .slider-span:after {
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     position: absolute;
     content: "";
     height: 45px;
@@ -174,13 +94,8 @@ h4 {
     border-top-right-radius: 50%;
     border-bottom-left-radius: 50%;
 }
-<<<<<<< HEAD
-
-.field input::-webkit-slider-thumb {
-=======
 /*Thumb styling (the button we actually touch)*/
 .age-range .field input::-webkit-slider-thumb, .weight-range .field input::-webkit-slider-thumb {
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
@@ -191,51 +106,20 @@ h4 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-<<<<<<< HEAD
-.field input::-webkit-slider-thumb:hover {
-=======
 /* Thumb hover effect */
 .age-range .field input::-webkit-slider-thumb:hover, .weight-range .field input::-webkit-slider-thumb:hover {
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     background: linear-gradient(135deg, #2A3D66, #80d0c7);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-<<<<<<< HEAD
-.field {
-=======
 /*Slider and values*/
 .age-range .field, .weight-range .field {
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
 }
-<<<<<<< HEAD
-
-.value {
-    position: absolute;
-    font-size: 18px;
-    font-weight: 600;
-    color: #fff;
-}
-
-.value.left {
-    left: -22px;
-}
-
-.value.right {
-    right: -43px;
-}
-
-.field input {
-    appearance: none;
-    height: 10px;
-    width: 100%;
-    background: linear-gradient(90deg, #80d0c7 100%, #1b98e1 0%);
-=======
 /*numbers on the side*/
 .age-range .field .value, .weight-range .field .value {
     position: absolute;
@@ -256,20 +140,11 @@ h4 {
     height: 10px;
     width: 100%;
     background: linear-gradient(90deg, #80d0c7 100%,#1b98e1 0%);
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     border-radius: 5px;
     outline: none;
     border: none;
 }
 
-<<<<<<< HEAD
-/* Gender selection buttons */
-.gender-selection {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-=======
 
 
 /* Gender selection buttons */
@@ -280,41 +155,29 @@ h4 {
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
 }
 
 .gender-selection input[type="radio"] {
     display: none;
 }
 
-<<<<<<< HEAD
-.gender-selection label {
-=======
 /* Style for the label */
 .gender-selection label {
     position: relative;
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     color: #D0D3D4;
     font-family: sans-serif;
     font-size: 20px;
     border: 2px solid rgba(245, 245, 245, 0.678);
     background: linear-gradient(135deg, #80d0c7, #586175);
     border-radius: 10px;
-<<<<<<< HEAD
-    padding: 10px 20px;
-=======
     padding: 10px 50px;
     display: inline-flex;
     align-items: center;
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
-<<<<<<< HEAD
-=======
 /* Style for non-checked labels */
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
 .gender-selection label::before {
     content: "";
     height: 30px;
@@ -325,10 +188,7 @@ h4 {
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
-<<<<<<< HEAD
-=======
 /* Style for checked label */
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
 .gender-selection input[type="radio"]:checked + label {
     background-color: #4A627D;
     color: #B0B3B8;
@@ -349,60 +209,4 @@ h4 {
     color: #FFFFFF;
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-<<<<<<< HEAD
-}
-
-/* Submit button */
-#submit-btn {
-    background: #0072ff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s;
-    font-size: 16px;
-    margin-top: 20px;
-}
-
-#submit-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-
-/* Waiting popup */
-#waiting-popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-}
-
-.popup-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.spinner {
-    border: 4px solid rgba(0,0,0,0.1);
-    border-top: 4px solid #0072ff;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-=======
->>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
 }
