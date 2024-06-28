@@ -11,4 +11,5 @@ myFitnessAI Coach is an AI-powered platform designed to create personalized fitn
 ## Installation details
 Our website is accessible via url link (It was deployed on azure web static app): https://gentle-bay-09953a810.5.azurestaticapps.net/
 ## Architecture
-    - High level structure of the repo
+![image](https://github.com/VU-Applied-Programming-for-AI-2024/Group-15/assets/156012070/4bdc002a-67b3-4541-bfed-74f537f3df2a)
+
