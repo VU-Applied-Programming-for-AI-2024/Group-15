@@ -6,9 +6,9 @@ from dotenv import load_dotenv, find_dotenv
 from models.bodypart import BodyPart
 from utils.crud_operations_azure import server_crud_operations
 import json
+from models.bodypart import MuscleGroupDistributor
 import openai
 import logging 
-
 
 load_dotenv(find_dotenv())
 
