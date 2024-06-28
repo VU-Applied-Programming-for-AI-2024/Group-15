@@ -149,13 +149,33 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateRepSet(day, index, newRepSet) {
-      if (schedule[day] && schedule[day][index]) {
-          const [newSets, newReps] = newRepSet.split(' x ');
-          schedule[day][index].sets = parseInt(newSets);
-          schedule[day][index].reps = parseInt(newReps);
-          localStorage.setItem("schedule", JSON.stringify(schedule));
-      }
-  }
+    if (schedule[day] && schedule[day][index]) {
+        // Split newRepSet at 'x' to separate sets and reps
+        const parts = newRepSet.split('x').map(part => part.trim());
+
+        if (parts.length === 2) {
+            const newSets = parseInt(parts[0]);
+            const newReps = parseInt(parts[1]);
+
+            if (!isNaN(newSets) && !isNaN(newReps)) {
+                schedule[day][index].sets = newSets;
+                schedule[day][index].reps = newReps;
+                localStorage.setItem("schedule", JSON.stringify(schedule));
+
+                displayExercises(day); // Update display after modification
+            } else {
+                // Handle case where parsing failed
+                console.error(`Invalid sets (${parts[0]}) or reps (${parts[1]}) input.`);
+                // Optionally, revert to previous valid values or notify the user
+            }
+        } else {
+            // Handle case where split did not result in exactly two parts
+            console.error(`Invalid repSet format: ${newRepSet}`);
+            // Optionally, revert to previous valid values or notify the user
+        }
+    }
+}
+
 
   function saveChangesToServerAndReload() {
       const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule";
