@@ -20,6 +20,7 @@
     </header>
     <nav class="menu">
         <div class="menu-links">
+<<<<<<< HEAD
             <a href="index.html">Home</a>
             <a href="discover.html">Discover</a>
             <a href="manual_schedule.html">Manual Schedule</a>
@@ -30,6 +31,19 @@
         <h3>Personal Information</h3>
         <br />
         <form id="user-info-form" action="/create-schedule" method="POST">
+=======
+          <a href="index.html">Home</a>
+          <a href="discover.html">Discover</a>
+          <a href="manual_schedule.html">Manual Schedule</a>
+          <a href="AIschedule.component.html">AI Schedule</a>
+          <a href="favorites.html">Favorites</a>
+        </div>
+      </nav>
+    <main class="aischedulepage">
+        <h3>Personal Information</h3>
+        <br />
+        <form id="user-info-form" action="/create-schedule"  method="POST">
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
             <!-- Age input -->
             <h4>Age</h4>
             <div class="age-range">
@@ -47,6 +61,7 @@
                 const ageslideValue = document.querySelector(".age-range .slider-span");
                 const ageinputSlider = document.querySelector(".age-input");
                 ageinputSlider.oninput = () => {
+<<<<<<< HEAD
                     let agevalue = ageinputSlider.value;
                     ageslideValue.textContent = agevalue;
                     ageslideValue.style.left = agevalue + "%";
@@ -56,6 +71,17 @@
                     ageslideValue.classList.remove("show");
                 };
             </script>
+=======
+                  let agevalue = ageinputSlider.value;
+                  ageslideValue.textContent = agevalue;
+                  ageslideValue.style.left = agevalue + "%";
+                  ageslideValue.classList.add("show");
+                };
+                ageinputSlider.onblur = () => {
+                  ageslideValue.classList.remove("show");
+                };
+              </script>
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
             <h4>Gender</h4>
             <br />
             <div class="gender-selection">
@@ -81,6 +107,7 @@
             </div>
             <br />
             <script>
+<<<<<<< HEAD
                 const weightslideValue = document.querySelector(".weight-range .slider-span");
                 const weightinputSlider = document.querySelector(".weight-input");
                 weightinputSlider.oninput = () => {
@@ -93,6 +120,23 @@
                     weightslideValue.classList.remove("show");
                 };
             </script>
+=======
+                const weightslideValue = document.querySelector(
+                  ".weight-range .slider-span"
+                );
+                const weightinputSlider = document.querySelector(".weight-input");
+                weightinputSlider.oninput = () => {
+                  let weightvalue = weightinputSlider.value;
+                  weightslideValue.textContent = weightvalue;
+                  weightslideValue.style.left = weightvalue / 2 + "%";
+                  weightslideValue.classList.add("show");
+                };
+                weightinputSlider.onblur = () => {
+                  weightslideValue.classList.remove("show");
+                };
+              </script>
+            
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
             <!-- Goal selection -->
             <h4>Goal</h4>
             <div class="form-group">

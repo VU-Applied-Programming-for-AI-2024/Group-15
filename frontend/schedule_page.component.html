@@ -16,6 +16,7 @@
             <img src="../images/logo2.png" class="logo" alt="myFitnessAIcoach">
         </a>
     </h1>
+<<<<<<< HEAD
     <nav class="menu">
         <div class="menu-links">
             <a href="index.html">Home</a>
@@ -33,6 +34,48 @@
         </section>
         <div class="schedule" id="schedule-container">
             <!-- Schedule content will be dynamically inserted here -->
+=======
+    <nav class="navbar">
+      <div class="navbar-links">
+        <a href="index.html">Home</a>
+        <a href="discover.html">Discover</a>
+        <a href="manual_schedule.html">Manual Schedule</a>
+        <a href="AIschedule.component.html">AI Schedule</a>
+        <a href="favorites.html">Favorites</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <section class="schedule-description">
+        <h1>Schedule</h1>
+        <p>Edit your schedule and see statistics for each specific workout</p>
+      </section>
+      <div class="schedule" id="schedule-container">
+        <!-- Schedule content will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+  <!-- Link to JavaScript file -->
+  
+  <script id="schedule-template" type="text/x-handlebars-template">
+    {{#each schedule}}
+      <div class="day">
+        <div class="day-content">
+          <div class="day-text">
+            <h3>{{day}}</h3>
+            <div class="exercises">
+              {{#each exercises}}
+                <p>{{this.name}} {{this.sets}}x{{this.reps}}</p>
+              {{/each}}
+            </div>
+          </div>
+          <div class="icon">
+            <a href="workoutstatistics.html" target="_self" title="Workout Statistics">
+              <i class="info">i</i>
+            </a>
+            <i class="edit">✏️</i>
+          </div>
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
         </div>
     </div>
 

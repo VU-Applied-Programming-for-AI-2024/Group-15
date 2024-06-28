@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import List
 
 class BodyPart(Enum):
     BACK = ["lats", "traps", "upper back"]

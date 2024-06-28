@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body {
     font-family: 'Arial', sans-serif;
     background: #1b98e1;
@@ -16,6 +17,10 @@ header {
 }
 
 header h1 a {
+=======
+
+aischedule h1 a {
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     position: relative;
     z-index: 10;
     text-decoration: none !important;
@@ -64,7 +69,8 @@ h4 {
     margin-bottom: 10px;
 }
 
-/* Days selection styles */
+
+/*Days selection styles*/
 .day-selector {
     text-align: center;
     margin-top: 20px;
@@ -91,11 +97,21 @@ h4 {
 }
 
 .day.active {
+<<<<<<< HEAD
     background-color: #80d0c7;
     color: #2A3D66;
 }
 
 /* Sliders styles */
+=======
+    background-color: #80d0c7 ;
+    color: white;
+}
+
+/* SLIDERS STYLES*/
+
+/* sliders background*/
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
 .age-range, .weight-range {
     height: 50px;
     width: 100%;
@@ -106,7 +122,12 @@ h4 {
     margin: 20px auto;
 }
 
+<<<<<<< HEAD
 .slider-value {
+=======
+/*number showed when selecting*/
+.age-range .slider-value, .weight-range .slider-value {
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     position: relative;
     width: 100%;
 }
@@ -133,7 +154,12 @@ h4 {
     transform: translateX(-50%) scale(1);
 }
 
+<<<<<<< HEAD
 .slider-span:after {
+=======
+/*slider surrounding when using */
+.age-range .slider-value .slider-span:after, .weight-range .slider-value .slider-span:after {
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     position: absolute;
     content: "";
     height: 45px;
@@ -148,8 +174,13 @@ h4 {
     border-top-right-radius: 50%;
     border-bottom-left-radius: 50%;
 }
+<<<<<<< HEAD
 
 .field input::-webkit-slider-thumb {
+=======
+/*Thumb styling (the button we actually touch)*/
+.age-range .field input::-webkit-slider-thumb, .weight-range .field input::-webkit-slider-thumb {
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
@@ -160,18 +191,29 @@ h4 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+<<<<<<< HEAD
 .field input::-webkit-slider-thumb:hover {
+=======
+/* Thumb hover effect */
+.age-range .field input::-webkit-slider-thumb:hover, .weight-range .field input::-webkit-slider-thumb:hover {
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     background: linear-gradient(135deg, #2A3D66, #80d0c7);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+<<<<<<< HEAD
 .field {
+=======
+/*Slider and values*/
+.age-range .field, .weight-range .field {
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
 }
+<<<<<<< HEAD
 
 .value {
     position: absolute;
@@ -193,35 +235,86 @@ h4 {
     height: 10px;
     width: 100%;
     background: linear-gradient(90deg, #80d0c7 100%, #1b98e1 0%);
+=======
+/*numbers on the side*/
+.age-range .field .value, .weight-range .field .value {
+    position: absolute;
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+}
+.age-range .field .value.left, .weight-range .field .value.left {
+    left: -22px;
+}
+.age-range .field .value.right, .weight-range .field .value.right {
+    right: -43px;
+}
+
+/*Track style*/
+.age-range .field input, .weight-range .field input {
+    appearance: none;
+    height: 10px;
+    width: 100%;
+    background: linear-gradient(90deg, #80d0c7 100%,#1b98e1 0%);
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     border-radius: 5px;
     outline: none;
     border: none;
 }
 
+<<<<<<< HEAD
 /* Gender selection buttons */
 .gender-selection {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-bottom: 20px;
+=======
+
+
+/* Gender selection buttons */
+.gender-selection {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
 }
 
 .gender-selection input[type="radio"] {
     display: none;
 }
 
+<<<<<<< HEAD
 .gender-selection label {
+=======
+/* Style for the label */
+.gender-selection label {
+    position: relative;
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     color: #D0D3D4;
     font-family: sans-serif;
     font-size: 20px;
     border: 2px solid rgba(245, 245, 245, 0.678);
     background: linear-gradient(135deg, #80d0c7, #586175);
     border-radius: 10px;
+<<<<<<< HEAD
     padding: 10px 20px;
+=======
+    padding: 10px 50px;
+    display: inline-flex;
+    align-items: center;
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
+<<<<<<< HEAD
+=======
+/* Style for non-checked labels */
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
 .gender-selection label::before {
     content: "";
     height: 30px;
@@ -232,6 +325,10 @@ h4 {
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
+<<<<<<< HEAD
+=======
+/* Style for checked label */
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
 .gender-selection input[type="radio"]:checked + label {
     background-color: #4A627D;
     color: #B0B3B8;
@@ -252,6 +349,7 @@ h4 {
     color: #FFFFFF;
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+<<<<<<< HEAD
 }
 
 /* Submit button */
@@ -305,4 +403,6 @@ h4 {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+=======
+>>>>>>> 12a50d4559e641cda9a3f6257bafe9797d4c30e9
 }
