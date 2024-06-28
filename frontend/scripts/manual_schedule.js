@@ -41,11 +41,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             swapButton.dataset.index = index;
     
                             deleteButton.addEventListener("click", function () {
-                                deleteExercise(day, index);
+                                //deleteExercise(day, index);
                             });
     
                             swapButton.addEventListener("click", function () {
-                                swapExercise(day, index);
+                                //swapExercise(day, index);
                             });
     
                             exerciseElement.appendChild(deleteButton);
