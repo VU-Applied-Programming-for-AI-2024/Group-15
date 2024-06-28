@@ -150,19 +150,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateRepSet(day, index, newRepSet) {
     if (schedule[day] && schedule[day][index]) {
-        const [newSets, newReps] = newRepSet.split(' x ');
-        const parsedSets = parseInt(newSets);
-        const parsedReps = parseInt(newReps);
+        const [newSetsStr, newRepsStr] = newRepSet.split(' x ');
+        
+        // Convert to integers, using parseInt with radix 10 (decimal)
+        const newSets = parseInt(newSetsStr.trim(), 10);
+        const newReps = parseInt(newRepsStr.trim(), 10);
 
-        if (!isNaN(parsedSets) && !isNaN(parsedReps)) {
-            schedule[day][index].sets = parsedSets;
-            schedule[day][index].reps = parsedReps;
+        // Check if parsing was successful (not NaN)
+        if (!isNaN(newSets) && !isNaN(newReps)) {
+            schedule[day][index].sets = newSets;
+            schedule[day][index].reps = newReps;
             localStorage.setItem("schedule", JSON.stringify(schedule));
         } else {
             console.error(`Invalid input for sets or reps: ${newRepSet}`);
         }
     }
 }
+
 
 
   function saveChangesToServerAndReload() {
