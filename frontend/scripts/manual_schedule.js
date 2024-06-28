@@ -8,70 +8,71 @@ document.addEventListener("DOMContentLoaded", function () {
     let editMode = false;
   
     function displayExercises(day) {
-      const dayExercisesContainer = document.getElementById(`${day}-exercises`);
-  
-      if (dayExercisesContainer) {
-        dayExercisesContainer.innerHTML = ""; // Clear previous content
-  
-        if (window.location.href.includes(`manual_schedule.html?token=${userToken}`)) {
-          if (schedule[day] && schedule[day].length > 0) {
-            schedule[day].forEach((exercise, index) => {
-              const exerciseElement = document.createElement("div");
-              exerciseElement.classList.add("exercise-item");
-              exerciseElement.textContent = exercise.name;
-  
-              // Create rep x set element
-              const repSetElement = document.createElement("div");
-              repSetElement.classList.add("rep-set");
-              repSetElement.textContent = exercise.repSet || "0 x 0";
-              exerciseElement.appendChild(repSetElement);
-  
-              if (editMode) {
-                // If in edit mode, allow modification
-                const deleteButton = document.createElement("button");
-                deleteButton.textContent = "X";
-                deleteButton.classList.add("btn", "btn-danger", "delete-exercise-btn");
-                deleteButton.dataset.day = day;
-                deleteButton.dataset.index = index;
-  
-                const swapButton = document.createElement("button");
-                swapButton.textContent = "🔀";
-                swapButton.classList.add("btn", "btn-secondary", "swap-exercise-btn");
-                swapButton.dataset.day = day;
-                swapButton.dataset.index = index;
-  
-                deleteButton.addEventListener("click", function () {
-                  deleteExercise(day, index);
-                });
-  
-                swapButton.addEventListener("click", function () {
-                  swapExercise(day, index);
-                });
-  
-                exerciseElement.appendChild(deleteButton);
-                exerciseElement.appendChild(swapButton);
-  
-                // Allow modifying rep x set
-                repSetElement.contentEditable = "true";
-                repSetElement.addEventListener("input", function () {
-                  updateRepSet(day, index, repSetElement.textContent);
-                });
-              }
-  
-              dayExercisesContainer.appendChild(exerciseElement);
-            });
-          } else {
-            const noExerciseElement = document.createElement("div");
-            noExerciseElement.textContent = "Rest";
-            dayExercisesContainer.appendChild(noExerciseElement);
-          }
+        const dayExercisesContainer = document.getElementById(`${day}-exercises`);
+    
+        if (dayExercisesContainer) {
+            dayExercisesContainer.innerHTML = ""; // Clear previous content
+    
+            if (window.location.href.includes(`manual_schedule.html?token=${userToken}`)) {
+                if (schedule[day] && schedule[day].length > 0) {
+                    schedule[day].forEach((exercise, index) => {
+                        const exerciseElement = document.createElement("div");
+                        exerciseElement.classList.add("exercise-item");
+                        exerciseElement.textContent = exercise.name;
+    
+                        // Create rep x set element
+                        const repSetElement = document.createElement("div");
+                        repSetElement.classList.add("rep-set");
+                        repSetElement.textContent = `${exercise.sets} x ${exercise.reps}` || "0 x 0";
+                        exerciseElement.appendChild(repSetElement);
+    
+                        if (editMode) {
+                            // If in edit mode, allow modification
+                            const deleteButton = document.createElement("button");
+                            deleteButton.textContent = "X";
+                            deleteButton.classList.add("btn", "btn-danger", "delete-exercise-btn");
+                            deleteButton.dataset.day = day;
+                            deleteButton.dataset.index = index;
+    
+                            const swapButton = document.createElement("button");
+                            swapButton.textContent = "🔀";
+                            swapButton.classList.add("btn", "btn-secondary", "swap-exercise-btn");
+                            swapButton.dataset.day = day;
+                            swapButton.dataset.index = index;
+    
+                            deleteButton.addEventListener("click", function () {
+                                deleteExercise(day, index);
+                            });
+    
+                            swapButton.addEventListener("click", function () {
+                                swapExercise(day, index);
+                            });
+    
+                            exerciseElement.appendChild(deleteButton);
+                            exerciseElement.appendChild(swapButton);
+    
+                            // Allow modifying rep x set
+                            repSetElement.contentEditable = "true";
+                            repSetElement.addEventListener("input", function () {
+                                const [newSets, newReps] = repSetElement.textContent.split(' x ');
+                                updateRepSet(day, index, newSets, newReps);
+                            });
+                        }
+    
+                        dayExercisesContainer.appendChild(exerciseElement);
+                    });
+                } else {
+                    const noExerciseElement = document.createElement("div");
+                    noExerciseElement.textContent = "Rest";
+                    dayExercisesContainer.appendChild(noExerciseElement);
+                }
+            } else {
+                // If not on the correct page, clear the content
+                dayExercisesContainer.innerHTML = "";
+            }
         } else {
-          // If not on the correct page, clear the content
-          dayExercisesContainer.innerHTML = "";
+            console.error(`Element with ID '${day}-exercises' not found.`);
         }
-      } else {
-        console.error(`Element with ID '${day}-exercises' not found.`);
-      }
     }
   
     days.forEach((day) => {
@@ -96,18 +97,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedDay = localStorage.getItem("selectedDay");
   
     if (clickedExercise && selectedDay) {
-      if (!schedule[selectedDay]) {
-        schedule[selectedDay] = [];
-      }
-      clickedExercise.repSet = "0 x 0"; // Initialize repSet for new exercise
-      schedule[selectedDay].push(clickedExercise);
-      localStorage.setItem("schedule", JSON.stringify(schedule));
-      localStorage.removeItem("clickedExercise");
-  
-      saveChangesToServer();
-      if (window.location.href.endsWith(`manual_schedule_${userToken}.html`)) {
-        console.log("Open modal or perform actions for the correct URL");
-      }
+        if (!schedule[selectedDay]) {
+            schedule[selectedDay] = [];
+        }
+        clickedExercise.sets = 0;
+        clickedExercise.reps = 0; // Example: Initialize reps for new exercise
+        schedule[selectedDay].push(clickedExercise);
+        localStorage.setItem("schedule", JSON.stringify(schedule));
+        localStorage.removeItem("clickedExercise");
+    
+        saveChangesToServer();
+        if (window.location.href.endsWith(`manual_schedule_${userToken}.html`)) {
+            console.log("Open modal or perform actions for the correct URL");
+        }
     }
   
     document.addEventListener("click", function (event) {
@@ -154,32 +156,50 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   
     function saveChangesToServer() {
-      const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule";
-  
-      fetch(userScheduleUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: userToken,
-          schedule: schedule,
-        }),
-      })
+        const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule";
+    
+        // Map schedule to desired structure with Sets and Reps
+        const mappedSchedule = {};
+        Object.keys(schedule).forEach(day => {
+            mappedSchedule[day] = schedule[day].map(exercise => ({
+                Muscle_Group: exercise.muscleGroup,
+                Exercises: [
+                    {
+                        Exercise: exercise.name,
+                        Sets: exercise.sets,
+                        Reps: exercise.reps
+                    }
+                ]
+            }));
+        });
+    
+        fetch(userScheduleUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: email,
+                scheduleName: scheduleName,
+                schedule: {
+                    Workout_Schedule: mappedSchedule
+                },
+            }),
+        })
         .then((response) => {
-          if (!response.ok) {
-            return response.text().then((text) => {
-              throw new Error(text);
-            });
-          }
-          return response.json();
+            if (!response.ok) {
+                return response.text().then((text) => {
+                    throw new Error(text);
+                });
+            }
+            return response.json();
         })
         .then((data) => {
-          console.log("Schedule saved successfully:", data);
-          window.location.href = `manual_schedule_${userToken}.html`;
+            console.log("Schedule saved successfully:", data);
+            window.location.href = `manual_schedule_${userToken}.html`;
         })
         .catch((error) => {
-          console.error("Error saving schedule:", error);
+            console.error("Error saving schedule:", error);
         });
     }
   

@@ -102,7 +102,9 @@
 }
 
 
-
+.btn:hover {
+    opacity: 0.8; 
+}
 
 .modal-header{
     background: linear-gradient(280deg, rgba(27, 152, 225, 0.7) 0%, rgba(128, 208, 199, 0.7) 100%);
@@ -167,3 +169,40 @@
     padding: 2px 4px;
     border-radius: 4px;
   }
+
+  .exercise-item {
+    float: left;
+    font-family: 'Arial', sans-serif; 
+    font-size: 18px; 
+    font-weight: bold; 
+    color: #333; 
+    margin-bottom: 10px; 
+    clear: both; 
+    flex: 1;
+}
+
+.exercise-details {
+    float: right; 
+    font-family: 'Arial', sans-serif; 
+    font-size: 16px; 
+    color: #666; 
+    margin-left: 20px;
+    flex:1;
+}
+
+.rep-set {
+    font-style: italic; 
+    margin-top: 3px; 
+}
+
+.exercise-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.buttons-wrapper {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    flex-wrap: wrap;
+}

@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Event listeners for form inputs
   document.querySelector('.age-input').addEventListener('input', validateForm);
   document.querySelectorAll('input[name="gender"]').forEach(genderInput => {
     genderInput.addEventListener('change', validateForm);
@@ -38,9 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('goal').addEventListener('change', validateForm);
   document.getElementById('available-time').addEventListener('input', validateForm);
 
+  // Event listener for form submission
   document.getElementById('user-info-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
+    // Gather form data
     const age = parseInt(document.querySelector('.age-input').value);
     const gender = document.querySelector('input[name="gender"]:checked').value;
     const weight = parseInt(document.querySelector('.weight-input').value);
@@ -50,8 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const data = { age, gender, weight, goal, days: selectedDays, available_time: availableTime };
 
-    console.log('Sending data:', JSON.stringify(data));
-
+    // Send data to server
     fetch('https://fitnessaicoach.azurewebsites.net/create-schedule', { 
       method: 'POST',
       headers: {
@@ -61,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Network response was not ok'+ error);
+        throw new Error('Network response was not ok');
       }
       return response.json();
     })
@@ -69,19 +71,20 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Success:', result);
       if (result.status === 'success') {
         const scheduleId = result.schedule_id;
+        localStorage.setItem('scheduleId', scheduleId); // Store scheduleId in localStorage
         const scheduleJson = JSON.stringify(result.schedule, null, 2);
-        localStorage.setItem('scheduleId', scheduleId);
-
-        window.location.href = `schedule_page.component.html?scheduleId=${scheduleId}`;
+        // Redirect to schedule_display.html with scheduleId in query parameter
+        window.location.href = `https://gentle-bay-09953a810.5.azurestaticapps.net/schedule_display.html?scheduleId=${scheduleId}`;
       } else {
         console.error('Error creating schedule:', result.message);
+        alert('An error occurred while creating the schedule. Please try again.');
       }
     })
     .catch(error => {
       console.error('Error:', error);
-      alert('An error occurred while creating the schedule. Please try again.' + error);
+      alert('An error occurred while creating the schedule. Please try again.');
     });
   });
 
-  validateForm();
+  validateForm(); // Validate form initially on page load
 });
