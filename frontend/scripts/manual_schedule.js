@@ -250,6 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (email && scheduleName) {
           const response = await fetch(addToFavesUrl, {
               method: 'POST',
+              mode: 'no-cors',
               headers: {
                   'Content-Type': 'application/json',
               },
