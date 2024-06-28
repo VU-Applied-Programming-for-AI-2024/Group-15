@@ -7,6 +7,7 @@ from utils.crud_operations_azure import server_crud_operations
 import json
 import openai
 import logging 
+import uuid
 
 load_dotenv(find_dotenv())
 

@@ -164,11 +164,11 @@ aischedule h1 a {
 /* Style for the label */
 .gender-selection label {
     position: relative;
-    color: #D0D3D4;
+    color: #315763;
     font-family: sans-serif;
     font-size: 20px;
     border: 2px solid rgba(245, 245, 245, 0.678);
-    background: linear-gradient(135deg, #80d0c7, #586175);
+    background: linear-gradient(135deg, #ffffff, #9cb3e5);
     border-radius: 10px;
     padding: 10px 50px;
     display: inline-flex;
@@ -190,7 +190,7 @@ aischedule h1 a {
 
 /* Style for checked label */
 .gender-selection input[type="radio"]:checked + label {
-    background-color: #4A627D;
+    background-color: #71bad0;
     color: #B0B3B8;
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
