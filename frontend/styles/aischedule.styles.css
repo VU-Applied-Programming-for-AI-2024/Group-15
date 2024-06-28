@@ -99,7 +99,7 @@ aischedule h1 a {
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
-    background: linear-gradient(135deg, #1b98e1 0%, #80d0c7 100%);
+    background: linear-gradient(135deg, #8ac9ed 0%, #80d0c7 100%);
     border-radius: 50%;
     border: 2px solid #B0B3B8;
     cursor: pointer;
@@ -108,7 +108,7 @@ aischedule h1 a {
 
 /* Thumb hover effect */
 .age-range .field input::-webkit-slider-thumb:hover, .weight-range .field input::-webkit-slider-thumb:hover {
-    background: linear-gradient(135deg, #2A3D66, #80d0c7);
+    background: linear-gradient(135deg, #7fa3ef, #80d0c7);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 

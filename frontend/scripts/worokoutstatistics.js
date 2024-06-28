@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const day = urlParams.get('day');
     const scheduleId = localStorage.getItem('scheduleId');
 
-    fetch(`https://gentle-bay-09953a810.5.azurestaticapps.net/get-schedule/${scheduleId}`)
+    fetch(`https://fitnessaicoach.azurewebsites.net//get-schedule/${scheduleId}`)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
