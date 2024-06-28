@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
           schedule[selectedDay] = [];
       }
       clickedExercise.sets = 0;
-      clickedExercise.reps = 0; // Example: Initialize reps for new exercise
+      clickedExercise.reps = "0"; // Initialize reps as a string
       schedule[selectedDay].push(clickedExercise);
       localStorage.setItem("schedule", JSON.stringify(schedule));
       localStorage.removeItem("clickedExercise");
@@ -148,34 +148,26 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   }
 
-  function updateRepSet(day, index, newRepSet) {
-    if (schedule[day] && schedule[day][index]) {
-        // Split newRepSet at 'x' to separate sets and reps
-        const parts = newRepSet.split('x').map(part => part.trim());
+  function updateRepSet(day, index, newSets, newReps) {
+      if (schedule[day] && schedule[day][index]) {
+          const sets = parseInt(newSets);
+          // Reps should be stored as string
+          const reps = newReps;
 
-        if (parts.length === 2) {
-            const newSets = parseInt(parts[0]);
-            const newReps = parseInt(parts[1]);
+          // Check if sets is a valid integer
+          if (!isNaN(sets)) {
+              schedule[day][index].sets = sets;
+          } else {
+              console.error(`Invalid sets (${newSets}) input.`);
+          }
 
-            if (!isNaN(newSets) && !isNaN(newReps)) {
-                schedule[day][index].sets = newSets;
-                schedule[day][index].reps = newReps;
-                localStorage.setItem("schedule", JSON.stringify(schedule));
+          // Update reps directly as string
+          schedule[day][index].reps = reps;
+          localStorage.setItem("schedule", JSON.stringify(schedule));
 
-                displayExercises(day); // Update display after modification
-            } else {
-                // Handle case where parsing failed
-                console.error(`Invalid sets (${parts[0]}) or reps (${parts[1]}) input.`);
-                // Optionally, revert to previous valid values or notify the user
-            }
-        } else {
-            // Handle case where split did not result in exactly two parts
-            console.error(`Invalid repSet format: ${newRepSet}`);
-            // Optionally, revert to previous valid values or notify the user
-        }
-    }
-}
-
+          displayExercises(day); // Update display after modification
+      }
+  }
 
   function saveChangesToServerAndReload() {
       const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule";
@@ -298,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const setsPerMuscleGroup = {};
 
       exercises.forEach(exercise => {
-          const reps = exercise.reps || 0;
+          const reps = exercise.reps || "0"; // Ensure reps is treated as string
           const sets = exercise.sets || 0;
           const muscleGroup = exercise.muscleGroup || "Other";
 
