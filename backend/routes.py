@@ -3,61 +3,25 @@ import requests
 import os
 from typing import List, Any, Union, Dict
 from dotenv import load_dotenv, find_dotenv
-from models.day import Day
 from models.bodypart import BodyPart
-from models.schedule import Schedule
-from models.exercise import Exercise
-from models.workout_exercise import WorkoutExercise
-from models.workout import Workout
 from utils.crud_operations_azure import server_crud_operations
-import re
-from bson import ObjectId
 import json
-from models.bodypart import MuscleGroupDistributor
-import concurrent.futures
+import openai
+import logging 
+import uuid
+
 
 load_dotenv(find_dotenv())
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
+OPENAI_KEY = os.environ.get("OPENAI_KEY")
+openai.api_key = os.getenv("OPENAI_KEY")
 API_ENDPOINT = os.environ.get("API_ENDPOINT")
-API_KEY = "4623|B0oWv01vaf4fCpyzvGYwrHiWQI1Jh1fy60FbgBrh"
-BASE_URL = "https://zylalabs.com/api/392/exercise+database+api"
-
-class CustomScheduleEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, BodyPart):
-            return obj.value  # List of strings
-        elif isinstance(obj, Exercise):
-            return {
-                'bodyPart': obj.body_part,
-                'equipment': obj.equipment,
-                'gifUrl': obj.gif_url,
-                'id': obj.exercise_id,
-                'name': obj.name,
-                'target': obj.target
-            }
-        elif isinstance(obj, WorkoutExercise):
-            return {
-                'exercise': self.default(obj.exercise),
-                'sets': obj.sets,
-                'reps': obj.reps
-            }
-        elif isinstance(obj, Workout):
-            return {
-                'exercises': [self.default(ex) for ex in obj.exercises]
-            }
-        elif isinstance(obj, Schedule):
-            return {
-                day.name: self.default(workout)
-                for day, workout in obj.schedule.items()
-            }
-        return super().default(obj)
-
-
-def treat_gender_data(gender):
-    if gender == "other":
-        gender = "female"
-    return gender
+API_KEY = os.environ.get("EXERCISE_API_KEY")
+BASE_URL = os.environ.get("API_ENDPOINT")
+OPENAI_KEY = os.environ.get("OPENAI_KEY")
 
 def treat_muscles_data (muscles)->List[BodyPart]:
      # Change the muscles into BodyParts objects
@@ -85,6 +49,52 @@ def treat_muscles_data (muscles)->List[BodyPart]:
             muscle_list.append(BodyPart.WAIST)
         
     return muscle_list
+
+def create_schedule_with_openai(age, gender, weight, goal, days, available_time):
+    try:
+        prompt = f"""
+        Create a detailed workout schedule in JSON format for a {age} year old {gender} who weighs {weight} kg and has a goal of {goal}. 
+        The schedule should be distributed over {len(days)} days ({', '.join(days)}) with each session being {available_time} minutes long. 
+        Each day's schedule should include exercises with sets and reps that fit within the available time per session, considering that each rep takes 3 seconds and 60 seconds rest between each set.
+        The output should only be a valid JSON object, no additional text or formatting. Example format:
+        {{
+            "Day 1": {{
+                "Muscle_Group": "Chest and Arms",
+                "Exercises": {{
+                    "Exercise 1": {{"Sets": 3, "Reps": 10}},
+                    "Exercise 2": {{"Sets": 3, "Reps": 10}}
+                }}
+            }},
+            "Day 2": {{
+                "Muscle_Group": "Back and Shoulders",
+                "Exercises": {{
+                    "Exercise 1": {{"Sets": 3, "Reps": 10}},
+                    "Exercise 2": {{"Sets": 3, "Reps": 10}}
+                }}
+            }}
+        }}
+        """
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        structured_data = response.choices[0].message['content'].strip()
+        logger.info(f"Structured data from OpenAI: {structured_data}")
+
+        json_data = json.loads(structured_data)
+        return json_data
+
+    except json.JSONDecodeError as json_err:
+        logger.error(f"JSON decode error: {json_err}")
+        raise ValueError("Invalid JSON response from OpenAI")
+    except Exception as e:
+        logger.error(f"Error in parsing exercise response: {str(e)}")
+        raise
 
 def search_exercises(user_input, bodypart, equipment):
     endpoint = f"{BASE_URL}/310/list+exercise+by+body+part"
@@ -146,111 +156,52 @@ def register_routes(app):
         return jsonify(exercises), status_code
     
     @app.route('/create-schedule', methods=['POST'])
-    def gather_info():
+    def create_schedule():
         try:
             data = request.get_json()
-            
+            app.logger.info(f"Received data: {data}")
             
             age = int(data.get('age'))
             gender = data.get('gender')
-            weight = int(data.get('weight')) 
+            weight = int(data.get('weight'))
             goal = data.get('goal')
             days = data.get('days')
-            available_time_per_session = int(data.get('available_time')) 
+            available_time_per_session = int(data.get('available_time'))
 
-            gender = treat_gender_data(gender)
+            schedule = create_schedule_with_openai(age, gender, weight, goal, days, available_time_per_session)
 
-            custom_schedule = create_custom_schedule(gender, weight, goal, days, available_time_per_session)
-            json_custom_schedule = json.dumps(custom_schedule, cls=CustomScheduleEncoder)
-            schedule_data = json.loads(json_custom_schedule)
+            # Generate unique string ID for the schedule
+            schedule_id = str(uuid.uuid4())
+            schedule["_id"] = schedule_id
 
+            # Store the schedule in the database
             inserted_id = server_crud_operations(
                 operation="insert",
-                json_data={"schedule": schedule_data},
-                collection_name="schedules"
+                json_data=schedule,
+                collection_name="Schedules"
             )
 
-            return jsonify({"status": "success", "message": "Schedule created successfully", "schedule_id": str(inserted_id)}), 200
+            return jsonify({"status": "success", "schedule_id": schedule_id, "schedule": schedule}), 200
         except Exception as e:
             app.logger.error("Error: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
 
-
     @app.route('/get-schedule/<schedule_id>', methods=['GET'])
     def get_schedule(schedule_id):
         try:
-            schedule_id = ObjectId(schedule_id)
-            schedule = server_crud_operations(
+            logger.info(f"Received request to get schedule with id: {schedule_id}")
+            result = server_crud_operations(
                 operation="read",
-                collection_name="schedules",
-                key="_id",
+                collection_name="Schedules",  # Ensure collection name matches the one used in the insert operation
                 value=schedule_id
             )
             
-            if schedule:
-                return jsonify({"status": "success", "schedule": schedule}), 200
+            if result:
+                logger.info(f"Found a document with _id {schedule_id}: {result}")
+                return jsonify({"status": "success", "schedule": result['schedule']}), 200
             else:
+                logger.info(f"No document found with _id {schedule_id}")
                 return jsonify({"status": "error", "message": "Schedule not found"}), 404
         except Exception as e:
-            print("Error:", str(e))
+            logger.error("Error: %s", str(e))
             return jsonify({"status": "error", "message": str(e)}), 500
-
-def fetch_api_data_async(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
-    headers = {"Authorization": f"Bearer {API_KEY}"}
-    response = requests.get(endpoint, headers=headers, params=params)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return {"error": "Failed to fetch data from the API!"}
-
-def create_custom_schedule(gender: str, weight: int, goal: str, days: List[str], available_time_per_session: int):
-    distributor = MuscleGroupDistributor(len(days))
-    muscle_groups_schedule = distributor.distribute_muscle_groups()
-
-    api_calls = []
-    for i, day_muscles in enumerate(muscle_groups_schedule):
-        for muscle in day_muscles:
-            for target in muscle.value:
-                api_calls.append((days[i], f"{BASE_URL}/4824/ai+workout+planner", {'target': target, 'gender': gender, 'weight': weight, 'goal': goal}))
-
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        future_to_params = {executor.submit(fetch_api_data_async, endpoint, params): (day, params['target']) for day, endpoint, params in api_calls}
-        api_results = {(day, target): future.result() for future, (day, target) in future_to_params.items()}
-
-    # Organize routines by day
-    routines = {day: [] for day in days}
-    for (day, target), result in api_results.items():
-        if 'routine' in result:
-            routines[day].append(result['routine'][0])
-
-    custom_schedule = {day: Workout() for day in days}
-    exercise_pattern = re.compile(r'^(.*) - (\d+) sets? of (\d+)-(\d+) reps?$')
-    print(exercise_pattern)
-    for day, daily_routines in routines.items():
-        current_workout = Workout()
-        for routine in daily_routines:
-            lines = routine.split('**')
-            for line in lines:
-                line = line.strip()
-                exercises = line.split('\n')
-                for exercise in exercises:
-                    if exercise and not exercise.startswith('Day'):
-                        match = exercise_pattern.match(exercise.strip())
-                        if match:
-                            name = match.group(1).strip()
-                            sets = int(match.group(2))
-                            reps = f"{match.group(3)}-{match.group(4)}"
-                            exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=name, target="unknown")
-                            current_workout.add_exercise(WorkoutExercise(exercise_obj, sets, reps))
-                        else:
-                            print(f"Exercise does not match pattern: {exercise}")
-                            exercise_obj = Exercise(body_part="unknown", equipment="unknown", gif_url="unknown", exercise_id="unknown", name=exercise.strip(), target="unknown")
-                            current_workout.add_exercise(WorkoutExercise(exercise_obj, 0, ""))
-            
-            total_time, _ = current_workout.calculate_workout_time()
-            if total_time > available_time_per_session:
-                break
-
-        custom_schedule[day] = current_workout
-
-    return Schedule([custom_schedule[day] for day in days])
