@@ -26,3 +26,4 @@ dependencies:
   - werkzeug
   - pip:
       - python-dotenv
+      - openai

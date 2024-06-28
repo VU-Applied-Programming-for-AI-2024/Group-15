@@ -1,7 +1,67 @@
-aischedule h1 a {
+body {
+    font-family: 'Arial', sans-serif;
+    background: #1b98e1;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 a {
     position: relative;
     z-index: 10;
     text-decoration: none !important;
+    color: #fff;
+}
+
+header img.logo {
+    width: 150px;
+}
+
+nav.menu {
+    background: #2A3D66;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+nav.menu .menu-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+nav.menu .menu-links a:hover {
+    text-decoration: underline;
+}
+
+main.aischedulepage {
+    background: #2A3D66;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
 /* Days selection styles */
@@ -23,41 +83,39 @@ aischedule h1 a {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #000;
+    border: 2px solid #fff;
     border-radius: 50%;
     cursor: pointer;
     user-select: none;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .day.active {
-    background-color: grey;
-    color: white;
+    background-color: #80d0c7;
+    color: #2A3D66;
 }
 
 /* Sliders styles */
-/* sliders background */
 .age-range, .weight-range {
     height: 50px;
     width: 100%;
-    max-width: 1000px;
     background: linear-gradient(135deg, #e0e0e0ae, #c0c0c017);
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 0 65px 0 45px;
-    margin: auto;
+    padding: 0 45px;
+    margin: 20px auto;
 }
 
-/* number showed when selecting */
-.age-range .slider-value, .weight-range .slider-value {
+.slider-value {
     position: relative;
     width: 100%;
 }
 
-.age-range .slider-value .slider-span, .weight-range .slider-value .slider-span {
+.slider-span {
     position: absolute;
     height: 45px;
     width: 45px;
-    color: #D0D3D4;
+    color: #fff;
     font-weight: 500;
     top: -40px;
     transform: translateX(-50%) scale(0);
@@ -71,17 +129,16 @@ aischedule h1 a {
     text-align: center;
 }
 
-.age-range .slider-value .slider-span.show, .weight-range .slider-value .slider-span.show {
+.slider-span.show {
     transform: translateX(-50%) scale(1);
 }
 
-/* slider surrounding when using */
-.age-range .slider-value .slider-span:after, .weight-range .slider-value .slider-span:after {
+.slider-span:after {
     position: absolute;
     content: "";
     height: 45px;
     width: 45px;
-    background: linear-gradient(135deg, #2A3D66, #2A3D66);
+    background: linear-gradient(135deg, #1b98e1 0%, #80d0c7 100%);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     left: 50%;
     transform: translateX(-50%) rotate(45deg);
@@ -92,28 +149,160 @@ aischedule h1 a {
     border-bottom-left-radius: 50%;
 }
 
-/* Thumb styling (the button we actually touch) */
-.age-range .field input::-webkit-slider-thumb, .weight-range .field input::-webkit-slider-thumb {
+.field input::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
-    background: linear-gradient(135deg, #2A3D66, #586175);
+    background: linear-gradient(135deg, #1b98e1 0%, #80d0c7 100%);
     border-radius: 50%;
     border: 2px solid #B0B3B8;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Thumb hover effect */
-.age-range .field input::-webkit-slider-thumb:hover, .weight-range .field input::-webkit-slider-thumb:hover {
-    background: linear-gradient(135deg, #00A8A8, #2A3D66);
+.field input::-webkit-slider-thumb:hover {
+    background: linear-gradient(135deg, #2A3D66, #80d0c7);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Slider and values */
-.age-range .field, .weight-range .field {
+.field {
     position: relative;
     display: flex;
     align-items: center;
-    
+    justify-content: center;
+    height: 100%;
+}
+
+.value {
+    position: absolute;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.value.left {
+    left: -22px;
+}
+
+.value.right {
+    right: -43px;
+}
+
+.field input {
+    appearance: none;
+    height: 10px;
+    width: 100%;
+    background: linear-gradient(90deg, #80d0c7 100%, #1b98e1 0%);
+    border-radius: 5px;
+    outline: none;
+    border: none;
+}
+
+/* Gender selection buttons */
+.gender-selection {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.gender-selection input[type="radio"] {
+    display: none;
+}
+
+.gender-selection label {
+    color: #D0D3D4;
+    font-family: sans-serif;
+    font-size: 20px;
+    border: 2px solid rgba(245, 245, 245, 0.678);
+    background: linear-gradient(135deg, #80d0c7, #586175);
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.gender-selection label::before {
+    content: "";
+    height: 30px;
+    width: 30px;
+    border: 3px solid #D0D3D4;
+    border-radius: 50%;
+    margin-right: 10px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.gender-selection input[type="radio"]:checked + label {
+    background-color: #4A627D;
+    color: #B0B3B8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gender-selection input[type="radio"]:checked + label:before {
+    height: 25px;
+    width: 25px;
+    border: 5px solid #B0B3B8;
+    background-color: black;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gender-selection label:hover {
+    background-color: #2A3D66;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Submit button */
+#submit-btn {
+    background: #0072ff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+#submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Waiting popup */
+#waiting-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.spinner {
+    border: 4px solid rgba(0,0,0,0.1);
+    border-top: 4px solid #0072ff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
