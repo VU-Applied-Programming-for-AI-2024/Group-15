@@ -155,27 +155,44 @@ def register_routes(app):
     def add_to_favorites():
         try:
             data = request.json
-            email = data['email']
-            schedule_name = data['scheduleName']
-            schedule = data['schedule']
+            if not data:
+                raise ValueError("No JSON data provided")
 
-            # Insert into the favorites collection
+            email = data.get('email')
+            schedule_name = data.get('scheduleName')
+            schedule = data.get('schedule')
+
+            if not email or not schedule_name or not schedule:
+                raise ValueError("Missing required fields: email, scheduleName, or schedule")
+
+            # Create the favorite document
             favorite = {
                 "_id": email + schedule_name,
                 "email": email,
                 "schedule_name": schedule_name,
                 "schedule": schedule
             }
+
+            # Log the favorite document for debugging
+            logger.debug(f"Favorite document: {favorite}")
+
+            # Perform the database operation
             server_crud_operations(
                 operation="insert",
                 json_data={"favorite": favorite},
                 collection_name="favorites"
             )
 
+            # Return success response
             return jsonify({"status": "success", "message": "Schedule added to favorites successfully"}), 200
+
+        except ValueError as ve:
+            logger.error(f"Validation Error: {str(ve)}")
+            return jsonify({"status": "error", "message": str(ve)}), 400
+
         except Exception as e:
             logger.error(f"Error adding schedule to favorites: {str(e)}")
-            return jsonify({"status": "error", "message": str(e)}), 500
+            return jsonify({"status": "error", "message": "Internal Server Error"}), 500
     
     @app.route('/create-schedule', methods=['POST'])
     def create_schedule():
