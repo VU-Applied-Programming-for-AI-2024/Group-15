@@ -3,10 +3,8 @@ import requests
 import os
 from typing import List, Any, Union, Dict
 from dotenv import load_dotenv, find_dotenv
-from models.bodypart import BodyPart
 from utils.crud_operations_azure import server_crud_operations
 import json
-from models.bodypart import MuscleGroupDistributor
 import openai
 import logging 
 
@@ -22,32 +20,6 @@ API_KEY = os.environ.get("EXERCISE_API_KEY")
 BASE_URL = os.environ.get("API_ENDPOINT")
 OPENAI_KEY = os.environ.get("OPENAI_KEY")
 
-def treat_muscles_data (muscles)->List[BodyPart]:
-     # Change the muscles into BodyParts objects
-    muscle_list: List[BodyPart] = []
-    for muscle in muscles:
-        if muscle == "back":
-            muscle_list.append(BodyPart.BACK)
-        if muscle == "cardio":
-            muscle_list.append(BodyPart.CARDIO)
-        if muscle == "chest":
-            muscle_list.append(BodyPart.CHEST)
-        if muscle == "lower arms":
-            muscle_list.append(BodyPart.LOWER_ARMS)
-        if muscle == "lower legs":
-            muscle_list.append(BodyPart.LOWER_LEGS)
-        if muscle == "neck":
-            muscle_list.append(BodyPart.NECK)
-        if muscle == "shoulders":
-            muscle_list.append(BodyPart.SHOULDERS)
-        if muscle == "upper arms":
-            muscle_list.append(BodyPart.UPPER_ARMS)
-        if muscle == "upper legs":
-            muscle_list.append(BodyPart.UPPER_LEGS)
-        if muscle == "waist":
-            muscle_list.append(BodyPart.WAIST)
-        
-    return muscle_list
 
 def create_schedule_with_openai(age, gender, weight, goal, days, available_time):
     try:
