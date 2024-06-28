@@ -149,13 +149,21 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateRepSet(day, index, newRepSet) {
-      if (schedule[day] && schedule[day][index]) {
-          const [newSets, newReps] = newRepSet.split(' x ');
-          schedule[day][index].sets = parseInt(newSets);
-          schedule[day][index].reps = parseInt(newReps);
-          localStorage.setItem("schedule", JSON.stringify(schedule));
-      }
-  }
+    if (schedule[day] && schedule[day][index]) {
+        const [newSets, newReps] = newRepSet.split(' x ');
+        const parsedSets = parseInt(newSets);
+        const parsedReps = parseInt(newReps);
+
+        if (!isNaN(parsedSets) && !isNaN(parsedReps)) {
+            schedule[day][index].sets = parsedSets;
+            schedule[day][index].reps = parsedReps;
+            localStorage.setItem("schedule", JSON.stringify(schedule));
+        } else {
+            console.error(`Invalid input for sets or reps: ${newRepSet}`);
+        }
+    }
+}
+
 
   function saveChangesToServerAndReload() {
       const userScheduleUrl = "https://fitnessaicoach.azurewebsites.net/save_schedule";
