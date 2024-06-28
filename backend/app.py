@@ -2,6 +2,10 @@ from flask import Flask
 from flask_cors import CORS
 import logging
 from routes import register_routes
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def create_app():
 
