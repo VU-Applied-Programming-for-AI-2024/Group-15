@@ -6,6 +6,7 @@ myFitnessAI Coach is an AI-powered platform designed to create personalized fitn
 ## Frontend mockup
 ## Team members
 #### Felice Faruolo 
+#### Timothé Van Damme
 ## Installation details
 Our website is accessible via url link (It was deployed on azure web static app): https://gentle-bay-09953a810.5.azurestaticapps.net/
 ## Architecture
