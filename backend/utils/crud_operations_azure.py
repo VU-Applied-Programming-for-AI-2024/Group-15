@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Union
 import logging 
 import os
 from dotenv import load_dotenv, find_dotenv
+from bson import ObjectId
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -18,8 +19,11 @@ def delete_document(collection: pymongo.collection.Collection, document_id: Any)
 
 def read_document(collection: pymongo.collection.Collection, document_id: Any) -> Dict[str, Any]:
     """Return the contents of the document containing document_id"""
+    logger.info(f"Attempting to read document with _id: {document_id}")
+    
     document = collection.find_one({"_id": document_id})
-    logger.info("Found a document with _id {}: {}".format(document_id, document))
+    logger.info("Finding document with _id: {}".format(document_id))
+    logger.info("Found document: {}".format(document))
     return document
 
 def update_document_id(collection: pymongo.collection.Collection, document_id: Any, update_data: Dict[str, Any]) -> None:
@@ -29,6 +33,7 @@ def update_document_id(collection: pymongo.collection.Collection, document_id: A
 
 def insert_document(collection: pymongo.collection.Collection, document_data: Dict[str, Any]) -> Any:
     """Insert a document with document_data and return the contents of its _id field"""
+    document_data["_id"] = str(document_data["_id"])  # Ensure _id is stored as a string
     document_id = collection.insert_one(document_data).inserted_id
     logger.info("Inserted document with _id {}".format(document_id))
     return document_id

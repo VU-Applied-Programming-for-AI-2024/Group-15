@@ -24,5 +24,6 @@ dependencies:
   - pytz
   - pyyaml
   - werkzeug
+  - openai
   - pip:
       - python-dotenv
