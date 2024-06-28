@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.log('Sending data:', JSON.stringify(data));
 
-        fetch('https://gentle-bay-09953a810.5.azurestaticapps.net/create-schedule', {
+        fetch('https://fitnessaicoach.azurewebsites.net//create-schedule', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
