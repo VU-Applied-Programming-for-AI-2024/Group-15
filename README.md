@@ -36,7 +36,7 @@ If you want to run and test the servers locally, you need to:
 
 In order to run and test the functionality of the display_exercises file, you need to get a json file that follows this type of architecture:
 
-
+```Json
 
 {
 	"_id" : ObjectId("667d9a80f07ca119710ce733"),
@@ -132,13 +132,13 @@ In order to run and test the functionality of the display_exercises file, you ne
 	}
 }
 
-
+```
 
 Then, you need to modify the current display_exercises to make it accept a Json file from your localhost instead of the backend server, the first method needs to be changed in this way:
 
 
 
-
+```python
 document.addEventListener("DOMContentLoaded", function () {
     let schedule = null;
     let editMode = false;
@@ -174,6 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         exerciseWrapper.classList.add("exercise-wrapper");
 
 ...
+```
 
 Then the schedule on the Json file will be displayed.
 
