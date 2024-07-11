@@ -35,6 +35,9 @@ If you want to run and test the servers locally, you need to:
 - If you have followed those steps correctly, you should have similar experience than on the regular website (which you can access by following the link on top of the readme)
 
 In order to run and test the functionality of the display_exercises file, you need to get a json file that follows this type of architecture:
+
+
+
 {
 	"_id" : ObjectId("667d9a80f07ca119710ce733"),
 	"schedule" : {
@@ -43,7 +46,9 @@ In order to run and test the functionality of the display_exercises file, you ne
 				{
 					"Muscle_Group" : "Back",
 					"Exercises" : [
+     
 						{
+      
 							"Exercise" : "Deadlifts",
 							"Sets" : 3,
 							"Reps" : 12
