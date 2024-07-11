@@ -21,8 +21,18 @@ For running the application on a local machine the steps are the following:
 5. Set up a .env file with all the keys;
 6. go to the backend folder directory and run on terminal "flask run";
 7. for running at the same time the frontend, open another terminal and run "python -m http.server", then go on a browser and type in the search bar:"http:localhost:8000". if the port is different, you can specify the port by running:"python -m http.server 8000";
-8. every imports and links need to be changed. For imports, delete the ../ in front of the paths. As for the links, every link with azure-static needs to be changed go your personal frontend link, as for the backend links (the ones starting with fitnessaicoach), change them to fit your localhost link.
 
+
+If you want to run and test the servers locally, you need to: 
+- Download the github repository
+- Open it in your code editor
+- Run the backend server by opening your terminal and navigate to the backend folder by doing cd backend. Then, you can do Flask run which will give you your localhost backend url. Keep it, it is important later in the process.
+- Open the file you want to test, or index.py if you want to see the landing page.
+- For every file in the frontend, you need to adjust the imports, deleting the ../ in front of all the import links (CSS and JavaScript)
+- Then, with your code editor, utilize an extension such as live server to visualize your page live. If you want, you should also be able to see the files just from clicking on them. Here again, open index.py if you want to see the main page, or open another file if you want to see that one specifically.
+- Once that is done, you should have a url: that is the frontend url.
+- Then, you need go modify the JavaScript links. To do so, you have to replace every link that starts with azure-static with your frontend url, and every link starting with myfitnessai with your backend url
+- If you have followed those steps correctly, you should have similar experience than on the regular website (which you can access by following the link on top of the readme)
 
 In order to run and test the functionality of the display_exercises file, you need to get a json file that follows this type of architecture:
 {
@@ -117,7 +127,12 @@ In order to run and test the functionality of the display_exercises file, you ne
 	}
 }
 
+
+
 Then, you need to modify the current display_exercises to make it accept a Json file from your localhost instead of the backend server, the first method needs to be changed in this way:
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
     let schedule = null;
