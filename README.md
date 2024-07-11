@@ -21,6 +21,143 @@ For running the application on a local machine the steps are the following:
 5. Set up a .env file with all the keys;
 6. go to the backend folder directory and run on terminal "flask run";
 7. for running at the same time the frontend, open another terminal and run "python -m http.server", then go on a browser and type in the search bar:"http:localhost:8000". if the port is different, you can specify the port by running:"python -m http.server 8000";
+8. every imports and links need to be changed. For imports, delete the ../ in front of the paths. As for the links, every link with azure-static needs to be changed go your personal frontend link, as for the backend links (the ones starting with fitnessaicoach), change them to fit your localhost link.
+
+
+In order to run and test the functionality of the display_exercises file, you need to get a json file that follows this type of architecture:
+{
+	"_id" : ObjectId("667d9a80f07ca119710ce733"),
+	"schedule" : {
+		"Workout_Schedule" : {
+			"Wednesday" : [
+				{
+					"Muscle_Group" : "Back",
+					"Exercises" : [
+						{
+							"Exercise" : "Deadlifts",
+							"Sets" : 3,
+							"Reps" : 12
+						},
+						{
+							"Exercise" : "Lat Pulldown",
+							"Sets" : 3,
+							"Reps" : 12
+						},
+						{
+							"Exercise" : "Seated Cable Rows",
+							"Sets" : 3,
+							"Reps" : 12
+						}
+					]
+				},
+				{
+					"Muscle_Group" : "Chest",
+					"Exercises" : [
+						{
+							"Exercise" : "Bench Press",
+							"Sets" : 3,
+							"Reps" : 12
+						},
+						{
+							"Exercise" : "Incline Dumbbell Press",
+							"Sets" : 3,
+							"Reps" : 12
+						},
+						{
+							"Exercise" : "Chest Fly",
+							"Sets" : 3,
+							"Reps" : 12
+						}
+					]
+				}
+			],
+			"Thursday" : [
+				{
+					"Muscle_Group" : "Legs",
+					"Exercises" : [
+						{
+							"Exercise" : "Squats",
+							"Sets" : 3,
+							"Reps" : 12
+						},
+						{
+							"Exercise" : "Leg Press",
+							"Sets" : 3,
+							"Reps" : 12
+						},
+						{
+							"Exercise" : "Lunges",
+							"Sets" : 3,
+							"Reps" : 12
+						}
+					]
+				},
+				{
+					"Muscle_Group" : "Arms",
+					"Exercises" : [
+						{
+							"Exercise" : "Bicep Curls",
+							"Sets" : 3,
+							"Reps" : 12
+						},
+						{
+							"Exercise" : "Tricep Dips",
+							"Sets" : 3,
+							"Reps" : 12
+						},
+						{
+							"Exercise" : "Hammer Curls",
+							"Sets" : 3,
+							"Reps" : 12
+						}
+					]
+				}
+			]
+		}
+	}
+}
+
+Then, you need to modify the current display_exercises to make it accept a Json file from your localhost instead of the backend server, the first method needs to be changed in this way:
+
+document.addEventListener("DOMContentLoaded", function () {
+    let schedule = null;
+    let editMode = false;
+    let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    fetch("./scripts/mock_schedule.json")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            schedule = data.schedule.Workout_Schedule;
+            console.log(schedule)
+            displaySchedule();
+        })
+        .catch(error => {
+            console.error('Error fetching mock schedule:', error);
+        });
+    function displaySchedule() {
+        days.forEach(day => {
+            displayExercises(day);
+        });
+    }
+    function displayExercises(day) {
+        const dayExercisesContainer = document.getElementById(`${day}-exercises`);
+        if (dayExercisesContainer) {
+            dayExercisesContainer.innerHTML = "";
+            if (schedule && schedule.hasOwnProperty(day) && schedule[day].length > 0) {
+                schedule[day].forEach((group, groupIndex) => {
+                    group.Exercises.forEach((exercise, exerciseIndex) => {
+                        const exerciseWrapper = document.createElement("div");
+                        exerciseWrapper.classList.add("exercise-wrapper");
+
+...
+
+Then the schedule on the Json file will be displayed.
+
+Note that the other links in that file and the other files it's using need to be updated in order to fit the links of the local machine like explained above.
 
 ## Architecture
 ![image](https://github.com/VU-Applied-Programming-for-AI-2024/Group-15/assets/156012070/4bdc002a-67b3-4541-bfed-74f537f3df2a)
