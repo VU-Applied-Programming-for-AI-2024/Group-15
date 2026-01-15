@@ -50,7 +50,7 @@ jupyter_client==8.0.0
 requests==2.31.0
 waitress==3.0.0
 python-dotenv==1.0.1
-gunicorn==20.1.0
+gunicorn==22.0.0
 flask_restful==0.3.10
 pymongo==4.7.3
 bson==0.5.10
